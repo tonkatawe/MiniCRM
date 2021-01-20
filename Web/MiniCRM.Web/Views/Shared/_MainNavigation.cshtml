@@ -1,32 +1,38 @@
 ﻿@using MiniCRM.Web.Infrastructure
+@using Microsoft.AspNetCore.Identity
+@using MiniCRM.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
 
-<a asp-controller="Home" asp-action="Index"
-   class="nav-link @Url.MakeActiveClass("home","index")" />
-
-<a asp-controller="Home" asp-action="Privacy"
-   class="nav-link @Url.MakeActiveClass("home","privacy")" />
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="~/Home" class="brand-link">
-        <img src="~/img/AdminLTELogo.png" alt="AdminLTE Logo"
+    <a asp-area="" asp-controller="Home" asp-action="Index"  class="brand-link">
+        <img src="https://res.cloudinary.com/dx479nsjv/image/upload/v1611049724/MiniCRM/Crm_Customer_Relationship_Management__Client-512_wogria.webp" alt="MiniCRM Logo"
              class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">MiniCRM</span>
     </a>
+
+
     <div class="sidebar">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img src="~/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        @if (this.SignInManager.IsSignedIn(this.User))
+        {
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="https://res.cloudinary.com/dx479nsjv/image/upload/v1610982693/MiniCRM/avatar3_fefsib.png" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">@this.User.Identity.Name</a>
+                </div>
             </div>
-            <div class="info">
-                <a href="#" class="d-block">Enrico Rossini</a>
-            </div>
-        </div>
+
+        }
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column"
                 data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item ">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link">
+
+                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                       class="nav-link @Url.MakeActiveClass("home","index")">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
@@ -34,7 +40,8 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a asp-controller="Home" asp-action="Privacy" class="nav-link">
+                    <a  asp-area="" asp-controller="Home" asp-action="Privacy"
+                       class="nav-link @Url.MakeActiveClass("home","privacy")">
                         <i class="nav-icon fas fa-lock"></i>
                         <p>
                             Privacy
@@ -42,6 +49,14 @@
                     </a>
                 </li>
             </ul>
+            @if (this.SignInManager.IsSignedIn(this.User))
+            {
+
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(this.Url.Action("Index", "Home", new { area = string.Empty }))">
+                    <button type="submit" class="nav-link btn btn-link">Logout</button>
+                </form>
+            }
+
         </nav>
     </div>
 </aside>

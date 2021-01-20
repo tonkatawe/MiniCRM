@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
-    <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>    
+    <title>@this.ViewData["Title"] - @GlobalConstants.SystemName</title>
     <partial name="_Styles" />
 </head>
 <body class="hold-transition sidebar-mini">
@@ -29,8 +29,8 @@
                     </div>
                 </div>
             </div>
+            <partial name="_CookieConsentPartial" />
             <div class="content">
-                <partial name="_CookieConsentPartial" />
                 <div class="container-fluid">
                     @RenderBody()
                 </div>
@@ -39,11 +39,15 @@
         <aside class="control-sidebar control-sidebar-dark">
             <div class="p-3">
                 <h5>Title</h5>
-                <p>Sidebar content</p>
+           
+                    <a class="nav-link " asp-area="Identity" asp-page="/Account/Login">Login</a>
+              
             </div>
         </aside>
-        <partial name="_Footer" />
+    <partial name="_Footer" />
     </div>
     <partial name="_Scripts" />
+    @await this.RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
