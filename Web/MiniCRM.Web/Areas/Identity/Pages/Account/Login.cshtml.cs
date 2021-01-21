@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Web.Areas.Identity.Pages.Account
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MiniCRM.Web.Areas.Identity.Pages.Account
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -42,8 +44,8 @@
         public class InputModel
         {
             [Required]
-            [EmailAddress]
-            public string Email { get; set; }
+            [Display(Name = "Username or email")]
+            public string UserNameOrEmail { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
@@ -80,28 +82,23 @@
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                var user = await this.userManager.Users.FirstOrDefaultAsync(u =>
+                    u.UserName == Input.UserNameOrEmail || u.Email == Input.UserNameOrEmail);
+                if (user != null)
                 {
-                    logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
+                    var result = await this.signInManager.PasswordSignInAsync(user.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        this.logger.LogInformation("User logged in.");
+                        return LocalRedirect(returnUrl);
+                    }
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
-            }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 
+
+            }
             // If we got this far, something failed, redisplay form
             return Page();
         }
