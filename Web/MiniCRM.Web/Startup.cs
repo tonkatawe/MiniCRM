@@ -1,19 +1,8 @@
-﻿using MiniCRM.Services;
-using MiniCRM.Services.Contracts;
+﻿using CloudinaryDotNet;
 
 namespace MiniCRM.Web
 {
     using System.Reflection;
-
-    using MiniCRM.Data;
-    using MiniCRM.Data.Common;
-    using MiniCRM.Data.Common.Repositories;
-    using MiniCRM.Data.Models;
-    using MiniCRM.Data.Repositories;
-    using MiniCRM.Data.Seeding;
-    using MiniCRM.Services.Mapping;
-    using MiniCRM.Services.Messaging;
-    using MiniCRM.Web.ViewModels;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -23,6 +12,17 @@ namespace MiniCRM.Web
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using MiniCRM.Data;
+    using MiniCRM.Data.Common;
+    using MiniCRM.Data.Common.Repositories;
+    using MiniCRM.Data.Models;
+    using MiniCRM.Data.Repositories;
+    using MiniCRM.Data.Seeding;
+    using MiniCRM.Services;
+    using MiniCRM.Services.Contracts;
+    using MiniCRM.Services.Mapping;
+    using MiniCRM.Services.Messaging;
+    using MiniCRM.Web.ViewModels;
 
     public class Startup
     {
@@ -63,13 +63,24 @@ namespace MiniCRM.Web
 
             services.AddSingleton(this.configuration);
 
+            // Add Cloudinary
+            var cloudinary = new Cloudinary(new Account()
+            {
+                Cloud = this.configuration["Cloudinary:CloudName"],
+                ApiKey = this.configuration["Cloudinary:ApiKey"],
+                ApiSecret = this.configuration["Cloudinary:ApiSecret"],
+            });
+
+            services.AddSingleton(cloudinary);
+
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             // Application services
-            services.AddTransient<IEmailSender, NullMessageSender>();
+            services.AddTransient<IEmailSender>(
+                serviceProvider => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
             services.AddTransient<ICloudinaryService, CloudinaryService>();
         }
 

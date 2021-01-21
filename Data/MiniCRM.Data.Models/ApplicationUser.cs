@@ -28,6 +28,9 @@ namespace MiniCRM.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        public string ProfilePictureUrl { get; set; }
+
+
         public virtual ApplicationUser Parent { get; set; }
 
         public string? ParentId { get; set; }
