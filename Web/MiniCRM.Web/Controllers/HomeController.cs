@@ -2,13 +2,17 @@
 {
     using System.Diagnostics;
 
-    using MiniCRM.Web.ViewModels;
-
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Web.ViewModels;
 
     public class HomeController : BaseController
     {
         public IActionResult Index()
+        {
+            return this.View();
+        }
+
+        public IActionResult Test()
         {
             return this.View();
         }

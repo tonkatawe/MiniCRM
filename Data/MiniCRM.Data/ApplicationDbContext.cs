@@ -24,8 +24,6 @@
         {
         }
 
-        public DbSet<Setting> Settings { get; set; }
-
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -47,6 +45,17 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<ApplicationUser>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.Property(x => x.UserName);
+                entity.HasOne(x => x.Parent)
+                    .WithMany(x => x.Employees)
+                    .HasForeignKey(x => x.ParentId)
+                    .IsRequired(false)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
 

@@ -4,9 +4,8 @@ namespace MiniCRM.Data.Models
     using System;
     using System.Collections.Generic;
 
-    using MiniCRM.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using MiniCRM.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
     {
@@ -16,6 +15,7 @@ namespace MiniCRM.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Employees = new HashSet<ApplicationUser>();
         }
 
         // Audit info
@@ -27,6 +27,12 @@ namespace MiniCRM.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public virtual ApplicationUser Parent { get; set; }
+
+        public string? ParentId { get; set; }
+
+        public virtual ICollection<ApplicationUser> Employees { get; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

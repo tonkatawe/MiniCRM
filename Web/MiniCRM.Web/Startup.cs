@@ -1,4 +1,7 @@
-﻿namespace MiniCRM.Web
+﻿using MiniCRM.Services;
+using MiniCRM.Services.Contracts;
+
+namespace MiniCRM.Web
 {
     using System.Reflection;
 
@@ -8,7 +11,6 @@
     using MiniCRM.Data.Models;
     using MiniCRM.Data.Repositories;
     using MiniCRM.Data.Seeding;
-    using MiniCRM.Services.Data;
     using MiniCRM.Services.Mapping;
     using MiniCRM.Services.Messaging;
     using MiniCRM.Web.ViewModels;
@@ -59,8 +61,6 @@
             services.AddRazorPages();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-           
-
             services.AddSingleton(this.configuration);
 
             // Data repositories
@@ -70,7 +70,7 @@
 
             // Application services
             services.AddTransient<IEmailSender, NullMessageSender>();
-            services.AddTransient<ISettingsService, SettingsService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
