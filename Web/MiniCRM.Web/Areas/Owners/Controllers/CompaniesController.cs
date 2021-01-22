@@ -20,9 +20,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
         public async Task<IActionResult> Create(string userId)
         {
-
             return View();
-
         }
 
         [HttpPost]

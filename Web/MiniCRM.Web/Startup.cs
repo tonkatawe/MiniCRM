@@ -1,4 +1,7 @@
-﻿namespace MiniCRM.Web
+﻿using MiniCRM.Services.Data;
+using MiniCRM.Services.Data.Contracts;
+
+namespace MiniCRM.Web
 {
     using System.Reflection;
 
@@ -81,6 +84,8 @@
             services.AddTransient<IEmailSender>(
                 serviceProvider => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+            services.AddTransient<ICompaniesService, CompaniesService>();
+            services.AddTransient<IIndustriesService, IndustriesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
