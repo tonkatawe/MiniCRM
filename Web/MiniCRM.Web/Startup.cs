@@ -86,6 +86,7 @@ namespace MiniCRM.Web
             services.AddTransient<ICloudinaryService, CloudinaryService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IIndustriesService, IndustriesService>();
+            services.AddTransient<IAddressService, AddressService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

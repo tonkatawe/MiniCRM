@@ -11,25 +11,34 @@
     {
         private readonly IDeletableEntityRepository<Company> companyRepository;
         private readonly IIndustriesService industriesService;
+        private readonly IAddressService addressService;
 
-        public CompaniesService(IDeletableEntityRepository<Company> companyRepository, IIndustriesService industriesService)
+        public CompaniesService(
+            IDeletableEntityRepository<Company> companyRepository,
+            IIndustriesService industriesService,
+            IAddressService addressService)
         {
             this.companyRepository = companyRepository;
             this.industriesService = industriesService;
+            this.addressService = addressService;
         }
 
-        public Task<int> CreateAsync(CompanyCreateModel input)
+        public async Task<int> CreateAsync(CompanyCreateModel input)
         {
-            var industryId = this.industriesService.CreateAsync(input.IndustryName);
-            var addressId = this.
+            var industryId = await this.industriesService.CreateAsync(input.IndustryName);
+            var addressId = await this.addressService.CreateAsync(input.Country, input.City, input.Street, input.ZipCode);
+
             var company = new Company
             {
                 UserId = input.UserId,
                 Name = input.Name,
                 IsPublic = input.IsPublic,
                 IndustryId = industryId,
-                AddressId = 
+                AddressId = addressId,
             };
+
+            await this.companyRepository.AddAsync(company);
+            return await this.companyRepository.SaveChangesAsync();
         }
     }
 }

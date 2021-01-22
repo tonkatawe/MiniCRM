@@ -4,6 +4,6 @@
 
     public interface IAddressService
     {
-        Task<int> CreateAsync(string city, string street, int? zipCode = null);
+        Task<int> CreateAsync(string country, string city, string street, int? zipCode = null);
     }
 }
