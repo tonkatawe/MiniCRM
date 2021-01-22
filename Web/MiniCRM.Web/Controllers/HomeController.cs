@@ -32,7 +32,7 @@
             {
                 if (user.CompanyId == null)
                 {
-                    return this.RedirectToAction("Create", "Organizations", new { area = "Owners" });
+                    return this.RedirectToAction("Create", "Companies", new { area = "Owners", userId = user.Id });
                 }
 
                 return this.RedirectToAction("Index", "Dashboard", new { area = "Owners" });
