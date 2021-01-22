@@ -1,8 +1,10 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
+
 namespace MiniCRM.Data.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Identity;
     using MiniCRM.Data.Common.Models;
@@ -28,8 +30,18 @@ namespace MiniCRM.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
-        public string ProfilePictureUrl { get; set; }
+        [Required]
+        [MaxLength(25)]
+        public string FirstName { get; set; }
 
+        [MaxLength(25)]
+        public string MiddleName { get; set; }
+
+        [Required]
+        [MaxLength(25)]
+        public string LastName { get; set; }
+
+        public string ProfilePictureUrl { get; set; }
 
         public virtual ApplicationUser Parent { get; set; }
 

@@ -54,6 +54,23 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required(ErrorMessage = "Firstname is required")]
+            [Display(Name = "Firstname")]
+            [MinLength(3)]
+            [MaxLength(25)]
+            public string FirstName { get; set; }
+
+            [Display(Name = "MiddleName")]
+            [MinLength(3)]
+            [MaxLength(25)]
+            public string MiddleName { get; set; }
+
+            [Required(ErrorMessage = "LastName is required")]
+            [Display(Name = "LastName")]
+            [MinLength(3)]
+            [MaxLength(25)]
+            public string LastName { get; set; }
+
             [Required(ErrorMessage = "Username is required")]
             [Display(Name = "Username")]
             [MaxLength(30)]
@@ -96,12 +113,15 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
             {
                 var user = new ApplicationUser
                 {
-                    UserName = Input.UserName,
-                    Email = Input.Email,
+                    UserName = this.Input.UserName,
+                    Email = this.Input.Email,
                     ProfilePictureUrl = profilePicture,
+                    FirstName = this.Input.FirstName,
+                    MiddleName = this.Input.MiddleName,
+                    LastName = this.Input.LastName,
                 };
 
-                var result = await this.userManager.CreateAsync(user, Input.Password);
+                var result = await this.userManager.CreateAsync(user, this.Input.Password);
 
                 if (result.Succeeded)
                 {

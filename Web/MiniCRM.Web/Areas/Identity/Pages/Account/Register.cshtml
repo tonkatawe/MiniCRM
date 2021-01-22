@@ -5,79 +5,86 @@
 }
 
 <div class="container">
-
     <div class="row justify-content-center">
-        <div class="register-box">
-            <div class="card">
-                <div class="card-body register-card-body">
-                    <p class="login-box-msg">Register a new membership</p>
+        <div class="col-xl-8 col-lg-8 col-md-9 ">
+            <div class="card  border-0 shadow-lg my-1">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="p-5">
+                                <form class="user" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <label asp-for="Input.UserName"></label>
+                                            <input asp-for="Input.UserName" class="form-control" placeholder="Username" />
+                                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Input.Email"></label>
+                                            <input asp-for="Input.Email" class="form-control" placeholder="Email" />
+                                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-4">
+                                            <label asp-for="Input.FirstName"></label>
+                                            <input asp-for="Input.FirstName" class="form-control" placeholder="Firstname" />
+                                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label asp-for="Input.MiddleName"></label>
+                                            <input asp-for="Input.MiddleName" class="form-control" placeholder="Middlename" />
+                                            <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label asp-for="Input.LastName"></label>
+                                            <input asp-for="Input.LastName" class="form-control" placeholder="Lastname" />
+                                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Profile Picture(optional):</label>
+                                        <div class="custom-file form-group rounded-pill">
+                                            <input type="file" accept="image/*" asp-for="Input.ImageFile" class="custom-file-input rounded-pill">
+                                            <label class="custom-file-label" for="inputGroupFile01">Choose image</label>
+                                            <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <label asp-for="Input.Password"></label>
+                                            <input asp-for="Input.Password" class="form-control" placeholder="Password" />
+                                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label asp-for="Input.ConfirmPassword"></label>
+                                            <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        Register Account
+                                    </button>
+                                </form>
+                                <div class="social-auth-links text-center">
+                                    <p>- OR -</p>
+                                    <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" clas="user">
+                                        <button type="submit" name="provider" value="Facebook" class="btn btn-block btn-primary">
+                                            <i class="fab fa-facebook mr-2"></i>
+                                            Sign up using Facebook
+                                        </button>
+                                    </form>
 
-                    <form class="user" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <div class="input-group mb-3">
-                            <input asp-for="Input.UserName" class="form-control" placeholder="Username">
-                            <span asp-validation-for="Input.UserName" class="text-danger"></span>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-user"></span>
+                                </div>
+                                <div class="text-center">
+                                    <a class="small" asp-page="./ForgotPassword">Forgot Password?</a>
+                                </div>
+                                <div class="text-center">
+                                    <a class="small" asp-page="./Login">Already have an account? Login!</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group mb-3">
-                            <input asp-for="Input.Email" class="form-control" placeholder="Email">
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-envelope"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="custom-file form-group rounded-pill">
-                                <input type="file" accept="image/*" asp-for="Input.ImageFile" class="custom-file-input" id="inputGroupFile01"
-                                       aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose image</label>
-                                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
-                            </div>
-                        </div>
-                        <div class="input-group mb-3">
-                            <input asp-for="Input.Password" class="form-control" placeholder="Password">
-                            <span asp-validation-for="Input.Password" class="text-danger"></span>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="input-group mb-3">
-                            <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Retype password">
-                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    <span class="fas fa-lock"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Register Account
-                        </button>
-                    </form>
-
-                    <div class="social-auth-links text-center">
-                        <p>- OR -</p>
-                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" clas="user">
-                            <button type="submit" name="provider" value="Facebook" class="btn btn-block btn-primary">
-                                <i class="fab fa-facebook mr-2"></i>
-                                Sign up using Facebook
-                            </button>
-                        </form>
-
-                    </div>
-                    <div class="text-center">
-                        <a class="small" asp-page="./ForgotPassword" id="forgot-password">Forgot Password?</a>
-                    </div>
-                    <div class="text-center">
-                        <a class="small" asp-page="./Login">Already have an account? Login!</a>
                     </div>
                 </div>
             </div>

@@ -1,11 +1,14 @@
 ﻿@using MiniCRM.Web.Infrastructure
 @using Microsoft.AspNetCore.Identity
 @using MiniCRM.Data.Models
+@using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a asp-area="" asp-controller="Home" asp-action="Index"  class="brand-link">
+    <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
         <img src="https://res.cloudinary.com/dx479nsjv/image/upload/v1611049724/MiniCRM/Crm_Customer_Relationship_Management__Client-512_wogria.webp" alt="MiniCRM Logo"
              class="brand-image img-circle elevation-3"
              style="opacity: .8">
@@ -16,9 +19,11 @@
     <div class="sidebar">
         @if (this.SignInManager.IsSignedIn(this.User))
         {
+            var profileImageUrl = this.UserManager.Users.FirstOrDefault(x => x.Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier))?.ProfilePictureUrl;
+
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                    <img src="https://res.cloudinary.com/dx479nsjv/image/upload/v1610982693/MiniCRM/avatar3_fefsib.png" class="img-circle elevation-2" alt="User Image">
+                    <img src="@profileImageUrl" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block">@this.User.Identity.Name</a>
@@ -40,8 +45,8 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a  asp-area="" asp-controller="Home" asp-action="Privacy"
-                        class="nav-link @Url.MakeActiveClass("home","privacy")">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy"
+                       class="nav-link @Url.MakeActiveClass("home","privacy")">
                         <i class="nav-icon fas fa-lock"></i>
                         <p>
                             Privacy
@@ -49,8 +54,8 @@
                     </a>
                 </li>
                 <li class="nav-item ">
-                    <a  asp-area="" asp-controller="Home" asp-action="Test"
-                        class="nav-link @Url.MakeActiveClass("home","test")">
+                    <a asp-area="" asp-controller="Home" asp-action="Test"
+                       class="nav-link @Url.MakeActiveClass("home","test")">
                         <i class="nav-icon fas fa-lock"></i>
                         <p>
                             Test tree
