@@ -1,13 +1,12 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using MiniCRM.Common;
-using MiniCRM.Data.Models;
-
-namespace MiniCRM.Web.Controllers
+﻿namespace MiniCRM.Web.Controllers
 {
     using System.Diagnostics;
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Common;
+    using MiniCRM.Data.Models;
     using MiniCRM.Web.ViewModels;
 
     public class HomeController : BaseController
@@ -31,8 +30,14 @@ namespace MiniCRM.Web.Controllers
 
             if (this.User.IsInRole(GlobalConstants.OwnerUserRoleName))
             {
-                return this.RedirectToAction("Index", "Owners");
+                if (user.CompanyId == null)
+                {
+                    return this.RedirectToAction("Create", "Organizations", new { area = "Owners" });
+                }
+
+                return this.RedirectToAction("Index", "Dashboard", new { area = "Owners" });
             }
+
             return this.View();
         }
 
