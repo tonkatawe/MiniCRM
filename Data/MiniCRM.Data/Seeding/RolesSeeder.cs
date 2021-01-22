@@ -4,11 +4,10 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using MiniCRM.Common;
-    using MiniCRM.Data.Models;
-
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
+    using MiniCRM.Common;
+    using MiniCRM.Data.Models;
 
     internal class RolesSeeder : ISeeder
     {
@@ -19,6 +18,7 @@
             await SeedRoleAsync(roleManager, GlobalConstants.AdministratorRoleName);
             await SeedRoleAsync(roleManager, GlobalConstants.OwnerUserRoleName);
             await SeedRoleAsync(roleManager, GlobalConstants.EmployerUserRoleName);
+            await SeedRoleAsync(roleManager, GlobalConstants.CustomerUserRoleName);
         }
 
         private static async Task SeedRoleAsync(RoleManager<ApplicationRole> roleManager, string roleName)

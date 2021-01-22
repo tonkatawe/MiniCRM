@@ -3,9 +3,8 @@ namespace MiniCRM.Data.Models
 {
     using System;
 
-    using MiniCRM.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using MiniCRM.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

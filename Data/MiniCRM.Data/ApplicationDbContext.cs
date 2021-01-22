@@ -24,6 +24,21 @@
         {
         }
 
+
+        public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<EmailAddress> EmailAddresses { get; set; }
+
+        public DbSet<Industry> Industries { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<PhoneNumber> PhoneNumbers { get; set; }
+
+        public DbSet<Product> Products { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -55,6 +70,14 @@
                     .IsRequired(false)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
+
+
+            builder.Entity<Company>()
+                .HasOne(c => c.User)
+                .WithOne(u => u.Company)
+                .HasForeignKey<ApplicationUser>(u => u.CompanyId);
+
 
             // Needed for Identity models configuration
             base.OnModelCreating(builder);

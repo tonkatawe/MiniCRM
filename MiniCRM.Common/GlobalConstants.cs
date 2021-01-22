@@ -8,5 +8,7 @@
         public const string AdministratorRoleName = "Administrator";
         public const string OwnerUserRoleName = "Owner";
         public const string EmployerUserRoleName = "Employer";
+        public const string CustomerUserRoleName = "Customer";
+
     }
 }

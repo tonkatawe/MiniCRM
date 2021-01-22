@@ -18,6 +18,10 @@ namespace MiniCRM.Data.Models
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Employees = new HashSet<ApplicationUser>();
+            this.Customers = new HashSet<ApplicationUser>();
+            this.Orders = new HashSet<Order>();
+            this.PhoneNumbers = new HashSet<PhoneNumber>();
+            this.EmailAddresses = new HashSet<EmailAddress>();
         }
 
         // Audit info
@@ -47,11 +51,27 @@ namespace MiniCRM.Data.Models
 
         public string ProfilePictureUrl { get; set; }
 
+        public string CompanyId { get; set; }
+
+        public virtual Company Company { get; set; }
+
+        public int? AddressId { get; set; }
+
+        public virtual Address Address { get; set; }
+
         public virtual ApplicationUser Parent { get; set; }
 
         public string? ParentId { get; set; }
 
         public virtual ICollection<ApplicationUser> Employees { get; }
+
+        public virtual ICollection<ApplicationUser> Customers { get; }
+
+        public virtual ICollection<Order> Orders { get; set; }
+
+        public virtual ICollection<PhoneNumber> PhoneNumbers { get; set; }
+
+        public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 
