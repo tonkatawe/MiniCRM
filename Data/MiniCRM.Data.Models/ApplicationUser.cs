@@ -41,6 +41,10 @@ namespace MiniCRM.Data.Models
         [MaxLength(25)]
         public string LastName { get; set; }
 
+        public string FullName => string.IsNullOrEmpty(this.MiddleName)
+            ? (this.FirstName + " " + this.LastName)
+            : (this.FirstName + " " + this.MiddleName.Substring(0, 1) + ". " + this.LastName);
+
         public string ProfilePictureUrl { get; set; }
 
         public virtual ApplicationUser Parent { get; set; }

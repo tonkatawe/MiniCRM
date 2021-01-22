@@ -1,4 +1,9 @@
-﻿namespace MiniCRM.Web.Controllers
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using MiniCRM.Common;
+using MiniCRM.Data.Models;
+
+namespace MiniCRM.Web.Controllers
 {
     using System.Diagnostics;
 
@@ -7,8 +12,27 @@
 
     public class HomeController : BaseController
     {
-        public IActionResult Index()
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public HomeController(UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            if (user == null)
+            {
+                return this.View();
+            }
+
+            if (this.User.IsInRole(GlobalConstants.OwnerUserRoleName))
+            {
+                return this.RedirectToAction("Index", "Owners");
+            }
             return this.View();
         }
 

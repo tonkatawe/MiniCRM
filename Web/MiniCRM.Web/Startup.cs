@@ -1,9 +1,8 @@
-﻿using CloudinaryDotNet;
-
-namespace MiniCRM.Web
+﻿namespace MiniCRM.Web
 {
     using System.Reflection;
 
+    using CloudinaryDotNet;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
