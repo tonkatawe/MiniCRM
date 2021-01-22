@@ -354,6 +354,7 @@ MigrationBackup/
 
 # Custom ignores
 **/wwwroot/lib/
+**/wwwroot/plugins/
 appsettings.json
 appsettings.Development.json
 appsettings.production.json
