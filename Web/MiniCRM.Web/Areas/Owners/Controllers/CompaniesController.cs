@@ -1,26 +1,35 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using MiniCRM.Data.Models;
-using MiniCRM.Web.ViewModels.Companies;
-
-namespace MiniCRM.Web.Areas.Owners.Controllers
+﻿namespace MiniCRM.Web.Areas.Owners.Controllers
 {
+    using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Data.Models;
+    using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Web.Areas.Owner.Controllers;
+    using MiniCRM.Web.ViewModels.Companies;
 
     public class CompaniesController : OwnersController
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ICompaniesService companiesService;
 
-        public CompaniesController(UserManager<ApplicationUser> userManager)
+        public CompaniesController(
+            UserManager<ApplicationUser> userManager,
+            ICompaniesService companiesService)
         {
             this.userManager = userManager;
+            this.companiesService = companiesService;
         }
 
-        public async Task<IActionResult> Create(string userId)
+        public IActionResult Create(string userId)
         {
-            return View();
+            var viewModel = new CompanyCreateModel
+            {
+                UserId = userId,
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -30,6 +39,8 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             {
                 return this.View(input);
             }
+
+            await this.companiesService.CreateAsync(input);
 
             return this.RedirectToAction("Index", "Dashboard");
 

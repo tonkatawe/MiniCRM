@@ -32,6 +32,7 @@
             {
                 UserId = input.UserId,
                 Name = input.Name,
+                Description = input.Description,
                 IsPublic = input.IsPublic,
                 IndustryId = industryId,
                 AddressId = addressId,
