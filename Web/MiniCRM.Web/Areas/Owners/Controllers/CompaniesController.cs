@@ -6,7 +6,6 @@
     using Microsoft.AspNetCore.Mvc;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
-    using MiniCRM.Web.Areas.Owner.Controllers;
     using MiniCRM.Web.ViewModels.Companies;
 
     public class CompaniesController : OwnersController
@@ -44,6 +43,11 @@
 
             return this.RedirectToAction("Index", "Dashboard");
 
+        }
+
+        public IActionResult Edit()
+        {
+            return this.View();
         }
     }
 }
