@@ -1,4 +1,4 @@
-﻿using MiniCRM.Data.Models;
+﻿using MiniCRM.Services.Data.Contracts;
 
 namespace MiniCRM.Web.Areas.Administration.Controllers
 {
@@ -7,19 +7,23 @@ namespace MiniCRM.Web.Areas.Administration.Controllers
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+    using MiniCRM.Data.Models;
 
-    public class RolesManagerController : AdministrationController
+    public class RolesController : AdministrationController
     {
         private readonly RoleManager<ApplicationRole> roleManager;
+        private readonly IRolesService rolesService;
 
-        public RolesManagerController(RoleManager<ApplicationRole> roleManager)
+        public RolesController(RoleManager<ApplicationRole> roleManager, IRolesService rolesService)
         {
             this.roleManager = roleManager;
+            this.rolesService = rolesService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var roles = await this.roleManager.Roles.ToListAsync();
+           // var roles = await this.roleManager.Roles.ToListAsync();
+           var roles = await this.rolesService.GetAllAsync();
             return this.View(roles);
         }
 
