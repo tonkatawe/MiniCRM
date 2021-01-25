@@ -210,9 +210,6 @@ namespace MiniCRM.Data.Migrations
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CompanyId")
                         .HasColumnType("nvarchar(450)");
 
@@ -299,11 +296,7 @@ namespace MiniCRM.Data.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CompanyId")
-                        .IsUnique()
-                        .HasFilter("[CompanyId] IS NOT NULL");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("IsDeleted");
 
@@ -356,10 +349,6 @@ namespace MiniCRM.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -419,7 +408,9 @@ namespace MiniCRM.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.HasKey("Id");
 
@@ -607,13 +598,9 @@ namespace MiniCRM.Data.Migrations
                         .WithMany()
                         .HasForeignKey("AddressId");
 
-                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("MiniCRM.Data.Models.Company", "Company")
-                        .WithOne("User")
-                        .HasForeignKey("MiniCRM.Data.Models.ApplicationUser", "CompanyId");
+                        .WithMany("Users")
+                        .HasForeignKey("CompanyId");
 
                     b.HasOne("MiniCRM.Data.Models.ApplicationUser", "Parent")
                         .WithMany("Employees")
@@ -706,8 +693,6 @@ namespace MiniCRM.Data.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("Customers");
-
                     b.Navigation("EmailAddresses");
 
                     b.Navigation("Employees");
@@ -725,7 +710,7 @@ namespace MiniCRM.Data.Migrations
                 {
                     b.Navigation("Products");
 
-                    b.Navigation("User");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("MiniCRM.Data.Models.Industry", b =>

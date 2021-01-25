@@ -38,6 +38,11 @@
                 return this.RedirectToAction("Index", "Dashboard", new { area = "Owners" });
             }
 
+            if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+            {
+                return this.RedirectToAction("Index", "Dashboard", new { area = "Administration" });
+            }
+
             return this.View();
         }
 

@@ -12,6 +12,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Products = new HashSet<Product>();
+            this.Users = new HashSet<ApplicationUser>();
         }
 
         [Required]
@@ -31,10 +32,7 @@
 
         public bool IsPublic { get; set; }
 
-        [Required]
-        public string UserId { get; set; }
-
-        public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

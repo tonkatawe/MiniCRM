@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Data
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace MiniCRM.Data
 {
     using System;
     using System.Linq;
@@ -60,6 +62,9 @@
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            // Needed for Identity models configuration
+            base.OnModelCreating(builder);
+
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.HasKey(x => x.Id);
@@ -73,16 +78,9 @@
 
 
 
-            builder.Entity<Company>()
-                .HasOne(c => c.User)
-                .WithOne(u => u.Company)
-                .HasForeignKey<ApplicationUser>(u => u.CompanyId);
-
-
-            // Needed for Identity models configuration
-            base.OnModelCreating(builder);
-
             this.ConfigureUserIdentityRelations(builder);
+
+
 
             EntityIndexesConfiguration.Configure(builder);
 
@@ -99,7 +97,7 @@
 
             // Disable cascade delete
             var foreignKeys = entityTypes
-                .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
+                        .SelectMany(e => e.GetForeignKeys().Where(f => f.DeleteBehavior == DeleteBehavior.Cascade));
             foreach (var foreignKey in foreignKeys)
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;

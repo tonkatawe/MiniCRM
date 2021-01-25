@@ -1,4 +1,8 @@
-﻿namespace MiniCRM.Services.Data
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using MiniCRM.Services.Mapping;
+
+namespace MiniCRM.Services.Data
 {
     using System.Threading.Tasks;
 
@@ -10,15 +14,18 @@
     public class CompaniesService : ICompaniesService
     {
         private readonly IDeletableEntityRepository<Company> companyRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> userRepository;
         private readonly IIndustriesService industriesService;
         private readonly IAddressService addressService;
 
         public CompaniesService(
             IDeletableEntityRepository<Company> companyRepository,
+            IDeletableEntityRepository<ApplicationUser> userRepository,
             IIndustriesService industriesService,
             IAddressService addressService)
         {
             this.companyRepository = companyRepository;
+            this.userRepository = userRepository;
             this.industriesService = industriesService;
             this.addressService = addressService;
         }
@@ -28,9 +35,13 @@
             var industryId = await this.industriesService.CreateAsync(input.IndustryName);
             var addressId = await this.addressService.CreateAsync(input.Country, input.City, input.Street, input.ZipCode);
 
+            var user = await this.userRepository
+                .All()
+                .Where(x => x.Id == input.UserId)
+                .FirstOrDefaultAsync();
+
             var company = new Company
             {
-                UserId = input.UserId,
                 Name = input.Name,
                 Description = input.Description,
                 IsPublic = input.IsPublic,
@@ -39,7 +50,23 @@
             };
 
             await this.companyRepository.AddAsync(company);
-            return await this.companyRepository.SaveChangesAsync();
+            await this.companyRepository.SaveChangesAsync();
+            user.Company = company;
+
+            this.userRepository.Update(user);
+
+            return await this.userRepository.SaveChangesAsync();
+        }
+
+        public Task<T> GetByIdAsync<T>(string id)
+        {
+            var query = this.companyRepository
+                .All()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return query;
         }
     }
 }

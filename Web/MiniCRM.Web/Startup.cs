@@ -1,4 +1,5 @@
-﻿using MiniCRM.Services.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using MiniCRM.Services.Data;
 using MiniCRM.Services.Data.Contracts;
 
 namespace MiniCRM.Web

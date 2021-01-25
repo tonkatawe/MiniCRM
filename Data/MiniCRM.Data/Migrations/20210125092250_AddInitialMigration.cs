@@ -49,7 +49,7 @@ namespace MiniCRM.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -91,7 +91,6 @@ namespace MiniCRM.Data.Migrations
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     IndustryId = table.Column<int>(type: "int", nullable: false),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -158,7 +157,6 @@ namespace MiniCRM.Data.Migrations
                     CompanyId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: true),
                     ParentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -182,12 +180,6 @@ namespace MiniCRM.Data.Migrations
                         name: "FK_AspNetUsers_Addresses_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -420,16 +412,9 @@ namespace MiniCRM.Data.Migrations
                 column: "AddressId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ApplicationUserId",
-                table: "AspNetUsers",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_CompanyId",
                 table: "AspNetUsers",
-                column: "CompanyId",
-                unique: true,
-                filter: "[CompanyId] IS NOT NULL");
+                column: "CompanyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_IsDeleted",
