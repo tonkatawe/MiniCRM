@@ -22,5 +22,11 @@ namespace MiniCRM.Services.Data
         {
             return await this.rolesRepository.All().ToListAsync();
         }
+
+        public async Task CreateAsync(string roleName)
+        {
+            await this.rolesRepository.AddAsync(new ApplicationRole(roleName.Trim()));
+            await this.rolesRepository.SaveChangesAsync();
+        }
     }
 }

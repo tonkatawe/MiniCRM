@@ -1,9 +1,10 @@
-﻿
+﻿@using MiniCRM.Common
+
 @{
     ViewData["Title"] = "Role Manager";
 }
 <h1>Role Manager</h1>
-<form method="post" asp-action="AddRole" asp-controller="Roles">
+<form method="post" asp-action="Add" asp-controller="Roles">
     <div class="input-group">
         <input name="roleName" class="form-control w-25">
         <span class="input-group-btn">
@@ -24,6 +25,15 @@
             <tr>
                 <td>@role.Id</td>
                 <td>@role.Name</td>
+                <td>
+                    @if (role.Name != GlobalConstants.AdministratorRoleName)
+                    {
+
+                        <form method="post" asp-action="Remove" asp-route-id="@role.Id">
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    }
+                </td>
             </tr>
         }
     </tbody>

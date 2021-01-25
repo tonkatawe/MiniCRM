@@ -85,7 +85,6 @@ namespace MiniCRM.Web
             services.AddTransient<IEmailSender>(
                 serviceProvider => new SendGridEmailSender(this.configuration["SendGrid:ApiKey"]));
             services.AddTransient<ICloudinaryService, CloudinaryService>();
-            services.AddTransient<IRolesService, RolesService>();
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IIndustriesService, IndustriesService>();
             services.AddTransient<IAddressService, AddressService>();
