@@ -17,6 +17,6 @@
 
         public string Email { get; set; }
 
-        public IEnumerator<string> Roles { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }
