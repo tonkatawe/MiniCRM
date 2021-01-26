@@ -21,6 +21,7 @@ namespace MiniCRM.Data.Models
             this.Orders = new HashSet<Order>();
             this.PhoneNumbers = new HashSet<PhoneNumber>();
             this.EmailAddresses = new HashSet<EmailAddress>();
+            this.UserCompanies = new HashSet<UserCompanies>();
         }
 
         // Audit info
@@ -69,6 +70,8 @@ namespace MiniCRM.Data.Models
         public virtual ICollection<PhoneNumber> PhoneNumbers { get; set; }
 
         public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
+        
+        public virtual ICollection<UserCompanies> UserCompanies { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

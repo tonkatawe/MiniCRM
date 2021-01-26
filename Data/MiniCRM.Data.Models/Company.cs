@@ -12,7 +12,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Products = new HashSet<Product>();
-            this.Users = new HashSet<ApplicationUser>();
+            this.Users = new HashSet<UserCompanies>();
         }
 
         [Required]
@@ -32,7 +32,7 @@
 
         public bool IsPublic { get; set; }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public virtual ICollection<UserCompanies> Users { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }
