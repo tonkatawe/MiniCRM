@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace MiniCRM.Data
+﻿namespace MiniCRM.Data
 {
     using System;
     using System.Linq;
