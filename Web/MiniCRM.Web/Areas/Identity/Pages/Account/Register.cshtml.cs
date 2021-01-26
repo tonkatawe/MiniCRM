@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using MiniCRM.Common;
 
 namespace MiniCRM.Web.Areas.Identity.Pages.Account
@@ -109,6 +110,12 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
 
             var profilePicture = await this.cloudinaryService.UploadAsync(this.Input.ImageFile, "MiniCRM/ProfilePictures");
 
+            if (await this.userManager.Users.AnyAsync(x => x.Email == this.Input.Email))
+            {
+                this.ModelState.AddModelError(string.Empty, "The email is already taken");
+
+            }
+
             if (this.ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -120,8 +127,8 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
                     MiddleName = this.Input.MiddleName,
                     LastName = this.Input.LastName,
                 };
-
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
+
 
                 if (result.Succeeded)
                 {
