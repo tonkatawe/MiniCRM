@@ -65,16 +65,16 @@ namespace MiniCRM.Data
             // Needed for Identity models configuration
             base.OnModelCreating(builder);
 
-            builder.Entity<ApplicationUser>(entity =>
-            {
-                entity.HasKey(x => x.Id);
-                entity.Property(x => x.UserName);
-                entity.HasOne(x => x.Parent)
-                    .WithMany(x => x.Employees)
-                    .HasForeignKey(x => x.ParentId)
-                    .IsRequired(false)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            //builder.Entity<ApplicationUser>(entity =>
+            //{
+            //    entity.HasKey(x => x.Id);
+            //    entity.Property(x => x.UserName);
+            //    entity.HasOne(x => x.Parent)
+            //        .WithMany(x => x.Employees)
+            //        .HasForeignKey(x => x.ParentId)
+            //        .IsRequired(false)
+            //        .OnDelete(DeleteBehavior.Restrict);
+            //});
 
             builder.Entity<UserCompanies>()
                 .HasKey(uc => new { uc.UserId, uc.CompanyId });

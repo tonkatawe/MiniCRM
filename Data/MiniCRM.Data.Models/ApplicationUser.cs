@@ -19,7 +19,7 @@ namespace MiniCRM.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.Employees = new HashSet<ApplicationUser>();
+            this.Employees = new HashSet<Employer>();
             this.Orders = new HashSet<Order>();
             this.PhoneNumbers = new HashSet<PhoneNumber>();
             this.EmailAddresses = new HashSet<EmailAddress>();
@@ -65,14 +65,14 @@ namespace MiniCRM.Data.Models
 
         public string? ParentId { get; set; }
 
-        public virtual ICollection<ApplicationUser> Employees { get; }
+        public virtual ICollection<Employer> Employees { get; }
 
         public virtual ICollection<Order> Orders { get; set; }
 
         public virtual ICollection<PhoneNumber> PhoneNumbers { get; set; }
 
         public virtual ICollection<EmailAddress> EmailAddresses { get; set; }
-        
+
         public virtual ICollection<UserCompanies> UserCompanies { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }

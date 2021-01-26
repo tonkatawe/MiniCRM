@@ -7,9 +7,9 @@
     public class Order : BaseDeletableModel<int>
     {
         [Required]
-        public string UserId { get; set; }
+        public int EmployerId { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public virtual Employer Employer { get; set; }
 
         public int ProductId { get; set; }
 
