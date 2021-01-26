@@ -2,10 +2,14 @@
 @using Microsoft.AspNetCore.Identity
 @using MiniCRM.Data.Models
 @using System.Security.Claims
-@inject SignInManager<ApplicationUser> SignInManager
+@using MiniCRM.Common
+
 @inject UserManager<ApplicationUser> UserManager
 
-
+@{
+    var profileImageUrl = this.UserManager.Users.FirstOrDefault(x => x.Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier))?.ProfilePictureUrl;
+    var fullName = this.UserManager.Users.FirstOrDefault()?.FullName;
+}
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
@@ -15,27 +19,18 @@
         <span class="brand-text font-weight-light">MiniCRM</span>
     </a>
 
-
     <div class="sidebar">
-        @if (this.SignInManager.IsSignedIn(this.User))
-        {
-            var profileImageUrl = this.UserManager.Users.FirstOrDefault(x => x.Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier))?.ProfilePictureUrl;
-            var fullName = this.UserManager.Users.FirstOrDefault()?.FullName;
-
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="@profileImageUrl" class="img-circle elevation-2" alt="User Image">
-                </div>
-                <div class="info">
-                    <a href="#" class="d-block">@fullName</a>
-                </div>
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="@profileImageUrl" class="img-circle elevation-2" alt="User Image">
             </div>
-
-        }
+            <div class="info">
+                <a href="#" class="d-block">@fullName</a>
+            </div>
+        </div>
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column"
-                data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item ">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
 
                     <a asp-area="" asp-controller="Home" asp-action="Index"
                        class="nav-link @Url.MakeActiveClass("home","index")">
@@ -54,23 +49,26 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item ">
-                    <a asp-area="" asp-controller="Home" asp-action="Test"
-                       class="nav-link @Url.MakeActiveClass("home","test")">
-                        <i class="nav-icon fas fa-lock"></i>
-                        <p>
-                            Test tree
-                        </p>
-                    </a>
-                </li>
-            </ul>
-            @if (this.SignInManager.IsSignedIn(this.User))
-            {
+                
+                @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
+                {
+                    <partial name="_AdministratorNavigation" />
+                }
+                else if (this.User.IsInRole(GlobalConstants.OwnerUserRoleName))
+                {
+                    <partial name="_OwnerNavigation" />
 
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@(this.Url.Action("Index", "Home", new { area = string.Empty }))">
-                    <button type="submit" class="nav-link btn btn-link">Logout</button>
-                </form>
-            }
+                }
+                else if (this.User.IsInRole(GlobalConstants.EmployerUserRoleName))
+                {
+                    <partial name="_EmployerNavigation" />
+                }
+                else if (this.User.IsInRole(GlobalConstants.CustomerUserRoleName))
+                {
+                    <partial name="_CustomerNavigation" />
+                }
+            </ul>
+
 
         </nav>
     </div>

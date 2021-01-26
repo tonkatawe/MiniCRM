@@ -1,0 +1,21 @@
+﻿@using MiniCRM.Web.Infrastructure
+<li class="nav-item ">
+
+    <a asp-area="Administration" asp-controller="Roles" asp-action="Index"
+       class="nav-link @Url.MakeActiveClass("roles","index")">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Roles manager
+        </p>
+    </a>
+</li>
+<li class="nav-item ">
+
+    <a asp-area="Administration" asp-controller="UserRoles" asp-action="Index"
+       class="nav-link @Url.MakeActiveClass("userRoles","index")">
+        <i class="nav-icon fas fa-users"></i>
+        <p>
+           User Roles 
+        </p>
+    </a>
+</li>

@@ -1,4 +1,7 @@
 ﻿@using MiniCRM.Common
+@using MiniCRM.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +15,11 @@
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <partial name="_TopNavigation" />
-        <partial name="_MainNavigation" />
+        @if (this.SignInManager.IsSignedIn(this.User))
+        {
+            <partial name="_MainNavigation" />
+        }
+
         <div class="content-wrapper">
             <div class="content-header">
                 <div class="container-fluid">
@@ -39,12 +46,12 @@
         <aside class="control-sidebar control-sidebar-dark">
             <div class="p-3">
                 <h5>Title</h5>
-           
-                    <a class="nav-link " asp-area="Identity" asp-page="/Account/Login">Login</a>
-              
+
+                <a class="nav-link " asp-area="Identity" asp-page="/Account/Login">Login</a>
+
             </div>
         </aside>
-    <partial name="_Footer" />
+        <partial name="_Footer" />
     </div>
     <partial name="_Scripts" />
     @await this.RenderSectionAsync("Scripts", required: false)
