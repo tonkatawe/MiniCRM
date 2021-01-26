@@ -28,6 +28,7 @@
                 <a href="#" class="d-block">@fullName</a>
             </div>
         </div>
+
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
@@ -49,7 +50,7 @@
                         </p>
                     </a>
                 </li>
-                
+
                 @if (this.User.IsInRole(GlobalConstants.AdministratorRoleName))
                 {
                     <partial name="_AdministratorNavigation" />

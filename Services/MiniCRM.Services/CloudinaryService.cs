@@ -16,6 +16,7 @@ namespace MiniCRM.Services
     {
         private readonly Cloudinary cloudinary;
         private readonly string defaultImage = @"https://res.cloudinary.com/dx479nsjv/image/upload/v1608064012/CRMSystem/default-img_rftxia.gif";
+        private readonly string defaultProfileImage = @"https://res.cloudinary.com/dx479nsjv/image/upload/v1611663587/MiniCRM/ProfilePictures/default-profile-picture_cwgvhg.png";
 
         public CloudinaryService(Cloudinary cloudinary)
         {
@@ -26,7 +27,7 @@ namespace MiniCRM.Services
         {
             if (file == null || !this.IsValidFile(file))
             {
-                return this.defaultImage;
+                return path == "MiniCRM/ProfilePictures" ? this.defaultProfileImage : this.defaultImage;
             }
 
             string imageUrl = " ";
