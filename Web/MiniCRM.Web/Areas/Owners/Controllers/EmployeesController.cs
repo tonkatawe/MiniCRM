@@ -21,6 +21,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(EmployeeCreateModel input)
         {
+            
             return this.View();
         }
     }

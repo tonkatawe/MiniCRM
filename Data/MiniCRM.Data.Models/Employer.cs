@@ -13,6 +13,7 @@
             this.Customers = new HashSet<Customer>();
             this.Products = new HashSet<Product>();
         }
+
         public string CompanyId { get; set; }
 
         public Company Company { get; set; }
