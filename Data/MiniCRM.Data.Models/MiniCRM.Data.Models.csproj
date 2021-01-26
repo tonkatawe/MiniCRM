@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\MiniCRM.Common\MiniCRM.Common.csproj" />
     <ProjectReference Include="..\MiniCRM.Data.Common\MiniCRM.Data.Common.csproj" />
   </ItemGroup>
   

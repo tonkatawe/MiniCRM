@@ -1,5 +1,7 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
 
+using MiniCRM.Common;
+
 namespace MiniCRM.Data.Models
 {
     using System;
@@ -35,14 +37,14 @@ namespace MiniCRM.Data.Models
         public DateTime? DeletedOn { get; set; }
 
         [Required]
-        [MaxLength(25)]
+        [MaxLength(GlobalConstants.MaxNamesLength)]
         public string FirstName { get; set; }
 
-        [MaxLength(25)]
+        [MaxLength(GlobalConstants.MaxNamesLength)]
         public string MiddleName { get; set; }
 
         [Required]
-        [MaxLength(25)]
+        [MaxLength(GlobalConstants.MaxNamesLength)]
         public string LastName { get; set; }
 
         public string FullName => string.IsNullOrEmpty(this.MiddleName)

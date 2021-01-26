@@ -10,5 +10,7 @@
         public const string EmployerUserRoleName = "Employer";
         public const string CustomerUserRoleName = "Customer";
 
+        public const int MaxNamesLength = 25;
+
     }
 }
