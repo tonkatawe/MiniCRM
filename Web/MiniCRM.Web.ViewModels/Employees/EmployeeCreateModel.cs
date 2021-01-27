@@ -17,7 +17,8 @@
         [MaxLength(20, ErrorMessage = "The last name should be maximum 20 letters")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use latin letters only please")]
         public string LastName { get; set; }
-
+        
+        [Required]
         [MaxLength(30, ErrorMessage = "Job title should be maximum 30 letters")]
         public string JobTitle { get; set; }
 

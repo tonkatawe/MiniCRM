@@ -36,6 +36,7 @@ namespace MiniCRM.Services.Data
                 Parent = owner,
                 Email = input.Email,
                 CompanyId = owner.CompanyId,
+                ProfilePictureUrl = @"https://res.cloudinary.com/dx479nsjv/image/upload/v1611663587/MiniCRM/ProfilePictures/default-profile-picture_cwgvhg.png",
                 JobTitle = new JobTitle { Name = input.JobTitle },
             };
 
@@ -55,7 +56,7 @@ namespace MiniCRM.Services.Data
             {
                 throw new Exception(result.ToString());
             }
-            
+
         }
     }
 }

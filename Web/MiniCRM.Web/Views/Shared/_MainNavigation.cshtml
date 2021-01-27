@@ -7,10 +7,10 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    var profileImageUrl = this.UserManager.Users.FirstOrDefault(x => x.Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier))?.ProfilePictureUrl;
+    var profileImageUrl = this.UserManager.GetUserAsync(User).Result.ProfilePictureUrl;
 
 
-    var fullName = this.UserManager.Users.FirstOrDefault()?.FullName;
+    var fullName = this.UserManager.GetUserAsync(User).Result.FullName;
  
 }
 

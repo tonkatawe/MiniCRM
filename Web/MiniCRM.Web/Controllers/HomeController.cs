@@ -12,10 +12,12 @@
     public class HomeController : BaseController
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public HomeController(UserManager<ApplicationUser> userManager)
+        public HomeController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
@@ -46,6 +48,7 @@
             return this.View();
         }
 
+
         public IActionResult Test()
         {
             return this.View();
@@ -61,6 +64,32 @@
         {
             return this.View(
                 new ErrorViewModel { RequestId = Activity.Current?.Id ?? this.HttpContext.TraceIdentifier });
+        }
+
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            //todo move this controller to employer area and make this statmants at service delete signinManager and usermanager
+
+            var user = await this.userManager.FindByEmailAsync(email);
+
+            if (user == null)
+            {
+                return View("Error");
+            }
+
+            var result = await this.userManager.ConfirmEmailAsync(user, token);
+
+            if (result.Succeeded)
+            {
+                this.TempData["ConfirmationEmail"] =
+                    "Thank you for confirming your email. You've already sing in. You can list our products";
+                await this.signInManager.SignInAsync(user, isPersistent: false);
+                return this.RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View("Error");
+            }
         }
     }
 }
