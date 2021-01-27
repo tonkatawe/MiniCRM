@@ -10,7 +10,7 @@
         public Product()
         {
             this.Orders = new HashSet<Order>();
-            this.Customers = new HashSet<Customer>();
+            //  this.Customers = new HashSet<ApplicationUser>();
         }
 
         [Required]
@@ -34,7 +34,7 @@
 
         public virtual ICollection<Order> Orders { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; }
+        //public virtual ICollection<ApplicationUser> Customers { get; set; }
 
         public string ProductPictureUrl { get; set; }
     }

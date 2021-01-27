@@ -7,9 +7,9 @@
     public class Order : BaseDeletableModel<int>
     {
         [Required]
-        public int EmployerId { get; set; }
+        public int UserId { get; set; }
 
-        public virtual Employer Employer { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public int ProductId { get; set; }
 
@@ -18,8 +18,8 @@
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; }
 
-        public string CompanyId { get; set; }
+        //public string CompanyId { get; set; }
 
-        public virtual Company Company { get; set; }
+        //public virtual Company Company { get; set; }
     }
 }

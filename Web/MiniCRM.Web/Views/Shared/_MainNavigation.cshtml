@@ -8,7 +8,10 @@
 
 @{
     var profileImageUrl = this.UserManager.Users.FirstOrDefault(x => x.Id == this.User.FindFirstValue(ClaimTypes.NameIdentifier))?.ProfilePictureUrl;
+
+
     var fullName = this.UserManager.Users.FirstOrDefault()?.FullName;
+ 
 }
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -27,7 +30,9 @@
             <div class="info">
                 <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" class="d-block">@fullName</a>
             </div>
+            <br/>
         </div>
+        
 
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">

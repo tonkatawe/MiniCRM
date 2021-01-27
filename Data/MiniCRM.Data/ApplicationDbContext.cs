@@ -29,13 +29,13 @@
 
         public DbSet<Company> Companies { get; set; }
 
-        public DbSet<EmailAddress> EmailAddresses { get; set; }
 
         public DbSet<Industry> Industries { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+        
+        public DbSet<JobTitle> JobTitles { get; set; }
 
-        public DbSet<PhoneNumber> PhoneNumbers { get; set; }
 
         public DbSet<Product> Products { get; set; }
 

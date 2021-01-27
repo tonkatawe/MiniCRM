@@ -126,6 +126,7 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
                     FirstName = this.Input.FirstName,
                     MiddleName = this.Input.MiddleName,
                     LastName = this.Input.LastName,
+                    JobTitleId = 1,
                 };
                 var result = await this.userManager.CreateAsync(user, this.Input.Password);
 

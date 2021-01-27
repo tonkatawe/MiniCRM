@@ -1,4 +1,11 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using MiniCRM.Web.Infrastructure
+<li class="nav-item ">
+
+    <a asp-area="Owners" asp-controller="Employees" asp-action="Create"
+       class="nav-link @Url.MakeActiveClass("employees","create")">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            add employer
+        </p>
+    </a>
+</li>

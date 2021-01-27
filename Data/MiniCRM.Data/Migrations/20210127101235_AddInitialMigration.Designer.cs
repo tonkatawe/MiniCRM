@@ -10,7 +10,7 @@ using MiniCRM.Data;
 namespace MiniCRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210126144325_AddInitialMigration")]
+    [Migration("20210127101235_AddInitialMigration")]
     partial class AddInitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -240,6 +240,9 @@ namespace MiniCRM.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("JobTitleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(25)
@@ -298,6 +301,8 @@ namespace MiniCRM.Data.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("JobTitleId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -358,149 +363,6 @@ namespace MiniCRM.Data.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("MiniCRM.Data.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("AdditionalInfo")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmployerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<bool>("HasAccount")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsTemporary")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("JobTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("MiddleName")
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EmployerId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Customer");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.EmailAddress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("EmailAddresses");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.Employer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeletedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("JobTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.ToTable("Employer");
-                });
-
             modelBuilder.Entity("MiniCRM.Data.Models.Industry", b =>
                 {
                     b.Property<int>("Id")
@@ -532,6 +394,37 @@ namespace MiniCRM.Data.Migrations
                     b.ToTable("Industries");
                 });
 
+            modelBuilder.Entity("MiniCRM.Data.Models.JobTitle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.ToTable("JobTitles");
+                });
+
             modelBuilder.Entity("MiniCRM.Data.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -539,23 +432,11 @@ namespace MiniCRM.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("EmployerId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -569,53 +450,21 @@ namespace MiniCRM.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("EmployerId");
 
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("ProductId");
 
+                    b.HasIndex("UserId1");
+
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.PhoneNumber", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PhoneNumbers");
                 });
 
             modelBuilder.Entity("MiniCRM.Data.Models.Product", b =>
@@ -638,9 +487,6 @@ namespace MiniCRM.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
-
-                    b.Property<int?>("EmployerId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -665,8 +511,6 @@ namespace MiniCRM.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("EmployerId");
 
                     b.HasIndex("IsDeleted");
 
@@ -746,8 +590,12 @@ namespace MiniCRM.Data.Migrations
                         .HasForeignKey("AddressId");
 
                     b.HasOne("MiniCRM.Data.Models.Company", "Company")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("CompanyId");
+
+                    b.HasOne("MiniCRM.Data.Models.JobTitle", "JobTitle")
+                        .WithMany("Users")
+                        .HasForeignKey("JobTitleId");
 
                     b.HasOne("MiniCRM.Data.Models.ApplicationUser", "Parent")
                         .WithMany()
@@ -756,6 +604,8 @@ namespace MiniCRM.Data.Migrations
                     b.Navigation("Address");
 
                     b.Navigation("Company");
+
+                    b.Navigation("JobTitle");
 
                     b.Navigation("Parent");
                 });
@@ -779,89 +629,19 @@ namespace MiniCRM.Data.Migrations
                     b.Navigation("Industry");
                 });
 
-            modelBuilder.Entity("MiniCRM.Data.Models.Customer", b =>
-                {
-                    b.HasOne("MiniCRM.Data.Models.Employer", "Employer")
-                        .WithMany("Customers")
-                        .HasForeignKey("EmployerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("MiniCRM.Data.Models.Product", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Employer");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.EmailAddress", b =>
-                {
-                    b.HasOne("MiniCRM.Data.Models.Customer", null)
-                        .WithMany("Emails")
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", "User")
-                        .WithMany("EmailAddresses")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.Employer", b =>
-                {
-                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", null)
-                        .WithMany("Employees")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("MiniCRM.Data.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
-                    b.Navigation("Company");
-                });
-
             modelBuilder.Entity("MiniCRM.Data.Models.Order", b =>
                 {
-                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("MiniCRM.Data.Models.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("MiniCRM.Data.Models.Customer", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("MiniCRM.Data.Models.Employer", "Employer")
-                        .WithMany()
-                        .HasForeignKey("EmployerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("MiniCRM.Data.Models.Product", "Product")
                         .WithMany("Orders")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Company");
-
-                    b.Navigation("Employer");
+                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.PhoneNumber", b =>
-                {
-                    b.HasOne("MiniCRM.Data.Models.Customer", null)
-                        .WithMany("Phones")
-                        .HasForeignKey("CustomerId");
-
-                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", "User")
-                        .WithMany("PhoneNumbers")
-                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -872,17 +652,13 @@ namespace MiniCRM.Data.Migrations
                         .WithMany("Products")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("MiniCRM.Data.Models.Employer", null)
-                        .WithMany("Products")
-                        .HasForeignKey("EmployerId");
-
                     b.Navigation("Company");
                 });
 
             modelBuilder.Entity("MiniCRM.Data.Models.UserCompanies", b =>
                 {
                     b.HasOne("MiniCRM.Data.Models.Company", "Company")
-                        .WithMany("Users")
+                        .WithMany("UserCompanies")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -902,15 +678,9 @@ namespace MiniCRM.Data.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("EmailAddresses");
-
-                    b.Navigation("Employees");
-
                     b.Navigation("Logins");
 
                     b.Navigation("Orders");
-
-                    b.Navigation("PhoneNumbers");
 
                     b.Navigation("Roles");
 
@@ -921,23 +691,9 @@ namespace MiniCRM.Data.Migrations
                 {
                     b.Navigation("Products");
 
+                    b.Navigation("UserCompanies");
+
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.Customer", b =>
-                {
-                    b.Navigation("Emails");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("Phones");
-                });
-
-            modelBuilder.Entity("MiniCRM.Data.Models.Employer", b =>
-                {
-                    b.Navigation("Customers");
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MiniCRM.Data.Models.Industry", b =>
@@ -945,10 +701,13 @@ namespace MiniCRM.Data.Migrations
                     b.Navigation("Companies");
                 });
 
+            modelBuilder.Entity("MiniCRM.Data.Models.JobTitle", b =>
+                {
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("MiniCRM.Data.Models.Product", b =>
                 {
-                    b.Navigation("Customers");
-
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
