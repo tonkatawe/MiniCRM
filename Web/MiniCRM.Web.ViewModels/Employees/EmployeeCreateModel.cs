@@ -21,7 +21,6 @@
         [MaxLength(30, ErrorMessage = "Job title should be maximum 30 letters")]
         public string JobTitle { get; set; }
 
-
         [Required]
         [MaxLength(30)]
         public string Country { get; set; }

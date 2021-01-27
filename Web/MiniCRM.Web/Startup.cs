@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MiniCRM.Services.Data;
-using MiniCRM.Services.Data.Contracts;
-
-namespace MiniCRM.Web
+﻿namespace MiniCRM.Web
 {
     using System.Reflection;
 
@@ -10,6 +6,7 @@ namespace MiniCRM.Web
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
@@ -23,6 +20,8 @@ namespace MiniCRM.Web
     using MiniCRM.Data.Seeding;
     using MiniCRM.Services;
     using MiniCRM.Services.Contracts;
+    using MiniCRM.Services.Data;
+    using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Services.Mapping;
     using MiniCRM.Services.Messaging;
     using MiniCRM.Web.ViewModels;
@@ -88,6 +87,7 @@ namespace MiniCRM.Web
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IIndustriesService, IndustriesService>();
             services.AddTransient<IAddressService, AddressService>();
+            services.AddTransient<IEmployeesManagerService, EmployeesManagerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
