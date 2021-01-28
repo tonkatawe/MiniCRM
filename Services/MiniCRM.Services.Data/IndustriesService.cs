@@ -30,7 +30,7 @@ namespace MiniCRM.Services.Data
                 await this.industryRepository.AddAsync(industry);
                 return await this.industryRepository.SaveChangesAsync();
             }
-
+            
             return this.industryRepository.All().FirstOrDefault(x => x.Name == name).Id;
         }
     }
