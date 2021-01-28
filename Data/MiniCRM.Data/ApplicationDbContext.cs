@@ -33,11 +33,12 @@
         public DbSet<Industry> Industries { get; set; }
 
         public DbSet<Order> Orders { get; set; }
-        
+
         public DbSet<JobTitle> JobTitles { get; set; }
 
-
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 
