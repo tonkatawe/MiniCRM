@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Mvc;
+
     public class UserCreateModel
     {
         [Required]
@@ -35,9 +37,12 @@
         [Range(0, 9999999)]
         public int? ZipCode { get; set; }
 
+        [Required]
+        [Remote(action: "VerifyEmail", controller: "Validation", areaName: "")]
         public string Email { get; set; }
 
+        [Required]
+        [Remote(action: "VerifyPhone", controller: "Validation", areaName: "")]
         public string Phone { get; set; }
-
     }
 }

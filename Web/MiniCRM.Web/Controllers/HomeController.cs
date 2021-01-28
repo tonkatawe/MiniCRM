@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Web.Controllers
+﻿using System;
+
+namespace MiniCRM.Web.Controllers
 {
     using System.Diagnostics;
     using System.Threading.Tasks;
@@ -68,6 +70,18 @@
 
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
+
+
+
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             //todo move this controller to employer area and make this statmants at service delete signinManager and usermanager
 
             var user = await this.userManager.FindByEmailAsync(email);

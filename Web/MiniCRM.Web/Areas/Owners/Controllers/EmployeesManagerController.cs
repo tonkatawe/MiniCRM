@@ -60,9 +60,11 @@
 
             var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = input.Email }, this.Request.Scheme);
 
-            var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
+            var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
 
-      //      await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, "Email confirm link", msg);
+
+            //TODO uncomment in production!
+            // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
 
             return this.RedirectToAction("Index");
         }

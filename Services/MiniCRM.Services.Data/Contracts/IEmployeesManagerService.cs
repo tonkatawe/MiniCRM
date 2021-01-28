@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using MiniCRM.Web.ViewModels.Employees;
-
-namespace MiniCRM.Services.Data.Contracts
+﻿namespace MiniCRM.Services.Data.Contracts
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
+    using MiniCRM.Web.ViewModels.Employees;
+
     public interface IEmployeesManagerService
     {
-        Task<KeyValuePair<string, string>> CreateAsync(UserCreateModel input, string ownerId);
+
     }
+
 }
