@@ -1,5 +1,6 @@
 ﻿namespace MiniCRM.Services.Data.Contracts
 {
+    using System.Linq;
     using System.Threading.Tasks;
 
     using MiniCRM.Web.ViewModels;
@@ -10,7 +11,7 @@
         Task<T> GetUserAsync<T>(string userId);
 
         Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent);
-        
-        
+
+        IQueryable<T> GetAllUser<T>(string userId);
     }
 }

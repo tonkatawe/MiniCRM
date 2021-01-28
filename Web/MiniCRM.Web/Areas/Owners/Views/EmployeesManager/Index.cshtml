@@ -1,14 +1,21 @@
-﻿<form asp-action="Index" method="get">
+﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.UserViewModel>
+@{
+    this.ViewData["Title"] = "All Customers";
+
+}
+
+
+<form asp-action="Index" method="get">
     <div class="row">
         <p>
             Find by name: <input type="text" class="rounded-pill" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <button type="submit" class="btn btn-primary btn-icon-split rounded-pill btn-sm">
+            <button type="submit" class="btn btn-primary  rounded-pill btn-sm">
                 <span class="icon text-white-50">
                     <i class="fas fa-search"></i>
                 </span>
                 <span class="text">Search</span>
             </button>
-            <a asp-action="Index" class="btn btn-info btn-icon-split rounded-pill btn-sm">
+            <a asp-action="Index" class="btn btn-info rounded-pill btn-sm">
                 <span class="icon text-white-50">
                     <i class="far fa-arrow-alt-circle-left"></i>
                 </span>
@@ -26,54 +33,32 @@
             </th>
 
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Orders</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Job Title</a>
             </th>
-            <th class="flex-center">
+            <th>
                 Customer Settings
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var customer in Model)
+        @foreach (var employer in Model)
         {
-            var tm = "#myModal" + customer.Id;
-            var mid = "myModal" + customer.Id;
+            var tm = "#myModal" + employer.Id;
+            var mid = "myModal" + employer.Id;
             <tr>
                 <td>
-                    @customer.FullName
+                    @employer.FullName
                 </td>
 
 
                 <td>
-                    @if (customer.OrdersCount == 0)
-                    {
-                        <p>empty</p>
-                    }
-                    else
-                    {
-
-                        <a asp-action="History" asp-controller="Orders" asp-route-id="@customer.Id" asp-route-fullname="@customer.FullName" title="See history">
-                            @customer.OrdersCount
-                        </a>
-                    }
+                @employer.JobTitleName
                 </td>
                 <td>
                     <ul class="list-inline">
-                        @if (!customer.HasAccount)
-                        {
-                            <li class="list-inline-item">
-                                <form asp-action="Create" asp-controller="Accounts" asp-route-id="@customer.Id" asp-route-organizationId="@customer.OrganizationId" method="post" class="form-inline">
-                                    <button type="submit" class="btn btn-warning btn-icon-split rounded-pill btn-sm">
-                                        <span class="icon text-white-50">
-                                            <i class="fas fa-user-times"></i>
-                                        </span>
-                                        <span class="text">Add account</span>
-                                    </button>
-                                </form>
-                            </li>
-                        }
+               
                         <li class="list-inline-item">
-                            <form asp-controller="Orders" asp-action="Create" asp-route-id="@customer.Id" method="get" class="form-inline">
+                            <form asp-controller="Companies" asp-action="Create" asp-route-id="@employer.Id" method="get" class="form-inline">
                                 <button class="btn btn-primary btn-icon-split rounded-pill btn-sm">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-plus"></i>
@@ -83,7 +68,7 @@
                             </form>
                         </li>
                         <li class="list-inline-item">
-                            <form asp-action="Details" asp-controller="Customers" asp-route-id="@customer.Id" class="form-inline">
+                            <form asp-action="Create" asp-controller="Companies" asp-route-id="@employer.Id" class="form-inline">
                                 <button class="btn btn-info btn-icon-split rounded-pill btn-sm">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-info"></i>
@@ -99,7 +84,7 @@
                                 </span>
                                 <span class="text">Delete</span>
                             </button>
-                            <form asp-action="Delete" asp-route-id="@customer.Id" method="post" class="user">
+                            <form asp-action="Create" asp-route-id="@employer.Id" method="post" class="user">
                                 <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -107,7 +92,7 @@
                                                 <h4 class="modal-title " id="myModalLabel">Delete Confirmation</h4>
                                             </div>
                                             <div class="modal-body font-weight-bold">
-                                                Are you sure want to delete @customer.FullName?
+                                                Are you sure want to delete @employer.FullName?
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="submit" id="deleteBtn" class="btn bg-danger mr-1 btn-user text-white">Delete</button>
@@ -167,6 +152,6 @@
         <span class="icon text-white-50">
             <i class="fas fa-user-plus"></i>
         </span>
-        <span class="text">Add New Customer</span>
+        <span class="text">Add New Employer</span>
     </a>
 </div>

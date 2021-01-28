@@ -41,10 +41,21 @@
             return query;
         }
 
+        public IQueryable<T> GetAllUser<T>(string userId)
+        {
+            var query = this.usersRepository
+                .All()
+                .Where(x => x.ParentId == userId)
+                .To<T>()
+                .AsQueryable();
+
+            return query;
+        }
+
         public async Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent)
         {
             var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
-            
+
             var username = $"{input.FirstName.Substring(0, 1)}.{input.LastName}";
             var possibleUsername = await this.GenerateAvailableUsername(username);
 
@@ -95,9 +106,9 @@
             {
                 for (int i = 0; i < existingUsers.Count; i++)
                 {
-                    if (existingUsers.FirstOrDefault(u => u.UserName == $"{possibleUsername}{i+1}") == null)
+                    if (existingUsers.FirstOrDefault(u => u.UserName == $"{possibleUsername}{i + 1}") == null)
                     {
-                        possibleUsername = $"{possibleUsername}{i+1}";
+                        possibleUsername = $"{possibleUsername}{i + 1}";
                         break;
                     }
                 }

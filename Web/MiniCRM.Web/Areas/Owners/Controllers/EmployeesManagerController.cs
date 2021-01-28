@@ -1,6 +1,7 @@
 ﻿namespace MiniCRM.Web.Areas.Owners.Controllers
 {
     using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@
     using MiniCRM.Common;
     using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Services.Messaging;
+    using MiniCRM.Web.Infrastructure;
     using MiniCRM.Web.ViewModels;
     using MiniCRM.Web.ViewModels.Employees;
 
@@ -26,8 +28,62 @@
 
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
+            var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
-            return this.View();
+            if (owner.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
+            }
+
+            var allEmployers = this.usersService.GetAllUser<UserViewModel>(ownerId);
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["SortByName"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var employees = from c in allEmployers
+                select c;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                employees = employees.Where(s => s.LastName.Contains(searchString)
+                                                 || s.FirstName.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+
+                case "name_desc":
+                    employees = employees
+                        .OrderByDescending(c => c.FirstName)
+                        .ThenByDescending(c => c.LastName)
+                        .ThenByDescending(c => c.MiddleName);
+                    break;
+
+                case "Date":
+             //       employees = employees.OrderBy(c => c.OrdersCount);
+                    break;
+                case "date_desc":
+                //    employees = employees.OrderByDescending(c => c.OrdersCount);
+                    break;
+                default:
+                    employees = employees.OrderBy(c => c.LastName);
+                    break;
+            }
+
+            int pageSize = 3;
+
+            return View(await PaginatedList<UserViewModel>.CreateAsync(employees, pageNumber ?? 1, pageSize));
+
         }
 
         public async Task<IActionResult> Create()
