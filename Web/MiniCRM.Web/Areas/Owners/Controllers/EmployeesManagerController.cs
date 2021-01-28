@@ -24,7 +24,7 @@
             this.usersService = usersService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
         {
 
             return this.View();

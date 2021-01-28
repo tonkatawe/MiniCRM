@@ -1,1 +1,172 @@
-﻿
+﻿<form asp-action="Index" method="get">
+    <div class="row">
+        <p>
+            Find by name: <input type="text" class="rounded-pill" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <button type="submit" class="btn btn-primary btn-icon-split rounded-pill btn-sm">
+                <span class="icon text-white-50">
+                    <i class="fas fa-search"></i>
+                </span>
+                <span class="text">Search</span>
+            </button>
+            <a asp-action="Index" class="btn btn-info btn-icon-split rounded-pill btn-sm">
+                <span class="icon text-white-50">
+                    <i class="far fa-arrow-alt-circle-left"></i>
+                </span>
+                <span class="text">Back to full list</span>
+            </a>
+        </p>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByName"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Full Name</a>
+            </th>
+
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Orders</a>
+            </th>
+            <th class="flex-center">
+                Customer Settings
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            var tm = "#myModal" + customer.Id;
+            var mid = "myModal" + customer.Id;
+            <tr>
+                <td>
+                    @customer.FullName
+                </td>
+
+
+                <td>
+                    @if (customer.OrdersCount == 0)
+                    {
+                        <p>empty</p>
+                    }
+                    else
+                    {
+
+                        <a asp-action="History" asp-controller="Orders" asp-route-id="@customer.Id" asp-route-fullname="@customer.FullName" title="See history">
+                            @customer.OrdersCount
+                        </a>
+                    }
+                </td>
+                <td>
+                    <ul class="list-inline">
+                        @if (!customer.HasAccount)
+                        {
+                            <li class="list-inline-item">
+                                <form asp-action="Create" asp-controller="Accounts" asp-route-id="@customer.Id" asp-route-organizationId="@customer.OrganizationId" method="post" class="form-inline">
+                                    <button type="submit" class="btn btn-warning btn-icon-split rounded-pill btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-user-times"></i>
+                                        </span>
+                                        <span class="text">Add account</span>
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        <li class="list-inline-item">
+                            <form asp-controller="Orders" asp-action="Create" asp-route-id="@customer.Id" method="get" class="form-inline">
+                                <button class="btn btn-primary btn-icon-split rounded-pill btn-sm">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                    <span class="text">Add Order</span>
+                                </button>
+                            </form>
+                        </li>
+                        <li class="list-inline-item">
+                            <form asp-action="Details" asp-controller="Customers" asp-route-id="@customer.Id" class="form-inline">
+                                <button class="btn btn-info btn-icon-split rounded-pill btn-sm">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-info"></i>
+                                    </span>
+                                    <span class="text">Details</span>
+                                </button>
+                            </form>
+                        </li>
+                        <li class="list-inline-item">
+                            <button type="button" class="btn btn-danger btn-icon-split rounded-pill btn-sm" data-toggle="modal" data-target="@tm">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-user-times"></i>
+                                </span>
+                                <span class="text">Delete</span>
+                            </button>
+                            <form asp-action="Delete" asp-route-id="@customer.Id" method="post" class="user">
+                                <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header d-flex justify-content-lg-start">
+                                                <h4 class="modal-title " id="myModalLabel">Delete Confirmation</h4>
+                                            </div>
+                                            <div class="modal-body font-weight-bold">
+                                                Are you sure want to delete @customer.FullName?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" id="deleteBtn" class="btn bg-danger mr-1 btn-user text-white">Delete</button>
+                                                <button type="button" class="btn btn-dark btn-user" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<ul class="pagination">
+
+
+    <li>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+    </li>
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item  @(Model.PageIndex == i ? "active" : string.Empty)">
+            <a class="page-link rounded-pill" asp-route-pageNumber="@i">@i</a>
+        </li>
+    }
+
+    <li>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+
+    </li>
+</ul>
+
+<div>
+    <a asp-action="Create" class="btn btn-primary btn-icon-split rounded-pill">
+        <span class="icon text-white-50">
+            <i class="fas fa-user-plus"></i>
+        </span>
+        <span class="text">Add New Customer</span>
+    </a>
+</div>
