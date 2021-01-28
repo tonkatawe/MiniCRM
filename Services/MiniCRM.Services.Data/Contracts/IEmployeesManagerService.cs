@@ -6,6 +6,6 @@ namespace MiniCRM.Services.Data.Contracts
 {
     public interface IEmployeesManagerService
     {
-        Task<KeyValuePair<string, string>> CreateAsync(EmployeeCreateModel input, string ownerId);
+        Task<KeyValuePair<string, string>> CreateAsync(UserCreateModel input, string ownerId);
     }
 }

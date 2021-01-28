@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class EmployeeCreateModel
+    public class UserCreateModel
     {
         [Required]
         [MaxLength(20, ErrorMessage = "The first name should be maximum 20 letters")]
@@ -17,7 +17,7 @@
         [MaxLength(20, ErrorMessage = "The last name should be maximum 20 letters")]
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use latin letters only please")]
         public string LastName { get; set; }
-        
+
         [Required]
         [MaxLength(30, ErrorMessage = "Job title should be maximum 30 letters")]
         public string JobTitle { get; set; }
@@ -39,6 +39,5 @@
 
         public string Phone { get; set; }
 
-        public string UserName => this.FirstName[0] + "." + this.LastName;
     }
 }

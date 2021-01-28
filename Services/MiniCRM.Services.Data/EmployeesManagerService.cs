@@ -21,14 +21,14 @@ namespace MiniCRM.Services.Data
             this.userManager = userManager;
         }
 
-        public async Task<KeyValuePair<string, string>> CreateAsync(EmployeeCreateModel input, string ownerId)
+        public async Task<KeyValuePair<string, string>> CreateAsync(UserCreateModel input, string ownerId)
         {
             var owner = await this.userManager.FindByIdAsync(ownerId);
             //todo make job title service
 
             var employer = new ApplicationUser
             {
-                UserName = input.UserName,
+                UserName = "input.UserName",
                 FirstName = input.FirstName,
                 MiddleName = input.MiddleName,
                 LastName = input.LastName,

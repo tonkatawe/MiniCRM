@@ -87,6 +87,7 @@
             services.AddTransient<ICompaniesService, CompaniesService>();
             services.AddTransient<IIndustriesService, IndustriesService>();
             services.AddTransient<IAddressService, AddressService>();
+            services.AddTransient<IUsersService, UsersService>();
             services.AddTransient<IEmployeesManagerService, EmployeesManagerService>();
         }
 

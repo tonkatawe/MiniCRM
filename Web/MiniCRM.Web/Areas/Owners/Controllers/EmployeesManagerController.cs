@@ -1,36 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using MiniCRM.Common;
-using MiniCRM.Data.Models;
-using MiniCRM.Services.Data.Contracts;
-using MiniCRM.Services.Messaging;
-
-namespace MiniCRM.Web.Areas.Owners.Controllers
+﻿namespace MiniCRM.Web.Areas.Owners.Controllers
 {
+    using System;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Common;
+    using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Services.Messaging;
+    using MiniCRM.Web.ViewModels;
     using MiniCRM.Web.ViewModels.Employees;
 
     public class EmployeesManagerController : OwnersController
     {
-        private readonly IEmployeesManagerService employeesManagerService;
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IEmailSender emailSender;
+        private readonly IUsersService usersService;
 
-        public EmployeesManagerController(IEmployeesManagerService employeesManagerService,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+        public EmployeesManagerController(
+            IEmailSender emailSender,
+            IUsersService usersService)
         {
-            this.employeesManagerService = employeesManagerService;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
             this.emailSender = emailSender;
+            this.usersService = usersService;
         }
 
         public async Task<IActionResult> Index()
@@ -45,45 +36,35 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(EmployeeCreateModel input)
+        public async Task<IActionResult> Create(UserCreateModel input)
         {
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //only for test
+            var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
-            var owner = await this.userManager.GetUserAsync(this.User);
+            var result = (string.Empty, string.Empty, string.Empty);
+
+            try
+            {
+                result = await this.usersService.CreateAsync(input, owner);
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, "Account doesn't create - " + e.Message);
+            }
 
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            var result = new KeyValuePair<string, string>();
-            try
-            {
-                result = await this.employeesManagerService.CreateAsync(input, ownerId);
-            }
-            catch (Exception e)
-            {
-                TempData["Error"] = "Account doesn't create - " + e.Message;
+            var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = input.Email }, this.Request.Scheme);
 
-                return this.RedirectToAction("Index");
-            }
+            var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
 
-
-            var confirmationLink = Url.Action("ConfirmEmail", "Home",
-               new { area = "", token = result.Key, email = input.Email },
-                Request.Scheme);
-
-            var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.CompanyId,
-                input.UserName, result.Value, confirmationLink);
-
-            await this.emailSender.SendEmailAsync(GlobalConstants.SystemEmail, owner.UserName,
-                input.Email, "Email confirm link", msg);
+      //      await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, "Email confirm link", msg);
 
             return this.RedirectToAction("Index");
         }
-        
-      
     }
 }
