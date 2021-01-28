@@ -62,8 +62,7 @@
 
             var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
 
-
-            //TODO uncomment in production!
+            // TODO uncomment in production!
             // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
 
             return this.RedirectToAction("Index");

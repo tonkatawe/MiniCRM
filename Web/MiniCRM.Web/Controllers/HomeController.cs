@@ -1,7 +1,7 @@
-﻿using System;
-
+﻿
 namespace MiniCRM.Web.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using System.Diagnostics;
     using System.Threading.Tasks;
 
@@ -70,20 +70,6 @@ namespace MiniCRM.Web.Controllers
 
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
-
-
-
-            try
-            {
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            //todo move this controller to employer area and make this statmants at service delete signinManager and usermanager
-
             var user = await this.userManager.FindByEmailAsync(email);
 
             if (user == null)
@@ -98,12 +84,39 @@ namespace MiniCRM.Web.Controllers
                 this.TempData["ConfirmationEmail"] =
                     "Thank you for confirming your email. You've already sing in. You can list our products";
                 await this.signInManager.SignInAsync(user, isPersistent: false);
-                return this.RedirectToAction("Index", "Home");
+
+                return this.RedirectToAction("ChangePassword", "Home", new { userId = user.Id });
             }
             else
             {
-                return View("Error");
+                return this.View("Error");
             }
+        }
+
+        [Authorize(Roles = "Customer, Employer, Owner")]
+        public IActionResult ChangePassword()
+        {
+            return this.View();
+        }
+
+        [Authorize(Roles = "Customer, Employer, Owner")]
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordModel input)
+        {
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            // TODO: refactor this using applicationmanagment system! :)
+
+            var token = await this.userManager.GeneratePasswordResetTokenAsync(user);
+            await this.userManager.ResetPasswordAsync(user, token, input.Password);
+
+            return this.RedirectToAction("Index");
         }
     }
 }
