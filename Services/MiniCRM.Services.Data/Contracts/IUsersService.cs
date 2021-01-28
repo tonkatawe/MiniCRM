@@ -13,5 +13,7 @@
         Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent);
 
         IQueryable<T> GetAllUser<T>(string userId);
+
+        Task<int> DeleteAsync(string userId);
     }
 }

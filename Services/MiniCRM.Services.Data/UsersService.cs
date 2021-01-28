@@ -52,6 +52,19 @@
             return query;
         }
 
+        public async Task<int> DeleteAsync(string userId)
+        {
+            var user = await this.usersRepository.All().FirstOrDefaultAsync(x => x.Id == userId);
+
+            var roles = await this.userManager.GetRolesAsync(user);
+
+            await this.userManager.RemoveFromRolesAsync(user, roles);
+
+            this.usersRepository.Delete(user);
+
+            return await this.usersRepository.SaveChangesAsync();
+        }
+
         public async Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent)
         {
             var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);

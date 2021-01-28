@@ -53,7 +53,7 @@
             ViewData["CurrentFilter"] = searchString;
 
             var employees = from c in allEmployers
-                select c;
+                            select c;
             if (!String.IsNullOrEmpty(searchString))
             {
                 employees = employees.Where(s => s.LastName.Contains(searchString)
@@ -70,10 +70,10 @@
                     break;
 
                 case "Date":
-             //       employees = employees.OrderBy(c => c.OrdersCount);
+                    //       employees = employees.OrderBy(c => c.OrdersCount);
                     break;
                 case "date_desc":
-                //    employees = employees.OrderByDescending(c => c.OrdersCount);
+                    //    employees = employees.OrderByDescending(c => c.OrdersCount);
                     break;
                 default:
                     employees = employees.OrderBy(c => c.LastName);
@@ -120,6 +120,23 @@
 
             // TODO uncomment in production!
             // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
+
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var user = await this.usersService.GetUserAsync<UserViewModel>(id);
+
+            if (user.ParentId != ownerId || id == null)
+            {
+                return this.NotFound();
+            }
+
+            await this.usersService.DeleteAsync(id);
 
             return this.RedirectToAction("Index");
         }
