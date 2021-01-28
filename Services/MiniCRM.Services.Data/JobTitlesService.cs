@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Services.Data
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MiniCRM.Services.Data
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -28,7 +30,11 @@
                 return await this.jobTitlesRepository.SaveChangesAsync();
             }
 
-            return this.jobTitlesRepository.All().FirstOrDefault(x => x.Name == name).Id;
+            return await this.jobTitlesRepository
+                .All()
+                .Where(x => x.Name == name)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
         }
     }
 }

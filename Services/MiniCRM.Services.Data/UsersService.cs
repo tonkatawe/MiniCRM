@@ -18,13 +18,16 @@
     {
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IJobTitlesService jobTitlesService;
 
         public UsersService(
             IDeletableEntityRepository<ApplicationUser> usersRepository,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            IJobTitlesService jobTitlesService)
         {
             this.usersRepository = usersRepository;
             this.userManager = userManager;
+            this.jobTitlesService = jobTitlesService;
         }
 
         public async Task<T> GetUserAsync<T>(string userId)
@@ -40,8 +43,8 @@
 
         public async Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent)
         {
-
-            //todo make job title service
+            var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
+            
             var username = $"{input.FirstName.Substring(0, 1)}.{input.LastName}";
             var possibleUsername = await this.GenerateAvailableUsername(username);
 
@@ -56,7 +59,7 @@
                 Email = input.Email,
                 CompanyId = parent.CompanyId,
                 ProfilePictureUrl = @"https://res.cloudinary.com/dx479nsjv/image/upload/v1611663587/MiniCRM/ProfilePictures/default-profile-picture_cwgvhg.png",
-                JobTitle = new JobTitle { Name = input.JobTitle },
+                JobTitleId = jobTitle,
             };
 
             var employerPassword = Guid.NewGuid().ToString().Substring(0, 8);
