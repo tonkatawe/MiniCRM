@@ -1,1 +1,65 @@
-﻿
+﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Products.ProductViewModel>
+@*@if (this.TempData.ContainsKey("Message"))
+    {
+        <div class="alert alert-success">@this.TempData["Message"]</div>
+    }
+    @if (this.TempData.ContainsKey("ConfirmationEmail"))
+    {
+        <div class="alert alert-success">@this.TempData["ConfirmationEmail"]</div>
+    }
+    @if (this.User.IsInRole("Owner"))
+    {
+        <h1 class="d-flex justify-content-lg-center">
+            Your company have @Model.Count() products
+        </h1>
+
+    }
+    else
+    {
+        <div class="d-flex justify-content-center font-weight-bold font-italic">
+            <p>If you want to order some product just write email to <a href="mailto:" type="email">@ViewData["Email"]</a></p>
+        </div>
+    }*@
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                <partial name="_ProductPartial" model="@product" />
+            </div>
+        }
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<ul class="pagination">
+
+
+    <li>
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+    </li>
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item  @(Model.PageIndex == i ? "active" : string.Empty)">
+            <a class="page-link rounded-pill" asp-route-pageNumber="@i">@i</a>
+        </li>
+    }
+
+    <li>
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+
+    </li>
+</ul>

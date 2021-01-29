@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using MiniCRM.Common;
-
-namespace MiniCRM.Web.Areas.Identity.Pages.Account
+﻿namespace MiniCRM.Web.Areas.Identity.Pages.Account
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -13,11 +9,14 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
 
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.RazorPages;
     using Microsoft.AspNetCore.WebUtilities;
+    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using MiniCRM.Common;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Contracts;
     using MiniCRM.Services.Messaging;

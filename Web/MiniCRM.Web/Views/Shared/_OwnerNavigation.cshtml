@@ -19,3 +19,23 @@
         </p>
     </a>
 </li>
+<li class="nav-item ">
+
+    <a asp-area="" asp-controller="Products" asp-action="Index"
+       class="nav-link @Url.MakeActiveClass("products","index")">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            All Products
+        </p>
+    </a>
+</li>
+<li class="nav-item ">
+
+    <a asp-area="" asp-controller="Products" asp-action="Create"
+       class="nav-link @Url.MakeActiveClass("products","create")">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Add Products
+        </p>
+    </a>
+</li>

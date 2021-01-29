@@ -24,6 +24,8 @@
     <ProjectReference Include="..\..\Data\MiniCRM.Data.Models\MiniCRM.Data.Models.csproj" />
     <ProjectReference Include="..\..\Web\MiniCRM.Web.ViewModels\MiniCRM.Web.ViewModels.csproj" />
     <ProjectReference Include="..\MiniCRM.Services.Mapping\MiniCRM.Services.Mapping.csproj" />
+    <ProjectReference Include="..\MiniCRM.Services\MiniCRM.Services.csproj" />
+
   </ItemGroup>
 
 </Project>
