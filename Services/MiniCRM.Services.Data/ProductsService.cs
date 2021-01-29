@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Services.Data
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MiniCRM.Services.Data
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -42,14 +44,40 @@
             return await this.productsRepository.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateAsync(int productId)
+        public async Task<int> UpdateAsync(EditProductModel input)
         {
-            throw new System.NotImplementedException();
+            var product = await this.productsRepository
+                .All()
+                .Where(x => x.Id == input.Id)
+                .FirstOrDefaultAsync();
+
+            product.Name = input.Name;
+            product.Description = input.Description;
+            product.Price = input.Price;
+            product.Quantity = input.Quantity;
+
+            if (input.ProductPicture != null)
+            {
+                //TODO MAKE DELETE OLD PICTURE FROM CLOUDINARY!!!
+                var productPictureUrl = await this.cloudinaryService.UploadAsync(input.ProductPicture, "MiniCRM/ProductPictures");
+                product.ProductPictureUrl = productPictureUrl;
+            }
+
+            this.productsRepository.Update(product);
+
+            return await this.productsRepository.SaveChangesAsync();
         }
 
         public async Task<int> DeleteAsync(int productId)
         {
-            throw new System.NotImplementedException();
+            var product = await this.productsRepository
+                .All()
+                .Where(x => x.Id == productId)
+                .FirstOrDefaultAsync();
+            this.productsRepository.Delete(product);
+
+            //todo MAKE DELETE PICTURE FROM CLOUDINARY
+            return await this.productsRepository.SaveChangesAsync();
         }
 
         public IQueryable<T> GetAll<T>(string companyId)

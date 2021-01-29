@@ -9,7 +9,7 @@
     {
         Task<int> CreateAsync(ProductCreateModel input, string companyId);
 
-        Task<int> UpdateAsync(int productId);
+        Task<int> UpdateAsync(EditProductModel input);
 
         Task<int> DeleteAsync(int productId);
 

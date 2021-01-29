@@ -22,8 +22,7 @@
         {
 
             var companyId = "0847db38-4e66-4081-b564-6e2ffdf33fc0";
-
-
+            
             var allProducts = this.productsService.GetAll<ProductViewModel>(companyId);
 
             var products = from c in allProducts
@@ -76,7 +75,7 @@
                 return this.View();
             }
 
-            //   await this.productsService.UpdateAsync(input);
+               await this.productsService.UpdateAsync(input);
 
             return this.RedirectToAction("Index");
         }
