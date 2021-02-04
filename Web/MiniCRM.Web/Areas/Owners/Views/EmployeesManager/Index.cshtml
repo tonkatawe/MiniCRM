@@ -1,4 +1,4 @@
-﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.UserViewModel>
+﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Employees.EmployerViewModel>
 @{
     this.ViewData["Title"] = "All Customers";
 
@@ -32,8 +32,20 @@
             </th>
 
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Job Title</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByJobTitle"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Job Title</a>
             </th>
+          
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByEmail"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Email</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByPhone"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Phone</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByCustomer"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customers</a>
+            </th>
+         
+
             <th>
                 Customer Settings
             </th>
@@ -51,11 +63,20 @@
 
 
                 <td>
-                @employer.JobTitleName
+                    @employer.JobTitleName
+                </td>
+                <td>
+                    @employer.Email
+                </td>
+                <td>
+                    @employer.PhoneNumber 
+                </td>
+                <td>
+                  0
                 </td>
                 <td>
                     <ul class="list-inline">
-               
+
                         <li class="list-inline-item">
                             <form asp-controller="Companies" asp-action="Create" asp-route-id="@employer.Id" method="get" class="form-inline">
                                 <button class="btn btn-primary btn-icon-split rounded-pill btn-sm">

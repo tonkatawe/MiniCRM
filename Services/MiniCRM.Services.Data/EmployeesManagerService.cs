@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using MiniCRM.Services.Mapping;
 
 namespace MiniCRM.Services.Data
 {
@@ -56,6 +57,17 @@ namespace MiniCRM.Services.Data
 
             await this.employersRepository.AddAsync(employer);
             return await this.employersRepository.SaveChangesAsync();
+        }
+
+        public IQueryable<T> GetAll<T>(string companyId)
+        {
+            var query = this.employersRepository
+                .All()
+                .Where(x => x.CompanyId == companyId)
+                .To<T>()
+                .AsQueryable();
+
+            return query;
         }
     }
 }

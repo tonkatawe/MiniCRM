@@ -45,10 +45,14 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
             }
 
-            var allEmployers = this.usersService.GetAllUser<UserViewModel>(ownerId);
+            var allEmployers = this.employeesManagerService.GetAll<EmployerViewModel>(owner.CompanyId);
 
-            ViewData["CurrentSort"] = sortOrder;
-            ViewData["SortByName"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            this.ViewData["CurrentSort"] = sortOrder;
+            this.ViewData["SortByName"] = string.IsNullOrEmpty(sortOrder) ? "nameDesc" : string.Empty;
+            this.ViewData["SortByJobTitle"] = string.IsNullOrEmpty(sortOrder) ? "jobDesc" : string.Empty;
+            this.ViewData["SortByEmail"] = string.IsNullOrEmpty(sortOrder) ? "emailDesc" : string.Empty;
+            this.ViewData["SortByPhone"] = string.IsNullOrEmpty(sortOrder) ? "phoneDesc" : string.Empty;
+            this.ViewData["SortByCustomer"] = string.IsNullOrEmpty(sortOrder) ? "customerCount" : string.Empty;
 
             if (searchString != null)
             {
@@ -71,18 +75,24 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             switch (sortOrder)
             {
 
-                case "name_desc":
+                case "nameDesc":
                     employees = employees
-                        .OrderByDescending(c => c.FirstName)
-                        .ThenByDescending(c => c.LastName)
-                        .ThenByDescending(c => c.MiddleName);
+                        .OrderByDescending(e => e.FirstName)
+                        .ThenByDescending(e => e.LastName)
+                        .ThenByDescending(e => e.MiddleName);
                     break;
 
-                case "Date":
-                    //       employees = employees.OrderBy(c => c.OrdersCount);
+                case "jobDesc":
+                    employees = employees.OrderByDescending(e => e.JobTitleName);
                     break;
-                case "date_desc":
-                    //    employees = employees.OrderByDescending(c => c.OrdersCount);
+                case "emailDesc":
+                      employees = employees.OrderByDescending(e => e.Email);
+                    break;
+                case "phoneDesc":
+                    employees = employees.OrderByDescending(e => e.PhoneNumber);
+                    break;
+                case "customerCount":
+                   // employees = employees.OrderByDescending(e => e.customersCount);
                     break;
                 default:
                     employees = employees.OrderBy(c => c.LastName);
@@ -91,7 +101,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
             int pageSize = 3;
 
-            return View(await PaginatedList<UserViewModel>.CreateAsync(employees, pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<EmployerViewModel>.CreateAsync(employees, pageNumber ?? 1, pageSize));
 
         }
 

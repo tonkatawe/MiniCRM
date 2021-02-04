@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Services.Data.Contracts
+﻿using System.Linq;
+
+namespace MiniCRM.Services.Data.Contracts
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,5 +10,7 @@
     public interface IEmployeesManagerService
     {
         Task<int> CreateAsync(EmployerCreateModel input, string companyId);
+
+        IQueryable<T> GetAll<T>(string companyId);
     }
 }
