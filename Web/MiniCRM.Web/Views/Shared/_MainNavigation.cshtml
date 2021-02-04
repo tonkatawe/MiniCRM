@@ -6,14 +6,16 @@
 
 @inject UserManager<ApplicationUser> UserManager
 
+
+
 @{
+
     var profileImageUrl = this.UserManager.GetUserAsync(User).Result.ProfilePictureUrl;
 
 
     var fullName = this.UserManager.GetUserAsync(User).Result.FullName;
- 
-}
 
+}
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-link">
         <img src="https://res.cloudinary.com/dx479nsjv/image/upload/v1611049724/MiniCRM/Crm_Customer_Relationship_Management__Client-512_wogria.webp" alt="MiniCRM Logo"
@@ -30,9 +32,9 @@
             <div class="info">
                 <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" class="d-block">@fullName</a>
             </div>
-            <br/>
+            <br />
         </div>
-        
+
 
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">

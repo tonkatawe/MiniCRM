@@ -1,7 +1,5 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
 
-using MiniCRM.Common;
-
 namespace MiniCRM.Data.Models
 {
     using System;
@@ -9,6 +7,7 @@ namespace MiniCRM.Data.Models
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Identity;
+    using MiniCRM.Common;
     using MiniCRM.Data.Common.Models;
 
     public class ApplicationUser : IdentityUser, IAuditInfo, IDeletableEntity
@@ -60,19 +59,15 @@ namespace MiniCRM.Data.Models
 
         public virtual Company Company { get; set; }
 
-        public int? AddressId { get; set; }
-
-        public virtual Address Address { get; set; }
-
         public virtual ApplicationUser Parent { get; set; }
 
         public string? ParentId { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
 
-        public virtual ICollection<Employer> Employers { get; set; }
-
         public virtual ICollection<Customer> Customers { get; set; }
+
+        public virtual ICollection<Employer> Employers { get; set; }
 
         public virtual ICollection<UserCompanies> UserCompanies { get; set; }
 

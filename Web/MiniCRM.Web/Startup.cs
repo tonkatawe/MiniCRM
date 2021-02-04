@@ -44,8 +44,7 @@
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-             //.AddClaimsPrincipalFactory<MyUserClaimsPrincipalFactory>();
-
+ 
             services.Configure<CookiePolicyOptions>(
                 options =>
                     {

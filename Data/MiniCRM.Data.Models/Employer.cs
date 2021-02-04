@@ -45,6 +45,6 @@
         [Required]
         public string Email { get; set; }
 
-        public IEnumerable<Customer> Customers { get; set; }
+        public virtual IEnumerable<Customer> Customers { get; set; }
     }
 }

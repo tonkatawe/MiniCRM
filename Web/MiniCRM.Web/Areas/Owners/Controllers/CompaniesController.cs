@@ -21,8 +21,16 @@
             this.companiesService = companiesService;
         }
 
-        public IActionResult Create(string userId)
+        public async Task<IActionResult> Create(string userId)
         {
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            if (user.CompanyId != null)
+            {
+                return this.RedirectToAction("Index", "Dashboard");
+
+            }
+
             var viewModel = new CompanyCreateModel
             {
                 UserId = userId,
@@ -34,6 +42,15 @@
         [HttpPost]
         public async Task<IActionResult> Create(CompanyCreateModel input)
         {
+
+            var user = await this.userManager.GetUserAsync(this.User);
+
+            if (user.CompanyId != null)
+            {
+                return this.RedirectToAction("Index", "Dashboard");
+
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
@@ -41,10 +58,7 @@
 
             await this.companiesService.CreateAsync(input);
 
-            this.userManager.GetUserAsync()
-            
             return this.RedirectToAction("Index", "Dashboard");
-
         }
 
         public IActionResult Edit()

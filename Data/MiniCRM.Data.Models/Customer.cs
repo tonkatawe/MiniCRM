@@ -20,7 +20,6 @@
 
         public virtual JobTitle JobTitle { get; set; }
 
-
         [MaxLength(1000)]
         public string AdditionalInfo { get; set; }
 
@@ -30,16 +29,17 @@
         public virtual Address Address { get; set; }
 
         [Required]
-        public string EmployerId { get; set; }
 
-        public virtual Employer Employer { get; set; }
+        public string OwnerId { get; set; }
 
-        public string UserId { get; set; }
+        public ApplicationUser Owner { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public int EmployerId { get; set; }
+
+        public Employer Employer { get; set; }
 
         [Required]
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
         [Required]
         public string Email { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Services.Data.Contracts
+﻿using MiniCRM.Web.ViewModels.Users;
+
+namespace MiniCRM.Services.Data.Contracts
 {
     using System.Linq;
     using System.Threading.Tasks;

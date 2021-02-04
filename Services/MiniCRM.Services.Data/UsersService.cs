@@ -13,6 +13,7 @@
     using MiniCRM.Services.Mapping;
     using MiniCRM.Web.ViewModels;
     using MiniCRM.Web.ViewModels.Employees;
+    using MiniCRM.Web.ViewModels.Users;
 
     public class UsersService : IUsersService
     {

@@ -1,12 +1,16 @@
-﻿namespace MiniCRM.Web.Areas.Owners.Controllers
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+namespace MiniCRM.Web.Areas.Owners.Controllers
 {
     using System;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using MiniCRM.Common;
+    using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Services.Messaging;
     using MiniCRM.Web.Infrastructure;
@@ -17,13 +21,15 @@
     {
         private readonly IEmailSender emailSender;
         private readonly IUsersService usersService;
-
+        private readonly UserManager<ApplicationUser> userManager;
         public EmployeesManagerController(
             IEmailSender emailSender,
-            IUsersService usersService)
+            IUsersService usersService,
+            UserManager<ApplicationUser> userManager)
         {
             this.emailSender = emailSender;
             this.usersService = usersService;
+            this.userManager = userManager;
         }
 
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
@@ -88,15 +94,27 @@
 
         public async Task<IActionResult> Create()
         {
+            var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
+
+            if (owner.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
+            }
+
             return this.View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UserCreateModel input)
+        public async Task<IActionResult> Create(EmployerCreateModel input)
         {
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
+
+            if (owner.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
+            }
 
             var result = (string.Empty, string.Empty, string.Empty);
 

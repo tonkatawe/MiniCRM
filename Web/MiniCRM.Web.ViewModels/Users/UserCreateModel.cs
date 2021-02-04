@@ -1,5 +1,6 @@
-﻿namespace MiniCRM.Web.ViewModels.Employees
+﻿namespace MiniCRM.Web.ViewModels.Users
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@
         [Required]
         [MaxLength(30)]
         public string Country { get; set; }
+
         [Required]
         [MaxLength(30)]
         public string City { get; set; }

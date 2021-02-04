@@ -139,10 +139,6 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account
                     var token = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     await this.userManager.ConfirmEmailAsync(user, token);
 
-                    Claim claim = new Claim("CompanyId", user.CompanyId = null, ClaimValueTypes.String);
-
-                    await this.userManager.AddClaimAsync(user, claim);
-
                     this.logger.LogInformation("User created a new account with password.");
 
                     await this.signInManager.SignInAsync(user, isPersistent: false);

@@ -81,6 +81,8 @@
 
             builder.Entity<UserCompanies>()
                 .HasKey(uc => new { uc.UserId, uc.CompanyId });
+            
+    
 
 
             this.ConfigureUserIdentityRelations(builder);
