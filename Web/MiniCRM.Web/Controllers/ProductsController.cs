@@ -84,7 +84,7 @@
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
-
+            //todo campare product companyId with the owner company id
             await this.productsService.DeleteAsync(id);
             return this.RedirectToAction("Index");
         }

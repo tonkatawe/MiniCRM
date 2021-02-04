@@ -41,6 +41,8 @@
 
             await this.companiesService.CreateAsync(input);
 
+            this.userManager.GetUserAsync()
+            
             return this.RedirectToAction("Index", "Dashboard");
 
         }

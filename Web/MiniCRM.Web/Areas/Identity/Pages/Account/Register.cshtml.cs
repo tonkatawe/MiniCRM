@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Web.Areas.Identity.Pages.Account
+﻿using System.Security.Claims;
+
+namespace MiniCRM.Web.Areas.Identity.Pages.Account
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -136,6 +138,10 @@
                     await this.userManager.AddToRoleAsync(user, GlobalConstants.OwnerUserRoleName);
                     var token = await this.userManager.GenerateEmailConfirmationTokenAsync(user);
                     await this.userManager.ConfirmEmailAsync(user, token);
+
+                    Claim claim = new Claim("CompanyId", user.CompanyId = null, ClaimValueTypes.String);
+
+                    await this.userManager.AddClaimAsync(user, claim);
 
                     this.logger.LogInformation("User created a new account with password.");
 

@@ -42,7 +42,9 @@
                 options => options.UseSqlServer(this.configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
-                .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+             //.AddClaimsPrincipalFactory<MyUserClaimsPrincipalFactory>();
 
             services.Configure<CookiePolicyOptions>(
                 options =>

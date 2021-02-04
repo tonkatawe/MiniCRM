@@ -1,4 +1,5 @@
 ﻿@using MiniCRM.Web.Infrastructure
+@using System.Security.Claims
 <li class="nav-item ">
 
     <a asp-area="Owners" asp-controller="EmployeesManager" asp-action="Create"
@@ -10,7 +11,6 @@
     </a>
 </li>
 <li class="nav-item ">
-
     <a asp-area="Owners" asp-controller="EmployeesManager" asp-action="Index"
        class="nav-link @Url.MakeActiveClass("employeesManager","index")">
         <i class="nav-icon fas fa-user"></i>
@@ -39,3 +39,4 @@
         </p>
     </a>
 </li>
+@User.FindFirst("CompanyId")
