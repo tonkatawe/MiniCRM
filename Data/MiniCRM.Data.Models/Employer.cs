@@ -22,12 +22,9 @@
             ? (this.FirstName + " " + this.LastName)
             : (this.FirstName + " " + this.MiddleName.Substring(0, 1) + ". " + this.LastName);
 
-        public int? JobTitleId { get; set; }
+        public int JobTitleId { get; set; }
 
         public virtual JobTitle JobTitle { get; set; }
-
-        [MaxLength(1000)]
-        public string AdditionalInfo { get; set; }
 
         public int AddressId { get; set; }
 
@@ -35,9 +32,11 @@
         public virtual Address Address { get; set; }
 
         [Required]
-        public string UserId { get; set; }
+        public string CompanyId { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public virtual Company Company { get; set; }
+
+        public bool HasAccount { get; set; }
 
         [Required]
         public string PhoneNumber { get; set; }

@@ -1,4 +1,4 @@
-﻿@model MiniCRM.Web.ViewModels.Employees.UserCreateModel;
+﻿@model MiniCRM.Web.ViewModels.Employees.EmployerCreateModel;
 @{
     this.ViewData["Title"] = "Add new customer";
 
@@ -74,6 +74,7 @@
                 </div>
 
             </div>
+            <input type="hidden" asp-for="@ViewData["CompanyId"]"/>
              <button type="submit" class="btn btn-primary btn-block">Add Employer</button>
            
             <br />

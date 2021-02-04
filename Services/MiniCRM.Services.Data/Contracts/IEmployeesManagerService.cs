@@ -7,7 +7,6 @@
 
     public interface IEmployeesManagerService
     {
-
+        Task<int> CreateAsync(EmployerCreateModel input, string companyId);
     }
-
 }

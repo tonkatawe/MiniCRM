@@ -21,14 +21,17 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
     {
         private readonly IEmailSender emailSender;
         private readonly IUsersService usersService;
+        private readonly IEmployeesManagerService employeesManagerService;
         private readonly UserManager<ApplicationUser> userManager;
         public EmployeesManagerController(
             IEmailSender emailSender,
             IUsersService usersService,
+            IEmployeesManagerService employeesManagerService,
             UserManager<ApplicationUser> userManager)
         {
             this.emailSender = emailSender;
             this.usersService = usersService;
+            this.employeesManagerService = employeesManagerService;
             this.userManager = userManager;
         }
 
@@ -109,6 +112,9 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         public async Task<IActionResult> Create(EmployerCreateModel input)
         {
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            //TODO CHEK FOR EmployersCount! And add it to userModel
+            //TODO clear try catch and make validation attributes !!! or blazor validation
             var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
             if (owner.CompanyId == null)
@@ -116,15 +122,13 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
             }
 
-            var result = (string.Empty, string.Empty, string.Empty);
-
             try
             {
-                result = await this.usersService.CreateAsync(input, owner);
+                await this.employeesManagerService.CreateAsync(input, owner.CompanyId);
             }
             catch (Exception e)
             {
-                this.ModelState.AddModelError(string.Empty, "Account doesn't create - " + e.Message);
+                this.ModelState.AddModelError(string.Empty, e.Message);
             }
 
             if (!this.ModelState.IsValid)
@@ -132,14 +136,34 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.View(input);
             }
 
-            var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = input.Email }, this.Request.Scheme);
-
-            var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
-
-            // TODO uncomment in production!
-            // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
-
             return this.RedirectToAction("Index");
+
+            //    var result = (string.Empty, string.Empty, string.Empty);
+
+
+
+            //    try
+            //    {
+            //        result = await this.usersService.CreateAsync(input, owner);
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        this.ModelState.AddModelError(string.Empty, "Account doesn't create - " + e.Message);
+            //    }
+
+            //    if (!this.ModelState.IsValid)
+            //    {
+            //        return this.View(input);
+            //    }
+
+            //    var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = input.Email }, this.Request.Scheme);
+
+            //    var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
+
+            //    // TODO uncomment in production!
+            //    // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
+
+            //    return this.RedirectToAction("Index");
         }
 
         [HttpPost]
