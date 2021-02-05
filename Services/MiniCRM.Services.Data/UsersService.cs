@@ -66,7 +66,7 @@
             return await this.usersRepository.SaveChangesAsync();
         }
 
-        public async Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent)
+        public async Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent, string role)
         {
             var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
 

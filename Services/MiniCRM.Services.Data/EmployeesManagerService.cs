@@ -1,15 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using MiniCRM.Services.Mapping;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace MiniCRM.Services.Data
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using MiniCRM.Data.Common.Repositories;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Services.Mapping;
     using MiniCRM.Web.ViewModels.Employees;
 
     public class EmployeesManagerService : IEmployeesManagerService
@@ -59,6 +59,17 @@ namespace MiniCRM.Services.Data
             return await this.employersRepository.SaveChangesAsync();
         }
 
+        public async Task<T> GetEmployerAsync<T>(int id)
+        {
+            var employer = await this.employersRepository
+                .All()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return employer;
+        }
+
         public IQueryable<T> GetAll<T>(string companyId)
         {
             var query = this.employersRepository
@@ -68,6 +79,19 @@ namespace MiniCRM.Services.Data
                 .AsQueryable();
 
             return query;
+        }
+
+        public async Task ChangeAccountStatusAsync(int id)
+        {
+            var employer = await this.employersRepository
+                .All()
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+            employer.HasAccount = true;
+
+            this.employersRepository.Update(employer);
+
+            await this.employersRepository.SaveChangesAsync();
         }
     }
 }

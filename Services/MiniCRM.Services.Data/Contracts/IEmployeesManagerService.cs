@@ -11,6 +11,9 @@ namespace MiniCRM.Services.Data.Contracts
     {
         Task<int> CreateAsync(EmployerCreateModel input, string companyId);
 
+        Task<T> GetEmployerAsync<T>(int id);
         IQueryable<T> GetAll<T>(string companyId);
+
+        Task ChangeAccountStatusAsync(int id);
     }
 }

@@ -1,7 +1,16 @@
-﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Employees.EmployerViewModel>
+﻿@using MiniCRM.Web.ViewModels.Employees
+@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Employees.EmployerViewModel>
 @{
     this.ViewData["Title"] = "All Customers";
 
+}
+@if (this.TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger">@this.TempData["Error"]</div>
+}
+@if (this.TempData.ContainsKey("Successful"))
+{
+    <div class="alert alert-success">@this.TempData["Successful"]</div>
 }
 
 <form asp-action="Index" method="get">
@@ -34,7 +43,7 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByJobTitle"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Job Title</a>
             </th>
-          
+
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByEmail"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Email</a>
             </th>
@@ -44,7 +53,7 @@
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByCustomer"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customers</a>
             </th>
-         
+
 
             <th>
                 Customer Settings
@@ -52,10 +61,14 @@
         </tr>
     </thead>
     <tbody>
+
+
+
         @foreach (var employer in Model)
         {
             var tm = "#myModal" + employer.Id;
             var mid = "myModal" + employer.Id;
+
             <tr>
                 <td>
                     @employer.FullName
@@ -69,24 +82,30 @@
                     @employer.Email
                 </td>
                 <td>
-                    @employer.PhoneNumber 
+                    @employer.PhoneNumber
                 </td>
                 <td>
-                  0
+                    0
                 </td>
                 <td>
                     <ul class="list-inline">
+                        @if (!@employer.HasAccount)
+                        {
 
-                        <li class="list-inline-item">
-                            <form asp-controller="Companies" asp-action="Create" asp-route-id="@employer.Id" method="get" class="form-inline">
-                                <button class="btn btn-primary btn-icon-split rounded-pill btn-sm">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-plus"></i>
-                                    </span>
-                                    <span class="text">Add Order</span>
-                                </button>
-                            </form>
-                        </li>
+
+                            <li class="list-inline-item">
+                                <form asp-area="Owners" asp-controller="EmployeesManager" asp-action="CreateAccount" asp-route-id="@employer.Id" method="post" class="form-inline">
+                         
+                                    <button class="btn btn-primary rounded-pill btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                        <span class="text">Create Account</span>
+                                    </button>
+                                </form>
+                            </li>
+                        }
+
                         <li class="list-inline-item">
                             <form asp-action="Create" asp-controller="Companies" asp-route-id="@employer.Id" class="form-inline">
                                 <button class="btn btn-info btn-icon-split rounded-pill btn-sm">
@@ -98,13 +117,13 @@
                             </form>
                         </li>
                         <li class="list-inline-item">
-                            <button type="button" class="btn btn-danger btn-icon-split rounded-pill btn-sm" data-toggle="modal" data-target="@tm">
+                            <button type="button" class="btn btn-danger rounded-pill btn-sm" data-toggle="modal" data-target="@tm">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-user-times"></i>
                                 </span>
                                 <span class="text">Delete</span>
                             </button>
-                            <form asp-action="Delete" asp-route-id="@employer.Id" method="post" class="user">
+                            <form asp-action="Delete" asp-route-id="@employer.Id" method="post">
                                 <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using MiniCRM.Common;
+using MiniCRM.Web.ViewModels.Users;
 
 namespace MiniCRM.Web.Areas.Owners.Controllers
 {
@@ -9,7 +10,6 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using MiniCRM.Common;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Services.Messaging;
@@ -23,6 +23,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         private readonly IUsersService usersService;
         private readonly IEmployeesManagerService employeesManagerService;
         private readonly UserManager<ApplicationUser> userManager;
+
         public EmployeesManagerController(
             IEmailSender emailSender,
             IUsersService usersService,
@@ -63,18 +64,18 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 searchString = currentFilter;
             }
 
-            ViewData["CurrentFilter"] = searchString;
+            this.ViewData["CurrentFilter"] = searchString;
 
             var employees = from c in allEmployers
                             select c;
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
                 employees = employees.Where(s => s.LastName.Contains(searchString)
                                                  || s.FirstName.Contains(searchString));
             }
+
             switch (sortOrder)
             {
-
                 case "nameDesc":
                     employees = employees
                         .OrderByDescending(e => e.FirstName)
@@ -86,13 +87,13 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                     employees = employees.OrderByDescending(e => e.JobTitleName);
                     break;
                 case "emailDesc":
-                      employees = employees.OrderByDescending(e => e.Email);
+                    employees = employees.OrderByDescending(e => e.Email);
                     break;
                 case "phoneDesc":
                     employees = employees.OrderByDescending(e => e.PhoneNumber);
                     break;
                 case "customerCount":
-                   // employees = employees.OrderByDescending(e => e.customersCount);
+                    // employees = employees.OrderByDescending(e => e.customersCount);
                     break;
                 default:
                     employees = employees.OrderBy(c => c.LastName);
@@ -101,8 +102,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
             int pageSize = 3;
 
-            return View(await PaginatedList<EmployerViewModel>.CreateAsync(employees, pageNumber ?? 1, pageSize));
-
+            return this.View(await PaginatedList<EmployerViewModel>.CreateAsync(employees, pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> Create()
@@ -147,33 +147,51 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             }
 
             return this.RedirectToAction("Index");
+        }
 
-            //    var result = (string.Empty, string.Empty, string.Empty);
+        [HttpPost]
+        public async Task<IActionResult> CreateAccount(int id)
+        {
+            var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
+            if (owner.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
+            }
 
+            var employer = await this.employeesManagerService.GetEmployerAsync<UserCreateModel>(id);
 
-            //    try
-            //    {
-            //        result = await this.usersService.CreateAsync(input, owner);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        this.ModelState.AddModelError(string.Empty, "Account doesn't create - " + e.Message);
-            //    }
+            if (employer.CompanyId != owner.CompanyId)
+            {
+                return this.NotFound();
+            }
 
-            //    if (!this.ModelState.IsValid)
-            //    {
-            //        return this.View(input);
-            //    }
+            var result = (string.Empty, string.Empty, string.Empty);
 
-            //    var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = input.Email }, this.Request.Scheme);
+            try
+            {
+                result = await this.usersService.CreateAsync(employer, owner, GlobalConstants.EmployerUserRoleName);
+            }
+            catch (Exception e)
+            {
+                this.TempData["Error"] = "Account doesn't create - " + e.Message;
 
-            //    var msg = string.Format(OutputMessages.EmailConformation, input.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
+                return this.RedirectToAction("Index");
+            }
 
-            //    // TODO uncomment in production!
-            //    // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
+            await this.employeesManagerService.ChangeAccountStatusAsync(id);
 
-            //    return this.RedirectToAction("Index");
+            var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = employer.Email }, this.Request.Scheme);
+
+            var msg = string.Format(OutputMessages.EmailConformation, employer.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
+
+            // TODO uncomment in production!
+            // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
+
+            this.TempData["Successful"] = "Account created successful.";
+
+            return this.RedirectToAction("Index");
         }
 
         [HttpPost]
