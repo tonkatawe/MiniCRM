@@ -1,16 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using MiniCRM.Data.Models;
+using MiniCRM.Services.Data.Contracts;
+using MiniCRM.Web.ViewModels.Customer;
+using MiniCRM.Web.ViewModels.Employees;
 
 namespace MiniCRM.Web.Areas.Owners.Controllers
 {
+    using System.Threading.Tasks;
+
+    using Microsoft.AspNetCore.Mvc;
+
     public class CustomerManagerController : OwnersController
     {
-        public async Task<IActionResult> Create()
+        private readonly IEmployeesManagerService employeesManagerService;
+        private readonly UserManager<ApplicationUser> userManager;
+
+        public CustomerManagerController(IEmployeesManagerService employeesManagerService,
+            UserManager<ApplicationUser> userManager)
+        {
+            this.employeesManagerService = employeesManagerService;
+            this.userManager = userManager;
+        }
+
+        public async Task<IActionResult> Index()
         {
             return this.View();
+        }
+        public async Task<IActionResult> Create()
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+            var employees = this.employeesManagerService.GetAll<EmployeesDropDownViewModel>(owner.CompanyId).ToList();
+            var viewModel = new CustomerCreateModel
+            {
+                OwnerId = owner.Id,
+                Employees = employees,
+            };
+
+            return this.View(viewModel);
+        }
+
+        public async Task<PartialViewResult> EmployerPartial(int employerId)
+        {
+            var viewModel = await this.employeesManagerService.GetEmployerAsync<EmployerShortInfoViewModel>(employerId);
+            return this.PartialView("_ShortEmployerPartial", viewModel);
         }
     }
 }

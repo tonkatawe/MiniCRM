@@ -1,11 +1,11 @@
 ﻿@model MiniCRM.Web.ViewModels.Customer.CustomerCreateModel;
 @{
     this.ViewData["Title"] = "Add new customer";
-
+    var employees = Model.Employees.Select(x => new SelectListItem(x.FullName, x.Id.ToString()));
 }
 
 <div class="container">
-    <form asp-action="Create" method="post">
+    <form asp-area="Owners" asp-controller="CustomerManager" asp-action="Create" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="card border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -46,6 +46,14 @@
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <select asp-for="EmployerId" asp-items="employees" id="EmployerId" class="form-control"><option disabled selected>--Choose Employer--</option></select>
+                                <span asp-validation-for="EmployerId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="AdditionalInfo" class="form-control" placeholder="Additional information" rows="3"></textarea>
+                                <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-5">
@@ -69,12 +77,13 @@
                                 <input asp-for="ZipCode" class="form-control" placeholder="Zip Code">
                                 <span asp-validation-for="ZipCode" class="text-danger"></span>
                             </div>
+                            <div id="container"></div>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Add Employer</button>
+            <button type="submit" class="btn btn-primary btn-block">Add Customer</button>
 
             <br />
         </div>
@@ -82,8 +91,29 @@
 </div>
 
 
-@section Scripts {
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#EmployerId").change(function (e) {
 
-    @*<partial name="_ValidationScriptsPartial" />*@
+                $.ajax({
+                    type: 'get',
+                    url: '@Url.Action("EmployerPartial")',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'html',
+                    data: { "EmployerId": $(this).val() },
+                    success: function (result) {
+                        $("#container").html(result);
+                    },
+                    error: function (ex) {
+                        alert("Error");
+                    }
+                });
+
+            });
+
+        });
+    </script>
 
 }
