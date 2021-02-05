@@ -68,6 +68,7 @@
         {
             var tm = "#myModal" + employer.Id;
             var mid = "myModal" + employer.Id;
+            var userId = "myModal" + employer.UserId;
 
             <tr>
                 <td>
@@ -95,13 +96,43 @@
 
                             <li class="list-inline-item">
                                 <form asp-area="Owners" asp-controller="EmployeesManager" asp-action="CreateAccount" asp-route-id="@employer.Id" method="post" class="form-inline">
-                         
+
                                     <button class="btn btn-primary rounded-pill btn-sm">
                                         <span class="icon text-white-50">
                                             <i class="fas fa-plus"></i>
                                         </span>
                                         <span class="text">Create Account</span>
                                     </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="list-inline-item">
+                                <button type="button" class="btn btn-danger rounded-pill btn-sm" data-toggle="modal" data-target="@tm">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-user-times"></i>
+                                    </span>
+                                    <span class="text">Delete Account</span>
+                                </button>
+                                <form asp-action="DeleteAccount" asp-route-userId="@employer.UserId" asp-route-id="@employer.Id" method="post">
+                                    <div class="modal fade" id="@mid"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header d-flex justify-content-lg-start">
+                                                    <h4 class="modal-title " id="myModalLabel">Delete Confirmation</h4>
+                                                </div>
+                                                <div class="modal-body font-weight-bold">
+                                                    Are you sure want to delete CRM account for @employer.FullName?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" id="deleteBtn" class="btn bg-danger mr-1 text-white">Delete</button>
+                                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </li>
                         }

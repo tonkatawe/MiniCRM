@@ -61,12 +61,12 @@
 
             await this.userManager.RemoveFromRolesAsync(user, roles);
 
-            this.usersRepository.Delete(user);
+            this.usersRepository.HardDelete(user);
 
             return await this.usersRepository.SaveChangesAsync();
         }
 
-        public async Task<(string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent, string role)
+        public async Task<(string, string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent, string role)
         {
             var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
 
@@ -83,7 +83,7 @@
                 ParentId = parent.Id,
                 Email = input.Email,
                 CompanyId = parent.CompanyId,
-                ProfilePictureUrl = @"https://res.cloudinary.com/dx479nsjv/image/upload/v1611663587/MiniCRM/ProfilePictures/default-profile-picture_cwgvhg.png",
+                ProfilePictureUrl = GlobalConstants.DefaultProfilePicture,
                 JobTitleId = jobTitle,
             };
 
@@ -97,7 +97,7 @@
 
                 var token = await this.userManager.GenerateEmailConfirmationTokenAsync(employer);
 
-                return (token, employerPassword, possibleUsername);
+                return (token, employerPassword, possibleUsername, employer.Id);
             }
             else
             {

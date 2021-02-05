@@ -81,13 +81,14 @@ namespace MiniCRM.Services.Data
             return query;
         }
 
-        public async Task ChangeAccountStatusAsync(int id)
+        public async Task ChangeAccountStatusAsync(int id, bool hasAccount, string userId)
         {
             var employer = await this.employersRepository
                 .All()
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
-            employer.HasAccount = true;
+            employer.HasAccount = hasAccount;
+            employer.UserId = userId;
 
             this.employersRepository.Update(employer);
 

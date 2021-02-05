@@ -10,6 +10,8 @@
         public const string EmployerUserRoleName = "Employer";
         public const string CustomerUserRoleName = "Customer";
 
+        public const string DefaultProfilePicture = "https://res.cloudinary.com/dx479nsjv/image/upload/v1611663587/MiniCRM/ProfilePictures/default-profile-picture_cwgvhg.png";
+
         public const int MaxNamesLength = 25;
 
     }

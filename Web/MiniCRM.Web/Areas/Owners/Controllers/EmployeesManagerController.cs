@@ -167,7 +167,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.NotFound();
             }
 
-            var result = (string.Empty, string.Empty, string.Empty);
+            var result = (string.Empty, string.Empty, string.Empty, string.Empty);
 
             try
             {
@@ -180,7 +180,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.RedirectToAction("Index");
             }
 
-            await this.employeesManagerService.ChangeAccountStatusAsync(id);
+            await this.employeesManagerService.ChangeAccountStatusAsync(id, true, result.Item4);
 
             var confirmationLink = this.Url.Action("ConfirmEmail", "Home", new { area = string.Empty, token = result.Item1, email = employer.Email }, this.Request.Scheme);
 
@@ -195,18 +195,20 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> DeleteAccount(string userId, int id)
         {
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var user = await this.usersService.GetUserAsync<UserViewModel>(id);
+            var user = await this.usersService.GetUserAsync<UserViewModel>(userId);
 
-            if (user.ParentId != ownerId || id == null)
+            if (user.ParentId != ownerId || userId == null)
             {
                 return this.NotFound();
             }
 
-            await this.usersService.DeleteAsync(id);
+            await this.usersService.DeleteAsync(userId);
+
+            await this.employeesManagerService.ChangeAccountStatusAsync(id, false, null);
 
             return this.RedirectToAction("Index");
         }
