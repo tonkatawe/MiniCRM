@@ -15,5 +15,7 @@ namespace MiniCRM.Services.Data.Contracts
         IQueryable<T> GetAll<T>(string companyId);
 
         Task ChangeAccountStatusAsync(int id, bool hasAccount, string userId);
+
+        Task<int> DeleteAsync(int id);
     }
 }

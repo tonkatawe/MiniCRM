@@ -150,6 +150,34 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var employer = await this.employeesManagerService.GetEmployerAsync<EmployerViewModel>(id);
+
+            var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
+
+            if (owner.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
+            }
+
+            if (employer.CompanyId != owner.CompanyId)
+            {
+                return this.NotFound();
+            }
+
+            if (employer.HasAccount)
+            {
+                await this.usersService.DeleteAsync(employer.UserId);
+            }
+
+            await this.employeesManagerService.DeleteAsync(id);
+
+            return this.RedirectToAction("Index");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateAccount(int id)
         {
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

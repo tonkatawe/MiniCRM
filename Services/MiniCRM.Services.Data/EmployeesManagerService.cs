@@ -94,5 +94,17 @@ namespace MiniCRM.Services.Data
 
             await this.employersRepository.SaveChangesAsync();
         }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var employer = await this.employersRepository
+                .All()
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            this.employersRepository.Delete(employer);
+
+            return await this.employersRepository.SaveChangesAsync();
+        }
     }
 }
