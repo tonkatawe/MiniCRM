@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using MiniCRM.Web.ViewModels.Employees;
-
-namespace MiniCRM.Web.ViewModels.Customer
+﻿namespace MiniCRM.Web.ViewModels.Customer
 {
-    using System.ComponentModel.DataAnnotations;
+    using System.Collections.Generic;
 
-    using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Web.ViewModels.Employees;
 
     public class CustomerCreateModel : EmployerCreateModel
     {

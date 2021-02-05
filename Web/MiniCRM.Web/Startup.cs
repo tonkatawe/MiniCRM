@@ -44,7 +44,7 @@
             services.AddDefaultIdentity<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
- 
+
             services.Configure<CookiePolicyOptions>(
                 options =>
                     {
@@ -92,6 +92,7 @@
             services.AddTransient<IJobTitlesService, JobTitlesService>();
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<IEmployeesManagerService, EmployeesManagerService>();
+            services.AddTransient<ICustomersService, CustomersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

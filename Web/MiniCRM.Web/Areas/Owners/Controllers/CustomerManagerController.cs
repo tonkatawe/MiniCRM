@@ -15,12 +15,16 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
     public class CustomerManagerController : OwnersController
     {
         private readonly IEmployeesManagerService employeesManagerService;
+        private readonly ICustomersService customersService;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public CustomerManagerController(IEmployeesManagerService employeesManagerService,
+        public CustomerManagerController(
+            IEmployeesManagerService employeesManagerService,
+            ICustomersService customersService,
             UserManager<ApplicationUser> userManager)
         {
             this.employeesManagerService = employeesManagerService;
+            this.customersService = customersService;
             this.userManager = userManager;
         }
 
@@ -28,6 +32,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         {
             return this.View();
         }
+
         public async Task<IActionResult> Create()
         {
             var owner = await this.userManager.GetUserAsync(this.User);
@@ -39,6 +44,25 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             };
 
             return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CustomerCreateModel input)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+            if (owner.CompanyId == null)
+            {
+                return this.RedirectToAction("Create", "Companies", new {area = "Owners"});
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            await this.customersService.CreateAsync(input, owner.Id);
+
+            return this.RedirectToAction("Index");
         }
 
         public async Task<PartialViewResult> EmployerPartial(int employerId)
