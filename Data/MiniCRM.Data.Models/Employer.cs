@@ -36,9 +36,11 @@
 
         public virtual Company Company { get; set; }
 
-        public string UserId { get; set; }
+        public string AccountId { get; set; }
 
-        public ApplicationUser Account { get; set; }
+        public string OwnerId { get; set; }
+
+        public ApplicationUser Owner { get; set; }
 
         public bool HasAccount { get; set; }
 

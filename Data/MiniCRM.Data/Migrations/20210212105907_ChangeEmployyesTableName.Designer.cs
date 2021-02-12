@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniCRM.Data;
 
 namespace MiniCRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210212105907_ChangeEmployyesTableName")]
+    partial class ChangeEmployyesTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -432,7 +434,7 @@ namespace MiniCRM.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("AccountId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AddressId")
                         .HasColumnType("int");
@@ -472,14 +474,16 @@ namespace MiniCRM.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("OwnerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
 
                     b.HasIndex("AddressId");
 
@@ -488,8 +492,6 @@ namespace MiniCRM.Data.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("JobTitleId");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Employees");
                 });
@@ -829,6 +831,10 @@ namespace MiniCRM.Data.Migrations
 
             modelBuilder.Entity("MiniCRM.Data.Models.Employer", b =>
                 {
+                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", "Account")
+                        .WithMany("Employees")
+                        .HasForeignKey("AccountId");
+
                     b.HasOne("MiniCRM.Data.Models.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
@@ -847,17 +853,13 @@ namespace MiniCRM.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MiniCRM.Data.Models.ApplicationUser", "Owner")
-                        .WithMany("Employees")
-                        .HasForeignKey("OwnerId");
+                    b.Navigation("Account");
 
                     b.Navigation("Address");
 
                     b.Navigation("Company");
 
                     b.Navigation("JobTitle");
-
-                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("MiniCRM.Data.Models.Notification", b =>

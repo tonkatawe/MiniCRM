@@ -1,9 +1,9 @@
 ﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Products.ProductViewModel>
-@*@if (this.TempData.ContainsKey("Message"))
+@if (this.TempData.ContainsKey("Message"))
     {
         <div class="alert alert-success">@this.TempData["Message"]</div>
     }
-    @if (this.TempData.ContainsKey("ConfirmationEmail"))
+    @*@if (this.TempData.ContainsKey("ConfirmationEmail"))
     {
         <div class="alert alert-success">@this.TempData["ConfirmationEmail"]</div>
     }

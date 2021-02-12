@@ -42,7 +42,7 @@
 
         public DbSet<Customer> Customers { get; set; }
 
-        public DbSet<Employer> Employers { get; set; }
+        public DbSet<Employer> Employees { get; set; }
 
         public override int SaveChanges() => this.SaveChanges(true);
 

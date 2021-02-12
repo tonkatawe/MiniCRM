@@ -1,4 +1,8 @@
-﻿namespace MiniCRM.Web.Controllers
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using MiniCRM.Data.Models;
+
+namespace MiniCRM.Web.Controllers
 {
     using System.Linq;
     using System.Threading.Tasks;
@@ -12,16 +16,19 @@
     public class ProductsController : Controller
     {
         private readonly IProductsService productsService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public ProductsController(IProductsService productsService)
+        public ProductsController(IProductsService productsService, UserManager<ApplicationUser> userManager)
         {
             this.productsService = productsService;
+            this.userManager = userManager;
         }
 
         public async Task<IActionResult> Index(int? pageNumber)
         {
 
-            var companyId = "0847db38-4e66-4081-b564-6e2ffdf33fc0";
+            var user = await this.userManager.GetUserAsync(this.User);
+            var companyId = user.CompanyId;
             
             var allProducts = this.productsService.GetAll<ProductViewModel>(companyId);
 
@@ -36,14 +43,15 @@
         [Authorize(Roles = "Owner, Administrator")]
         public IActionResult Create()
         {
-            return View();
+            return this.View();
         }
 
         [HttpPost]
         [Authorize(Roles = "Owner, Administrator")]
         public async Task<IActionResult> Create(ProductCreateModel input)
         {
-            var companyId = "0847db38-4e66-4081-b564-6e2ffdf33fc0";
+            var owner = await this.userManager.GetUserAsync(this.User);
+            var companyId = owner.CompanyId;
 
             if (!this.ModelState.IsValid)
             {
@@ -75,7 +83,7 @@
                 return this.View();
             }
 
-               await this.productsService.UpdateAsync(input);
+            await this.productsService.UpdateAsync(input);
 
             return this.RedirectToAction("Index");
         }

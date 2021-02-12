@@ -20,7 +20,7 @@ namespace MiniCRM.Data.Models
             this.Logins = new HashSet<IdentityUserLogin<string>>();
             this.Orders = new HashSet<Order>();
             this.Customers = new HashSet<Customer>();
-            this.Employers = new HashSet<Employer>();
+            this.Employees = new HashSet<Employer>();
             this.UserCompanies = new HashSet<UserCompanies>();
         }
 
@@ -67,7 +67,7 @@ namespace MiniCRM.Data.Models
 
         public virtual ICollection<Customer> Customers { get; set; }
 
-        public virtual ICollection<Employer> Employers { get; set; }
+        public virtual ICollection<Employer> Employees { get; set; }
 
         public virtual ICollection<UserCompanies> UserCompanies { get; set; }
 
