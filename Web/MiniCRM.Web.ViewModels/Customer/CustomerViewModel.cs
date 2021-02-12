@@ -13,14 +13,18 @@
 
         public string Email { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string Phone { get; set; }
 
         public string AdditionalInfo { get; set; }
 
         public string EmployerFullName { get; set; }
 
-        public string AddressCountry { get; set; }
         public string AddressCity { get; set; }
+        
+        public string AddressCountry { get; set; }
 
+        public string AddressStreet { get; set; }
+
+        public int AddressZipCode { get; set; }
     }
 }

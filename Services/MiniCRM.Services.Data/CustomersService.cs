@@ -41,6 +41,7 @@ namespace MiniCRM.Services.Data
                 OwnerId = ownerId,
                 Phone = input.Phone,
                 Email = input.Email,
+                AdditionalInfo = input.AdditionalInfo,
             };
 
             await this.customersRepository.AddAsync(customer);

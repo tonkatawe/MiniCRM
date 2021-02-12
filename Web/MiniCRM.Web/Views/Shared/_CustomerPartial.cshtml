@@ -1,0 +1,41 @@
+﻿@model MiniCRM.Web.ViewModels.Customer.CustomerViewModel;
+    <!-- Profile Image -->
+<div class="card card-primary card-outline">
+    <div class="card-body">
+        @*<div class="text-center">
+                <img class="profile-user-img img-fluid img-circle"
+                     src="https://res.cloudinary.com/dx479nsjv/image/upload/v1611663587/MiniCRM/ProfilePictures/default-profile-picture_cwgvhg.png"
+                     alt="User profile picture">
+            </div>*@
+
+        <h3 class="profile-username text-center">@Model.FullName</h3>
+
+        <p class="text-muted text-center">@Model.JobTitleName</p>
+
+        <ul class="list-group list-group-unbordered mb-3">
+            <li class="list-group-item">
+                <b>Orders</b> <a class="float-right">1,322</a>
+            </li>
+        </ul>
+        <div class="card-body">
+            <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
+            <p class="text-muted">@Model.AddressCountry, @Model.AddressCity, @Model.AddressStreet, @Model.AddressZipCode</p>
+            <hr>
+            <strong><i class="fas fa-phone-alt mr-1"></i> Phone</strong>
+            <p class="text-muted">
+                @Model.Phone
+            </p>
+            <hr>
+            <strong><i class="fas fa-at mr-1"></i> Email</strong>
+            <p class="text-muted">@Model.Email</p>
+            <hr>
+            <strong><i class="fas fa-info-circle mr-1"></i> Additional info</strong>
+            <p class="text-muted">@Model.AdditionalInfo</p>
+        </div>
+        <small>Responsible employer: @Model.EmployerFullName</small>
+        <a href="#" class="btn btn-primary btn-block"><b>Add order</b></a>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+<!-- About Me Box -->
