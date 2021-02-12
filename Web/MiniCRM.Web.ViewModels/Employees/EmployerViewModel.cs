@@ -7,7 +7,10 @@
     {
         public int Id { get; set; }
 
+        public int CustomersCount { get; set; }
+
         public string CompanyId { get; set; }
+
         public string JobTitleName { get; set; }
 
         public string FullName { get; set; }
@@ -25,6 +28,5 @@
         public bool HasAccount { get; set; }
 
         public string UserId { get; set; }
-
     }
 }

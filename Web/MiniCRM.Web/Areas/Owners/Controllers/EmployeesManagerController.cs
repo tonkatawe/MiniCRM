@@ -93,7 +93,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                     employees = employees.OrderByDescending(e => e.PhoneNumber);
                     break;
                 case "customerCount":
-                    // employees = employees.OrderByDescending(e => e.customersCount);
+                     employees = employees.OrderByDescending(e => e.CustomersCount);
                     break;
                 default:
                     employees = employees.OrderBy(c => c.LastName);

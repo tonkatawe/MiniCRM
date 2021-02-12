@@ -1,5 +1,5 @@
 ﻿@using MiniCRM.Web.ViewModels.Employees
-@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Employees.EmployerViewModel>
+@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Customer.CustomerViewModel>
 @{
     this.ViewData["Title"] = "All Customers";
 
@@ -68,7 +68,7 @@
         {
             var tm = "#myModal" + employer.Id;
             var mid = "myModal" + employer.Id;
-            var userId = "myModal" + employer.UserId;
+     
 
             <tr>
                 <td>
@@ -90,7 +90,7 @@
                 </td>
                 <td>
                     <ul class="list-inline">
-                        @if (!@employer.HasAccount)
+                        @*@if (!@employer.HasAccount)
                         {
 
 
@@ -108,7 +108,7 @@
                         }
                         else
                         {
-                            <p>Has account</p>
+                            <p>Has account</p>*@
                             @*<li class="list-inline-item">
                                     <button type="button" class="btn btn-danger rounded-pill btn-sm" data-toggle="modal" data-target="@tm">
                                         <span class="icon text-white-50">
@@ -155,7 +155,7 @@
                                 </span>
                                 <span class="text">Delete</span>
                             </button>
-                            <form asp-action="Delete" asp-route-id="@employer.Id" method="post">
+                            @*<form asp-action="Delete" asp-route-id="@employer.Id" method="post">
                                 <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -172,7 +172,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </form>*@
                         </li>
                     </ul>
                 </td>

@@ -1,4 +1,7 @@
-﻿namespace MiniCRM.Services.Data
+﻿using System.Linq;
+using MiniCRM.Services.Mapping;
+
+namespace MiniCRM.Services.Data
 {
     using System.Threading.Tasks;
 
@@ -42,6 +45,17 @@
 
             await this.customersRepository.AddAsync(customer);
             return await this.customersRepository.SaveChangesAsync();
+        }
+
+        public IQueryable<T> GetAll<T>(string ownerId)
+        {
+            var query = this.customersRepository
+                .All()
+                .Where(x => x.OwnerId == ownerId)
+                .To<T>()
+                .AsQueryable();
+
+            return query;
         }
     }
 }

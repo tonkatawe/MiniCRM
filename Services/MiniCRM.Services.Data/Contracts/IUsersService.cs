@@ -1,12 +1,10 @@
-﻿using MiniCRM.Web.ViewModels.Users;
-
-namespace MiniCRM.Services.Data.Contracts
+﻿namespace MiniCRM.Services.Data.Contracts
 {
     using System.Linq;
     using System.Threading.Tasks;
 
     using MiniCRM.Web.ViewModels;
-    using MiniCRM.Web.ViewModels.Employees;
+    using MiniCRM.Web.ViewModels.Users;
 
     public interface IUsersService
     {

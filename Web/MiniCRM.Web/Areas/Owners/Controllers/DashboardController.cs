@@ -1,14 +1,11 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-using MiniCRM.Data.Models;
-using MiniCRM.Services.Data.Contracts;
-using MiniCRM.Web.ViewModels.Owners;
-
-namespace MiniCRM.Web.Areas.Owners.Controllers
+﻿namespace MiniCRM.Web.Areas.Owners.Controllers
 {
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Web.ViewModels.Owners;
 
     public class DashboardController : OwnersController
     {
@@ -25,7 +22,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
             var viewModel = await this.usersService.GetUserAsync<OwnersDashBoardViewModel>(ownerId);
 
-            return this.View();
+            return this.View(viewModel);
         }
     }
 }
