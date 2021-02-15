@@ -1,5 +1,7 @@
 ﻿namespace MiniCRM.Web.ViewModels.Employees
 {
+    using System.ComponentModel.DataAnnotations;
+
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Mapping;
 

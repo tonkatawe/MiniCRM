@@ -58,5 +58,16 @@ namespace MiniCRM.Services.Data
 
             return query;
         }
+
+        public IQueryable<T> GetEmployerCustomers<T>(string ownerId, int? employerId)
+        {
+            var query = this.customersRepository
+                .All()
+                .Where(x => x.OwnerId == ownerId && x.EmployerId == employerId)
+                .To<T>()
+                .AsQueryable();
+
+            return query;
+        }
     }
 }

@@ -30,8 +30,9 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber, int? employerId)
         {
+            IQueryable<CustomerViewModel> allCustomers;
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             //var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
@@ -39,8 +40,14 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             //{
             //    return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
             //}
-
-            var allCustomers = this.customersService.GetAll<CustomerViewModel>(ownerId);
+            if (employerId != null)
+            {
+                allCustomers = this.customersService.GetEmployerCustomers<CustomerViewModel>(ownerId, employerId);
+            }
+            else
+            {
+                allCustomers = this.customersService.GetAll<CustomerViewModel>(ownerId);
+            }
 
             this.ViewData["CurrentSort"] = sortOrder;
             this.ViewData["SortByName"] = string.IsNullOrEmpty(sortOrder) ? "nameDesc" : string.Empty;
@@ -75,20 +82,20 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                         .OrderByDescending(e => e.FullName);
                     break;
 
-                //case "jobDesc":
-                //    employees = employees.OrderByDescending(e => e.JobTitleName);
-                //    break;
-                //case "emailDesc":
-                //    employees = employees.OrderByDescending(e => e.Email);
-                //    break;
-                //case "phoneDesc":
-                //    employees = employees.OrderByDescending(e => e.PhoneNumber);
-                //    break;
-                //case "customerCount":
-                //    employees = employees.OrderByDescending(e => e.CustomersCount);
-                //    break;
-                //default:
-                //    employees = employees.OrderBy(c => c.LastName);
+                    //case "jobDesc":
+                    //    employees = employees.OrderByDescending(e => e.JobTitleName);
+                    //    break;
+                    //case "emailDesc":
+                    //    employees = employees.OrderByDescending(e => e.Email);
+                    //    break;
+                    //case "phoneDesc":
+                    //    employees = employees.OrderByDescending(e => e.PhoneNumber);
+                    //    break;
+                    //case "customerCount":
+                    //    employees = employees.OrderByDescending(e => e.CustomersCount);
+                    //    break;
+                    //default:
+                    //    employees = employees.OrderBy(c => c.LastName);
                     break;
             }
 
@@ -116,7 +123,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             var owner = await this.userManager.GetUserAsync(this.User);
             if (owner.CompanyId == null)
             {
-                return this.RedirectToAction("Create", "Companies", new {area = "Owners"});
+                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
             }
 
             if (!this.ModelState.IsValid)
