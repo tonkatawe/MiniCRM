@@ -34,6 +34,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         {
             IQueryable<CustomerViewModel> allCustomers;
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
             //var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
             //if (owner.CompanyId == null)

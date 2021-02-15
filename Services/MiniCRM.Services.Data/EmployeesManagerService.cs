@@ -101,10 +101,22 @@ namespace MiniCRM.Services.Data
                 .All()
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync();
-
+            employer.HasAccount = false;
+            employer.AccountId = null;
             this.employersRepository.Delete(employer);
 
             return await this.employersRepository.SaveChangesAsync();
+        }
+
+        public async Task<T> GetByIdAsync<T>(int employerId)
+        {
+            var employer = await this.employersRepository
+                .All()
+                .Where(x => x.Id == employerId)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return employer;
         }
     }
 }

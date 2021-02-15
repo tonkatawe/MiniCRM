@@ -93,7 +93,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                     employees = employees.OrderByDescending(e => e.PhoneNumber);
                     break;
                 case "customerCount":
-                     employees = employees.OrderByDescending(e => e.CustomersCount);
+                    employees = employees.OrderBy(e => e.CustomersCount);
                     break;
                 default:
                     employees = employees.OrderBy(c => c.LastName);
@@ -169,7 +169,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
             if (employer.HasAccount)
             {
-                await this.usersService.DeleteAsync(employer.UserId);
+                await this.usersService.DeleteAsync(employer.AccountId);
             }
 
             await this.employeesManagerService.DeleteAsync(id);
@@ -223,22 +223,42 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteAccount(string userId, int id)
+        public async Task<IActionResult> DeleteAccount(string accountId, int id)
         {
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var user = await this.usersService.GetUserAsync<UserViewModel>(userId);
+            var user = await this.usersService.GetUserAsync<UserViewModel>(accountId);
 
-            if (user.ParentId != ownerId || userId == null)
+            if (user.ParentId != ownerId || accountId == null)
             {
                 return this.NotFound();
             }
 
-            await this.usersService.DeleteAsync(userId);
+            await this.usersService.DeleteAsync(accountId);
 
             await this.employeesManagerService.ChangeAccountStatusAsync(id, false, null);
 
             return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Details(int employerId)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+
+            var viewModel = await this.employeesManagerService.GetByIdAsync<DetailsEmployerViewModel>(employerId);
+
+            if (owner.CompanyId != viewModel.CompanyId)
+            {
+                return this.NotFound();
+            }
+            
+            
+            return this.View(viewModel);
+        }
+
+        public async Task<IActionResult> Edit(int employerId)
+        {
+            return this.View();
         }
     }
 }
