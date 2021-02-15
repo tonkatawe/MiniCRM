@@ -28,8 +28,8 @@ namespace MiniCRM.Services.Data
 
         public async Task<int> CreateAsync(CustomerCreateModel input, string ownerId)
         {
-            var address = await this.addressService.CreateAsync(input.Country, input.City, input.Street, input.ZipCode);
-            var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
+            var address = await this.addressService.CreateAsync(input.AddressCountry, input.AddressCity, input.AddressStreet, input.AddressZipCode);
+            var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitleName);
             var customer = new Customer
             {
                 FirstName = input.FirstName,
@@ -39,7 +39,7 @@ namespace MiniCRM.Services.Data
                 AddressId = address,
                 EmployerId = input.EmployerId,
                 OwnerId = ownerId,
-                Phone = input.Phone,
+                Phone = input.PhoneNumber,
                 Email = input.Email,
                 AdditionalInfo = input.AdditionalInfo,
             };

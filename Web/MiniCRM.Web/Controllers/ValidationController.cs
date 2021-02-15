@@ -31,7 +31,7 @@
         {
             if (this.userManager.Users.Any(x => x.PhoneNumber == phone))
             {
-                return Json($"Phone {phone} is already in use.");
+                return Json($"PhoneNumber {phone} is already in use.");
             }
 
             return this.Json(true);

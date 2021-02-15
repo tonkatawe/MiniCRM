@@ -20,26 +20,30 @@
 
         [Required]
         [MaxLength(30, ErrorMessage = "Job title should be maximum 30 letters")]
-        public string JobTitle { get; set; }
+        public string JobTitleName { get; set; }
 
         [Required]
         [MaxLength(30)]
-        public string Country { get; set; }
+        public string AddressCountry { get; set; }
 
         [Required]
         [MaxLength(30)]
-        public string City { get; set; }
+        public string AddressCity { get; set; }
 
         [MaxLength(50)]
-        public string Street { get; set; }
+        public string AddressStreet { get; set; }
 
         [Range(0, 9999999)]
-        public int? ZipCode { get; set; }
+        public int? AddressZipCode { get; set; }
 
         [Required]
         public string Email { get; set; }
 
         [Required]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
+
+
+        [Required]
+        public string OwnerId { get; set; }
     }
 }

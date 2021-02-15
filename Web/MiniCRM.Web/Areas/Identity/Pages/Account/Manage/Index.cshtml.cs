@@ -42,7 +42,7 @@ namespace MiniCRM.Web.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Username")]
             public string Username { get; set; }
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "PhoneNumber number")]
             public string PhoneNumber { get; set; }
             [Display(Name = "Profile Picture")]
             public string ProfilePictureUrl { get; set; }

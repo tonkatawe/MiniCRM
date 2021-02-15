@@ -115,7 +115,11 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
             }
 
-            return this.View();
+            var viewModel = new EmployerCreateModel
+            {
+                OwnerId = ownerId,
+            };
+            return this.View(viewModel);
         }
 
         [HttpPost]
@@ -251,14 +255,40 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             {
                 return this.NotFound();
             }
-            
-            
+
             return this.View(viewModel);
         }
 
         public async Task<IActionResult> Edit(int employerId)
         {
-            return this.View();
+            var owner = await this.userManager.GetUserAsync(this.User);
+            var viewModel = await this.employeesManagerService.GetByIdAsync<EmployerEditModel>(employerId);
+            if (owner.CompanyId != viewModel.CompanyId)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EmployerEditModel input)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+
+            if (owner.CompanyId != input.CompanyId)
+            {
+                return this.NotFound();
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            await this.employeesManagerService.UpdateAsync(input);
+
+            return this.RedirectToAction("Details", new { id = input.Id });
         }
     }
 }

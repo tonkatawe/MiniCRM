@@ -30,12 +30,12 @@ namespace MiniCRM.Services.Data
 
         public async Task<int> CreateAsync(EmployerCreateModel input, string companyId)
         {
-            var address = await this.addressService.CreateAsync(input.Country, input.City, input.Street, input.ZipCode);
-            var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
+            var address = await this.addressService.CreateAsync(input.AddressCountry, input.AddressCity, input.AddressStreet, input.AddressZipCode);
+            var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitleName);
 
-            if (this.employersRepository.All().Select(x => x.PhoneNumber).Contains(input.Phone))
+            if (this.employersRepository.All().Select(x => x.PhoneNumber).Contains(input.PhoneNumber))
             {
-                throw new Exception($"Phone {input.Phone} is already in use from another employer in your company.");
+                throw new Exception($"PhoneNumber {input.PhoneNumber} is already in use from another employer in your company.");
             }
 
             if (this.employersRepository.All().Select(x => x.Email).Contains(input.Email))
@@ -52,7 +52,8 @@ namespace MiniCRM.Services.Data
                 AddressId = address,
                 JobTitleId = jobTitle,
                 Email = input.Email,
-                PhoneNumber = input.Phone,
+                PhoneNumber = input.PhoneNumber,
+                OwnerId = input.OwnerId,
             };
 
             await this.employersRepository.AddAsync(employer);
@@ -117,6 +118,26 @@ namespace MiniCRM.Services.Data
                 .FirstOrDefaultAsync();
 
             return employer;
+        }
+
+        public async Task<int> UpdateAsync(EmployerEditModel input)
+        {
+            var employer = await this.employersRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == input.Id);
+
+            employer.FirstName = input.FirstName;
+            employer.MiddleName = input.MiddleName;
+            employer.LastName = input.LastName;
+            employer.PhoneNumber = input.PhoneNumber;
+            employer.Email = input.Email;
+
+            await this.addressService.UpdateAsync(employer.AddressId, input.AddressCountry, input.AddressCity, input.AddressStreet,
+                input.AddressZipCode);
+
+            this.employersRepository.Update(employer);
+
+            return await this.employersRepository.SaveChangesAsync();
         }
     }
 }

@@ -20,5 +20,7 @@ namespace MiniCRM.Services.Data.Contracts
         Task<int> DeleteAsync(int id);
 
         Task<T> GetByIdAsync<T>(int employerId);
+
+        Task<int> UpdateAsync(EmployerEditModel input);
     }
 }

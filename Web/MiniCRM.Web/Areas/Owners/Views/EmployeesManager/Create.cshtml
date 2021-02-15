@@ -18,8 +18,8 @@
 
                             <div class="form-group row">
                                 <div class="col-sm-12 mb-3 mb-sm-0">
-                                    <input asp-for="JobTitle" class="form-control" placeholder="Job Title">
-                                    <span asp-validation-for="JobTitle" class="text-danger"></span>
+                                    <input asp-for="JobTitleName" class="form-control" placeholder="Job Title">
+                                    <span asp-validation-for="JobTitleName" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -38,8 +38,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input asp-for="Phone" type="text" class="form-control" placeholder="Phone number">
-                                    <span asp-validation-for="Phone" class="text-danger"></span>
+                                    <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="PhoneNumber number">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input asp-for="Email" class="form-control" placeholder="Email address">
@@ -54,29 +54,29 @@
                                 <h1 class="h4 mb-4">Address data</h1>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="Country" class="form-control " placeholder="Country">
-                                <span asp-validation-for="Country" class="text-danger"></span>
+                                <input asp-for="AddressCountry" class="form-control " placeholder="AddressCountry">
+                                <span asp-validation-for="AddressCountry" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="City" class="form-control" placeholder="City">
-                                <span asp-validation-for="City" class="text-danger"></span>
+                                <input asp-for="AddressCity" class="form-control" placeholder="AddressCity">
+                                <span asp-validation-for="AddressCity" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="Street" class="form-control" placeholder="Street">
-                                <span asp-validation-for="Street" class="text-danger"></span>
+                                <input asp-for="AddressStreet" class="form-control" placeholder="AddressStreet">
+                                <span asp-validation-for="AddressStreet" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="ZipCode" class="form-control" placeholder="Zip Code">
-                                <span asp-validation-for="ZipCode" class="text-danger"></span>
+                                <input asp-for="AddressZipCode" class="form-control" placeholder="Zip Code">
+                                <span asp-validation-for="AddressZipCode" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <input type="hidden" asp-for="@ViewData["CompanyId"]"/>
-             <button type="submit" class="btn btn-primary btn-block">Add Employer</button>
-           
+            <input type="hidden" asp-for="OwnerId" />
+            <button type="submit" class="btn btn-primary btn-block">Add Employer</button>
+
             <br />
         </div>
     </form>

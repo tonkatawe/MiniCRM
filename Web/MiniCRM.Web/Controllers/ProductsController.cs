@@ -28,7 +28,7 @@
 
             var user = await this.userManager.GetUserAsync(this.User);
             var companyId = user.CompanyId;
-            
+
             var allProducts = this.productsService.GetAll<ProductViewModel>(companyId);
 
             var products = from c in allProducts

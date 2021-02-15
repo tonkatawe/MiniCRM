@@ -1,4 +1,5 @@
-﻿using MiniCRM.Data.Common.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using MiniCRM.Data.Common.Repositories;
 using MiniCRM.Data.Models;
 
 namespace MiniCRM.Services.Data
@@ -27,6 +28,20 @@ namespace MiniCRM.Services.Data
             };
 
             await this.addressRepository.AddAsync(address);
+
+            return await this.addressRepository.SaveChangesAsync();
+        }
+
+        public async Task<int> UpdateAsync(int id, string country, string city, string street, int? zipCode = null)
+        {
+            var address = await this.addressRepository.All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+            
+            address.Country = country;
+            address.City = city;
+            address.Street = street;
+            address.ZipCode = zipCode;
+            this.addressRepository.Update(address);
 
             return await this.addressRepository.SaveChangesAsync();
         }
