@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    <form asp-action="Create" method="post">
+    <form asp-area="Owners" asp-controller="EmployeesManager" asp-action="Edit" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="card border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -72,7 +72,9 @@
                         </div>
                     </div>
                 </div>
-
+                <input type="hidden" asp-for="CompanyId"/>
+                <input type="hidden" asp-for="Id"/>
+                <input type="hidden" asp-for="OwnerId"/>
             </div>
             <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
 

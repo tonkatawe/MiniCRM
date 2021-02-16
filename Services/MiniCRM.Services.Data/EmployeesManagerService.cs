@@ -126,14 +126,35 @@ namespace MiniCRM.Services.Data
                 .All()
                 .FirstOrDefaultAsync(x => x.Id == input.Id);
 
+
+
+            if (this.employersRepository.All().Select(x => x.PhoneNumber).Contains(input.PhoneNumber) && input.PhoneNumber != employer.PhoneNumber)
+            {
+                throw new Exception($"PhoneNumber {input.PhoneNumber} is already in use from another employer in your company.");
+            }
+            else
+            {
+                employer.PhoneNumber = input.PhoneNumber;
+            }
+
+            if (this.employersRepository.All().Select(x => x.Email).Contains(input.Email) && input.Email != employer.Email)
+            {
+                throw new Exception($"Email {input.Email} is already in use from another employer in your company.");
+            }
+            else
+            {
+                employer.Email = input.Email;
+            }
+
             employer.FirstName = input.FirstName;
             employer.MiddleName = input.MiddleName;
             employer.LastName = input.LastName;
-            employer.PhoneNumber = input.PhoneNumber;
-            employer.Email = input.Email;
+
 
             await this.addressService.UpdateAsync(employer.AddressId, input.AddressCountry, input.AddressCity, input.AddressStreet,
                 input.AddressZipCode);
+
+            employer.JobTitleId = await this.jobTitlesService.CreateAsync(input.JobTitleName);
 
             this.employersRepository.Update(employer);
 

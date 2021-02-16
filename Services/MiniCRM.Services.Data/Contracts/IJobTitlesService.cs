@@ -5,5 +5,6 @@
     public interface IJobTitlesService
     {
         Task<int> CreateAsync(string name);
+
     }
 }

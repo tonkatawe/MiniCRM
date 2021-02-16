@@ -268,6 +268,9 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.NotFound();
             }
 
+            //viewModel.OwnerId = owner.Id;
+
+
             return this.View(viewModel);
         }
 
@@ -281,14 +284,23 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.NotFound();
             }
 
+
+
+            try
+            {
+                await this.employeesManagerService.UpdateAsync(input);
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
 
-            await this.employeesManagerService.UpdateAsync(input);
-
-            return this.RedirectToAction("Details", new { id = input.Id });
+            return this.RedirectToAction("Details", new { employerId = input.Id });
         }
     }
 }

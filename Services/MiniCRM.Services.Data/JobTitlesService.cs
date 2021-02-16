@@ -36,5 +36,7 @@ namespace MiniCRM.Services.Data
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
         }
+
+     
     }
 }
