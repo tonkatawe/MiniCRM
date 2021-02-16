@@ -15,5 +15,8 @@
         IQueryable<T> GetAllUser<T>(string userId);
 
         Task<int> DeleteAsync(string userId);
+
+        Task ChangeUserEmail(string email, string accountId);
+        Task ChangeUserPhoneNumber(string phoneNumber, string accountId);
     }
 }

@@ -20,7 +20,7 @@ namespace MiniCRM.Web.Controllers
         [AcceptVerbs("GET", "POST")]
         public JsonResult VerifyEmail(string email)
         {
-            if (this.validationsService.IsValidUserEmail(email))
+            if (this.validationsService.IsExistUserEmail(email))
             {
                 return this.Json($"Email {email} is already in use.");
             }
@@ -31,7 +31,7 @@ namespace MiniCRM.Web.Controllers
         [AcceptVerbs("GET", "POST")]
         public JsonResult VerifyPhone(string phone)
         {
-            if (this.validationsService.IsValidUserPhoneNumber(phone))
+            if (this.validationsService.IsExistUserPhoneNumber(phone))
             {
                 return Json($"PhoneNumber {phone} is already in use.");
             }

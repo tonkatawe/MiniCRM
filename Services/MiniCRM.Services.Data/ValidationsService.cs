@@ -20,10 +20,10 @@ namespace MiniCRM.Services.Data
             this.userManager = userManager;
         }
 
-        public bool IsValidUserEmail(string email) =>
+        public bool IsExistUserEmail(string email) =>
             this.userManager.Users.Any(x => x.Email == email);
 
-        public bool IsValidUserPhoneNumber(string phoneNumber) =>
+        public bool IsExistUserPhoneNumber(string phoneNumber) =>
             this.userManager.Users.Any(x => x.PhoneNumber == phoneNumber);
     }
 }

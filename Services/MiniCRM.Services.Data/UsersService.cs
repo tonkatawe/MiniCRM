@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Services.Data
+﻿using System.Security.Claims;
+
+namespace MiniCRM.Services.Data
 {
     using System;
     using System.Linq;
@@ -103,6 +105,21 @@
             {
                 throw new Exception(result.ToString());
             }
+        }
+
+        public async Task ChangeUserEmail(string email, string accountId)
+        {
+            var user = await this.userManager.FindByIdAsync(accountId);
+            var token = await this.userManager.GenerateChangeEmailTokenAsync(user, email);
+            await this.userManager.ChangeEmailAsync(user, email, token);
+
+        }
+
+        public async Task ChangeUserPhoneNumber(string phoneNumber, string accountId)
+        {
+            var user = await this.userManager.FindByIdAsync(accountId);
+            var token = await this.userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
+            await this.userManager.ChangePhoneNumberAsync(user, phoneNumber, token);
         }
 
         private async Task<string> GenerateAvailableUsername(string possibleUsername)

@@ -2,7 +2,7 @@
 {
     public interface IValidationsService
     {
-        bool IsValidUserEmail(string email);
-        bool IsValidUserPhoneNumber(string phoneNumber);
+        bool IsExistUserEmail(string email);
+        bool IsExistUserPhoneNumber(string phoneNumber);
     }
 }
