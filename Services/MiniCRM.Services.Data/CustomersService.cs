@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MiniCRM.Services.Mapping;
 
@@ -40,7 +41,7 @@ namespace MiniCRM.Services.Data
                 AddressId = address,
                 EmployerId = input.EmployerId,
                 OwnerId = ownerId,
-                Phone = input.PhoneNumber,
+                PhoneNumber = input.PhoneNumber,
                 Email = input.Email,
                 AdditionalInfo = input.AdditionalInfo,
             };
@@ -89,6 +90,43 @@ namespace MiniCRM.Services.Data
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             this.customersRepository.Delete(customer);
+
+            await this.customersRepository.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(CustomerEditModel input)
+        {
+            var customer = await this.customersRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == input.Id);
+
+            if (this.customersRepository.All().Select(x => x.PhoneNumber).Contains(input.PhoneNumber) && input.PhoneNumber != customer.PhoneNumber)
+            {
+                throw new Exception($"PhoneNumber {input.PhoneNumber} is already in use from another employer in your company.");
+            }
+
+
+
+            customer.PhoneNumber = input.PhoneNumber;
+
+            if (this.customersRepository.All().Select(x => x.Email).Contains(input.Email) && input.Email != customer.Email)
+            {
+                throw new Exception($"Email {input.Email} is already in use from another employer in your company.");
+            }
+
+            customer.Email = input.Email;
+            customer.EmployerId = input.EmployerId;
+            customer.FirstName = input.FirstName;
+            customer.MiddleName = input.MiddleName;
+            customer.LastName = input.LastName;
+            customer.AdditionalInfo = input.AdditionalInfo;
+
+            await this.addressService.UpdateAsync(customer.AddressId, input.AddressCountry, input.AddressCity, input.AddressStreet,
+                input.AddressZipCode);
+
+            customer.JobTitleId = await this.jobTitlesService.CreateAsync(input.JobTitleName);
+
+            this.customersRepository.Update(customer);
 
             await this.customersRepository.SaveChangesAsync();
         }

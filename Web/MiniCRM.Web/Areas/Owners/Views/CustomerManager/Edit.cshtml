@@ -1,11 +1,13 @@
-﻿@model MiniCRM.Web.ViewModels.Employees.EmployerCreateModel;
+﻿@using MiniCRM.Data.Migrations
+@model MiniCRM.Web.ViewModels.Customer.CustomerEditModel;
 @{
     this.ViewData["Title"] = "Add new customer";
+    var employees = Model.Employees.Select(x => new SelectListItem(x.FullName, x.Id.ToString()));
 
 }
 
 <div class="container">
-    <form asp-area="Owners" asp-controller="EmployeesManager" asp-action="Create" method="post">
+    <form asp-area="Owners" asp-controller="CustomerManager" asp-action="Edit" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="card border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -46,6 +48,15 @@
                                     <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label asp-for="Employees">Change employer</label>
+                                <select asp-for="EmployerId" asp-items="employees" id="EmployerId" class="form-control"><option disabled selected>--Choose Employer--</option></select>
+                                <span asp-validation-for="EmployerId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="AdditionalInfo" class="form-control" placeholder="Additional information" rows="3"></textarea>
+                                <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-5">
@@ -54,28 +65,32 @@
                                 <h1 class="h4 mb-4">Address data</h1>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="AddressCountry" class="form-control " placeholder="Country">
+                                <input asp-for="AddressCountry" class="form-control " placeholder="AddressCountry">
                                 <span asp-validation-for="AddressCountry" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="AddressCity" class="form-control" placeholder="City">
+                                <input asp-for="AddressCity" class="form-control" placeholder="AddressCity">
                                 <span asp-validation-for="AddressCity" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="AddressStreet" class="form-control" placeholder="Street">
+                                <input asp-for="AddressStreet" class="form-control" placeholder="AddressStreet">
                                 <span asp-validation-for="AddressStreet" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
                                 <input asp-for="AddressZipCode" class="form-control" placeholder="Zip Code">
                                 <span asp-validation-for="AddressZipCode" class="text-danger"></span>
                             </div>
+                            <div id="container">
+                         
+                            </div>
                         </div>
                     </div>
                 </div>
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="OwnerId" type="hidden" />
 
             </div>
-            <input type="hidden" asp-for="OwnerId" />
-            <button type="submit" class="btn btn-primary btn-block">Add Employer</button>
+            <button type="submit" class="btn btn-primary btn-block">Add Customer</button>
 
             <br />
         </div>
@@ -83,8 +98,29 @@
 </div>
 
 
-@section Scripts {
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#EmployerId").change(function (e) {
 
-    @*<partial name="_ValidationScriptsPartial" />*@
+                $.ajax({
+                    type: 'get',
+                    url: '@Url.Action("EmployerPartial")',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'html',
+                    data: { "EmployerId": $(this).val() },
+                    success: function (result) {
+                        $("#container").html(result);
+                    },
+                    error: function (ex) {
+                        alert("Error");
+                    }
+                });
 
+            });
+
+        });
+    </script>
+ 
 }

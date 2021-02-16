@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Security.Claims;
 using MiniCRM.Web.Infrastructure;
 using MiniCRM.Web.ViewModels;
 
@@ -153,6 +154,50 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             return this.RedirectToAction("Index");
 
         }
+
+        public async Task<IActionResult> Edit(int customerId)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+            var viewModel = await this.customersService.GetByIdAsync<CustomerEditModel>(customerId);
+
+            if (owner.Id != viewModel.OwnerId)
+            {
+                return NotFound();
+            }
+
+            var employees = this.employeesManagerService.GetAll<EmployeesDropDownViewModel>(owner.CompanyId).ToList();
+            viewModel.Employees = employees;
+
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CustomerEditModel input)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+            if (owner.Id != input.OwnerId)
+            {
+                return this.NotFound();
+            }
+            
+            try
+            {
+                await this.customersService.UpdateAsync(input);
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            return this.RedirectToAction("Index");
+        }
+
         public async Task<PartialViewResult> EmployerPartial(int employerId)
         {
             var viewModel = await this.employeesManagerService.GetEmployerAsync<EmployerShortInfoViewModel>(employerId);

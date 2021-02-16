@@ -39,7 +39,7 @@
         public Employer Employer { get; set; }
 
         [Required]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         public string Email { get; set; }

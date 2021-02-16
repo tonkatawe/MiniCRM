@@ -4,7 +4,7 @@
     <div class="d-flex justify-content-end user">
         <ul class="list-inline">
             <li class="list-inline-item">
-                <a asp-area="Owners" asp-controller="CustomerManager" asp-action="Edit" asp-route-employerId="@Model.Id" class="btn btn-primary btn-sm">
+                <a asp-area="Owners" asp-controller="CustomerManager" asp-action="Edit" asp-route-customerId="@Model.Id" class="btn btn-primary btn-sm">
                     <i class="fas fa-edit" title="Edit customer"></i>
                 </a>
             </li>
@@ -36,7 +36,7 @@
             <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
             <p class="text-muted">@Model.AddressCountry, @Model.AddressCity, @Model.AddressStreet, @Model.AddressZipCode</p>
             <hr>
-            <strong><i class="fas fa-phone-alt mr-1"></i> PhoneNumber</strong>
+            <strong><i class="fas fa-phone-alt mr-1"></i> PhoneNumberNumber</strong>
             <p class="text-muted">
                 @Model.Phone
             </p>
