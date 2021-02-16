@@ -13,5 +13,9 @@ namespace MiniCRM.Services.Data.Contracts
         IQueryable<T> GetAll<T>(string ownerId);
 
         IQueryable<T> GetEmployerCustomers<T>(string ownerId, int? employerId);
+
+        Task<T> GetByIdAsync<T>(int id);
+
+        Task DeleteAsync(int id);
     }
 }

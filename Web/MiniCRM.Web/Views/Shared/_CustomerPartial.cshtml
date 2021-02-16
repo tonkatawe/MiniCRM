@@ -1,6 +1,21 @@
 ﻿@model MiniCRM.Web.ViewModels.Customer.CustomerViewModel;
     <!-- Profile Image -->
 <div class="card card-primary card-outline">
+    <div class="d-flex justify-content-end user">
+        <ul class="list-inline">
+            <li class="list-inline-item">
+                <a asp-area="Owners" asp-controller="CustomerManager" asp-action="Edit" asp-route-employerId="@Model.Id" class="btn btn-primary btn-sm">
+                    <i class="fas fa-edit" title="Edit customer"></i>
+                </a>
+            </li>
+            <li class="list-inline-item">
+                <form method="post" asp-area="Owners" asp-controller="CustomerManager" asp-action="Delete"  asp-route-customerId="@Model.Id">
+                <button class="btn btn-danger  btn-sm" type="submit">  <i class="fas fa-trash" title="Delete customer"></i></button>
+                </form>
+
+            </li>
+        </ul>
+    </div>
     <div class="card-body">
         @*<div class="text-center">
                 <img class="profile-user-img img-fluid img-circle"
@@ -38,4 +53,6 @@
     <!-- /.card-body -->
 </div>
 <!-- /.card -->
-<!-- About Me Box -->
+
+
+

@@ -1,7 +1,4 @@
-﻿using MiniCRM.Common;
-using MiniCRM.Web.ViewModels.Users;
-
-namespace MiniCRM.Web.Areas.Owners.Controllers
+﻿namespace MiniCRM.Web.Areas.Owners.Controllers
 {
     using System;
     using System.Linq;
@@ -10,12 +7,14 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Common;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Services.Messaging;
     using MiniCRM.Web.Infrastructure;
     using MiniCRM.Web.ViewModels;
     using MiniCRM.Web.ViewModels.Employees;
+    using MiniCRM.Web.ViewModels.Users;
 
     public class EmployeesManagerController : OwnersController
     {

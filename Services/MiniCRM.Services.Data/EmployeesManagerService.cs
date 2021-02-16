@@ -101,7 +101,7 @@
             await this.employersRepository.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var employer = await this.employersRepository
                 .All()
@@ -111,7 +111,7 @@
             employer.AccountId = null;
             this.employersRepository.Delete(employer);
 
-            return await this.employersRepository.SaveChangesAsync();
+            await this.employersRepository.SaveChangesAsync();
         }
 
         public async Task<T> GetByIdAsync<T>(int employerId)

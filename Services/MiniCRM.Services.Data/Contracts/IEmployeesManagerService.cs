@@ -17,7 +17,7 @@ namespace MiniCRM.Services.Data.Contracts
 
         Task ChangeAccountStatusAsync(int id, bool hasAccount, string accountId);
 
-        Task<int> DeleteAsync(int id);
+        Task DeleteAsync(int id);
 
         Task<T> GetByIdAsync<T>(int employerId);
 

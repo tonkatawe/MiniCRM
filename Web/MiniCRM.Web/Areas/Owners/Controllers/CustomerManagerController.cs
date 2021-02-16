@@ -34,7 +34,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
         {
             IQueryable<CustomerViewModel> allCustomers;
             var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            
+
             //var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
 
             //if (owner.CompanyId == null)
@@ -137,6 +137,22 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             return this.RedirectToAction("Index");
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int customerId)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
+            var customer = await this.customersService.GetByIdAsync<CustomerViewModel>(customerId);
+            if (customer.OwnerId != owner.Id)
+            {
+                return this.NotFound();
+            }
+
+            await this.customersService.DeleteAsync(customerId);
+
+            return this.RedirectToAction("Index");
+
+        }
         public async Task<PartialViewResult> EmployerPartial(int employerId)
         {
             var viewModel = await this.employeesManagerService.GetEmployerAsync<EmployerShortInfoViewModel>(employerId);

@@ -20,11 +20,13 @@
         public string EmployerFullName { get; set; }
 
         public string AddressCity { get; set; }
-        
+
         public string AddressCountry { get; set; }
 
         public string AddressStreet { get; set; }
 
         public int AddressZipCode { get; set; }
+
+        public string OwnerId { get; set; }
     }
 }

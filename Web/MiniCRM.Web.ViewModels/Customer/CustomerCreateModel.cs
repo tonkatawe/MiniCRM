@@ -6,8 +6,6 @@
 
     public class CustomerCreateModel : EmployerCreateModel
     {
-        public string OwnerId { get; set; }
-
         public int EmployerId { get; set; }
 
         public string AdditionalInfo { get; set; }

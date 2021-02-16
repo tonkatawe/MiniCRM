@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using MiniCRM.Services.Mapping;
 
 namespace MiniCRM.Services.Data
@@ -68,6 +69,28 @@ namespace MiniCRM.Services.Data
                 .AsQueryable();
 
             return query;
+        }
+
+        public async Task<T> GetByIdAsync<T>(int id)
+        {
+            var customer = await this.customersRepository
+                .All()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return customer;
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var customer = await this.customersRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            this.customersRepository.Delete(customer);
+
+            await this.customersRepository.SaveChangesAsync();
         }
     }
 }
