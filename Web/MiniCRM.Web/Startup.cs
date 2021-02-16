@@ -93,6 +93,7 @@
             services.AddTransient<IProductsService, ProductsService>();
             services.AddTransient<IEmployeesManagerService, EmployeesManagerService>();
             services.AddTransient<ICustomersService, CustomersService>();
+            services.AddTransient<IValidationsService, ValidationsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

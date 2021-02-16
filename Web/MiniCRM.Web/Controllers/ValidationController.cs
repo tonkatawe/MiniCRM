@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Web.Controllers
+﻿using MiniCRM.Services.Data.Contracts;
+
+namespace MiniCRM.Web.Controllers
 {
     using System.Linq;
 
@@ -8,17 +10,17 @@
 
     public class ValidationController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IValidationsService validationsService;
 
-        public ValidationController(UserManager<ApplicationUser> userManager)
+        public ValidationController(IValidationsService validationsService)
         {
-            this.userManager = userManager;
+            this.validationsService = validationsService;
         }
 
         [AcceptVerbs("GET", "POST")]
         public JsonResult VerifyEmail(string email)
         {
-            if (this.userManager.Users.Any(x => x.Email == email))
+            if (this.validationsService.IsValidUserEmail(email))
             {
                 return this.Json($"Email {email} is already in use.");
             }
@@ -29,7 +31,7 @@
         [AcceptVerbs("GET", "POST")]
         public JsonResult VerifyPhone(string phone)
         {
-            if (this.userManager.Users.Any(x => x.PhoneNumber == phone))
+            if (this.validationsService.IsValidUserPhoneNumber(phone))
             {
                 return Json($"PhoneNumber {phone} is already in use.");
             }
