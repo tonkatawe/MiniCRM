@@ -30,8 +30,19 @@ namespace MiniCRM.Services.Data
 
         public async Task<int> CreateAsync(CustomerCreateModel input, string ownerId)
         {
+
+            if (await this.IsExistEmail(input.Email, ownerId))
+            {
+                throw new Exception($"You already have customer with email: {input.Email}");
+            }
+            if (await this.IsExistPhone(input.PhoneNumber, ownerId))
+            {
+                throw new Exception($"You already have customer with phone: {input.PhoneNumber}");
+            }
+
             var address = await this.addressService.CreateAsync(input.AddressCountry, input.AddressCity, input.AddressStreet, input.AddressZipCode);
             var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitleName);
+
             var customer = new Customer
             {
                 FirstName = input.FirstName,
@@ -96,24 +107,25 @@ namespace MiniCRM.Services.Data
 
         public async Task UpdateAsync(CustomerEditModel input)
         {
+
             var customer = await this.customersRepository
                 .All()
                 .FirstOrDefaultAsync(x => x.Id == input.Id);
 
-            if (this.customersRepository.All().Select(x => x.PhoneNumber).Contains(input.PhoneNumber) && input.PhoneNumber != customer.PhoneNumber)
+            if (await this.IsExistEmail(input.Email, input.OwnerId) && customer.Email != input.Email)
             {
-                throw new Exception($"PhoneNumber {input.PhoneNumber} is already in use from another employer in your company.");
+                throw new Exception($"You already have customer with email: {input.Email}");
             }
+
+            if (await this.IsExistPhone(input.PhoneNumber, input.OwnerId) && customer.PhoneNumber != input.PhoneNumber)
+            {
+                throw new Exception($"You already have customer with phone: {input.PhoneNumber}");
+            }
+
 
 
 
             customer.PhoneNumber = input.PhoneNumber;
-
-            if (this.customersRepository.All().Select(x => x.Email).Contains(input.Email) && input.Email != customer.Email)
-            {
-                throw new Exception($"Email {input.Email} is already in use from another employer in your company.");
-            }
-
             customer.Email = input.Email;
             customer.EmployerId = input.EmployerId;
             customer.FirstName = input.FirstName;
@@ -130,5 +142,11 @@ namespace MiniCRM.Services.Data
 
             await this.customersRepository.SaveChangesAsync();
         }
+
+        private async Task<bool> IsExistEmail(string email, string ownerId) =>
+            await this.customersRepository.All().AnyAsync(x => x.Email == email && x.OwnerId == ownerId);
+
+        private async Task<bool> IsExistPhone(string phoneNumber, string ownerId) =>
+            await this.customersRepository.All().AnyAsync(x => x.PhoneNumber == phoneNumber && x.OwnerId == ownerId);
     }
 }

@@ -128,12 +128,19 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
             }
 
+            try
+            {
+                await this.customersService.CreateAsync(input, owner.Id);
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+            }
+
             if (!this.ModelState.IsValid)
             {
                 return this.View(input);
             }
-
-            await this.customersService.CreateAsync(input, owner.Id);
 
             return this.RedirectToAction("Index");
         }
@@ -180,7 +187,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             {
                 return this.NotFound();
             }
-            
+
             try
             {
                 await this.customersService.UpdateAsync(input);

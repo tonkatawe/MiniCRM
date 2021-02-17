@@ -6,6 +6,11 @@
 
     public class CustomerCreateModel : EmployerCreateModel
     {
+        public CustomerCreateModel()
+        {
+            this.Employees = new HashSet<EmployeesDropDownViewModel>();
+        }
+
         public int EmployerId { get; set; }
 
         public string AdditionalInfo { get; set; }

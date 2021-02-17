@@ -1,7 +1,7 @@
 ﻿@model MiniCRM.Web.ViewModels.Customer.CustomerCreateModel;
 @{
     this.ViewData["Title"] = "Add new customer";
-    var employees = Model.Employees.Select(x => new SelectListItem(x.FullName, x.Id.ToString()));
+    var employees = Model.Employees?.Select(x => new SelectListItem(x.FullName, x.Id.ToString()));
 }
 
 <div class="container">
@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <select asp-for="EmployerId" asp-items="employees" id="EmployerId" class="form-control"><option disabled selected>--Choose Employer--</option></select>
+                                <select asp-for="EmployerId" asp-items="@(new SelectList(Model.Employees, "Id", "FullName"))" id="EmployerId" class="form-control"><option disabled selected>--Choose Employer--</option></select>
                                 <span asp-validation-for="EmployerId" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -62,15 +62,15 @@
                                 <h1 class="h4 mb-4">Address data</h1>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="AddressCountry" class="form-control " placeholder="AddressCountry">
+                                <input asp-for="AddressCountry" class="form-control " placeholder="Country">
                                 <span asp-validation-for="AddressCountry" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="AddressCity" class="form-control" placeholder="AddressCity">
+                                <input asp-for="AddressCity" class="form-control" placeholder="City">
                                 <span asp-validation-for="AddressCity" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
-                                <input asp-for="AddressStreet" class="form-control" placeholder="AddressStreet">
+                                <input asp-for="AddressStreet" class="form-control" placeholder="Street">
                                 <span asp-validation-for="AddressStreet" class="text-danger"></span>
                             </div>
                             <div class="form-group row">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                 </div>
-                <input asp-for="EmployerId" type="hidden" />
+                <input asp-for="OwnerId" type="hidden" />
 
             </div>
             <button type="submit" class="btn btn-primary btn-block">Add Customer</button>

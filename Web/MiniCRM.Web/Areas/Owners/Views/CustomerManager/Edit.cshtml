@@ -1,5 +1,4 @@
-﻿@using MiniCRM.Data.Migrations
-@model MiniCRM.Web.ViewModels.Customer.CustomerEditModel;
+﻿@model MiniCRM.Web.ViewModels.Customer.CustomerEditModel;
 @{
     this.ViewData["Title"] = "Add new customer";
     var employees = Model.Employees.Select(x => new SelectListItem(x.FullName, x.Id.ToString()));
@@ -81,7 +80,7 @@
                                 <span asp-validation-for="AddressZipCode" class="text-danger"></span>
                             </div>
                             <div id="container">
-                         
+
                             </div>
                         </div>
                     </div>
@@ -90,7 +89,7 @@
                 <input asp-for="OwnerId" type="hidden" />
 
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Add Customer</button>
+            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
 
             <br />
         </div>
@@ -122,5 +121,5 @@
 
         });
     </script>
- 
+
 }

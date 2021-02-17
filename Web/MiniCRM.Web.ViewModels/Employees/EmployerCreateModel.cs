@@ -42,7 +42,6 @@
         [Required]
         public string PhoneNumber { get; set; }
 
-
         [Required]
         public string OwnerId { get; set; }
     }
