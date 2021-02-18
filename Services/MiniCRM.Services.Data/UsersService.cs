@@ -70,8 +70,7 @@ namespace MiniCRM.Services.Data
 
         public async Task<(string, string, string, string)> CreateAsync(UserCreateModel input, UserViewModel parent, string role)
         {
-            var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitle);
-
+       
             var username = $"{input.FirstName.Substring(0, 1)}.{input.LastName}";
             var possibleUsername = await this.GenerateAvailableUsername(username);
 
@@ -81,12 +80,12 @@ namespace MiniCRM.Services.Data
                 FirstName = input.FirstName,
                 MiddleName = input.MiddleName,
                 LastName = input.LastName,
-                PhoneNumber = input.Phone,
+                PhoneNumber = input.PhoneNumber,
                 ParentId = parent.Id,
                 Email = input.Email,
                 CompanyId = parent.CompanyId,
                 ProfilePictureUrl = GlobalConstants.DefaultProfilePicture,
-                JobTitleId = jobTitle,
+                JobTitleId = input.JobTitleId,
             };
 
             var employerPassword = Guid.NewGuid().ToString().Substring(0, 8);

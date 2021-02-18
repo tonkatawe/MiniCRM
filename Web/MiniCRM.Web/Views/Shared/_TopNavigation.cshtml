@@ -1,6 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using MiniCRM.Data.Models
+@using MiniCRM.Services.Data.Contracts
+@using System.Security.Claims
+@using MiniCRM.Web.ViewModels.Notifications
 @inject SignInManager<ApplicationUser> SignInManager
+@inject INotificationsService NotificationsService
 
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -99,11 +103,25 @@
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
+                    <span class="badge badge-warning navbar-badge">@await this.NotificationsService.GetNewNotificationsCountAsync(this.User.FindFirst(ClaimTypes.NameIdentifier).Value)</span>
                 </a>
+                @{
+                    var notifications = await this.NotificationsService.GetNotificationsAsync<NotificationViewModel>(this.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                }
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-header">15 Notifications</span>
+                    <span class="dropdown-header">15 Notifications</span> 
                     <div class="dropdown-divider"></div>
+                    @foreach (var notification in notifications)
+                    {
+                        <a href="#" class="dropdown-item">
+                            <p class="col-12">
+                                <i class="fas fa-envelope mr-2"></i>@notification.Content
+                                <br />
+                                <span class="float-left text-muted text-sm">@notification.CreatedOn</span>
+                            </p>
+                        </a>
+                    }
+
                     <a href="#" class="dropdown-item">
                         <i class="fas fa-envelope mr-2"></i> 4 new messages
                         <span class="float-right text-muted text-sm">3 mins</span>
@@ -132,17 +150,17 @@
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
             </li>
         }
-            <li class="nav-item">
-                <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                    <i class="fas fa-expand-arrows-alt"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-th-large"></i>
-                </a>
-            </li>
-               
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                <i class="fas fa-th-large"></i>
+            </a>
+        </li>
+
     </ul>
 </nav>
 <!-- /.navbar -->

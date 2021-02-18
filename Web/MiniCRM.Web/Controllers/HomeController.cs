@@ -1,4 +1,6 @@
 ﻿
+using MiniCRM.Services.Data.Contracts;
+
 namespace MiniCRM.Web.Controllers
 {
     using Microsoft.AspNetCore.Authorization;
@@ -15,11 +17,15 @@ namespace MiniCRM.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly INotificationsService notificationsService;
 
-        public HomeController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public HomeController(UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            INotificationsService notificationsService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.notificationsService = notificationsService;
         }
 
         public async Task<IActionResult> Index()
@@ -74,7 +80,7 @@ namespace MiniCRM.Web.Controllers
 
             if (user == null)
             {
-                return View("Error");
+                return this.View("Error");
             }
 
             var result = await this.userManager.ConfirmEmailAsync(user, token);
@@ -84,6 +90,9 @@ namespace MiniCRM.Web.Controllers
                 this.TempData["ConfirmationEmail"] =
                     "Thank you for confirming your email. You've already sing in. You can list our products";
                 await this.signInManager.SignInAsync(user, isPersistent: false);
+
+                await this.notificationsService.CreateNotificationAsync(user.ParentId,
+                    $"{user.FullName} has already confirm his email");
 
                 return this.RedirectToAction("ChangePassword", "Home", new { userId = user.Id });
             }

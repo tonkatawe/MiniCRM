@@ -8,7 +8,7 @@ namespace MiniCRM.Web.ViewModels.Users
 
     using Microsoft.AspNetCore.Mvc;
 
-    public class UserCreateModel : IMapFrom<Employer>, IMapFrom<Data.Models.Customer>
+    public class UserCreateModel : IMapFrom<Employer>
     {
         [Required]
         public string CompanyId { get; set; }
@@ -29,7 +29,7 @@ namespace MiniCRM.Web.ViewModels.Users
 
         [Required]
         [MaxLength(30, ErrorMessage = "Job title should be maximum 30 letters")]
-        public string JobTitle { get; set; }
+        public int JobTitleId { get; set; }
 
         [Required]
         [Remote(action: "VerifyEmail", controller: "Validation", areaName: "")]
@@ -37,6 +37,6 @@ namespace MiniCRM.Web.ViewModels.Users
 
         [Required]
         [Remote(action: "VerifyPhone", controller: "Validation", areaName: "")]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

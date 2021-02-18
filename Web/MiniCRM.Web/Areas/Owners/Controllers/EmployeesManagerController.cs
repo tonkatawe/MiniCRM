@@ -217,8 +217,8 @@
 
             var msg = string.Format(OutputMessages.EmailConformation, employer.FirstName, owner.FullName, owner.JobTitleName, owner.CompanyName, result.Item3, result.Item2, confirmationLink);
 
-            // TODO uncomment in production!
-            // await this.emailSender.SendEmailAsync(owner.Email, owner.FullName, input.Email, $"Email confirm link", msg);
+            // TODO uncomment in production! Change GlobalConstants.SystemEmail with owner.Email!!!!
+            await this.emailSender.SendEmailAsync(GlobalConstants.SystemEmail, owner.FullName, employer.Email, $"Email confirm link", msg);
 
             this.TempData["Successful"] = "Account created successful.";
 
