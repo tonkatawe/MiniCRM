@@ -127,5 +127,11 @@ namespace MiniCRM.Web.Controllers
 
             return this.RedirectToAction("Index");
         }
+
+        public async Task<PartialViewResult> TestNote(int employerId)
+        {
+            var viewModel = employerId;
+            return this.PartialView("_ShortEmployerPartial", viewModel);
+        }
     }
 }

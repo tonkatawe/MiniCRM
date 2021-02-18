@@ -48,5 +48,30 @@ namespace MiniCRM.Services.Data
                 .To<T>()
                 .ToListAsync();
         }
+
+        public async Task<T> GetByIdAsync<T>(int id)
+        {
+            return await this.notificationsRepository
+                .All()
+                .Where(x => x.Id == id)
+                .To<T>()
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task ReadNotificationsAsync(int notificationId)
+        {
+            var notification = await this.notificationsRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == notificationId);
+
+            if (notification.IsRead == false)
+            {
+                notification.IsRead = true;
+            }
+
+            this.notificationsRepository.Update(notification);
+
+            await this.notificationsRepository.SaveChangesAsync();
+        }
     }
 }

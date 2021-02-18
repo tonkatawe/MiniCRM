@@ -10,5 +10,11 @@ namespace MiniCRM.Services.Data.Contracts
         Task CreateNotificationAsync(string userId, string content);
 
         Task<IEnumerable<T>> GetNotificationsAsync<T>(string userId);
+
+        Task<T> GetByIdAsync<T>(int id);
+
+        Task ReadNotificationsAsync(int notificationId);
+
+
     }
 }
