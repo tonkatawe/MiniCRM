@@ -130,7 +130,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
 
             try
             {
-                await this.customersService.CreateAsync(input, owner.Id);
+                await this.customersService.CreateAsync(input);
             }
             catch (Exception e)
             {

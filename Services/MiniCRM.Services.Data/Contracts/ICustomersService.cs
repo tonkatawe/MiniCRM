@@ -8,7 +8,7 @@ namespace MiniCRM.Services.Data.Contracts
 
     public interface ICustomersService
     {
-        Task<int> CreateAsync(CustomerCreateModel input, string ownerId);
+        Task<int> CreateAsync(CustomerCreateModel input);
 
         IQueryable<T> GetAll<T>(string ownerId);
 

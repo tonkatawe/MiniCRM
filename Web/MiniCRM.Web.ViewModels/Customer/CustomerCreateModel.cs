@@ -2,9 +2,10 @@
 {
     using System.Collections.Generic;
 
+    using MiniCRM.Web.ViewModels.BaseModels;
     using MiniCRM.Web.ViewModels.Employees;
 
-    public class CustomerCreateModel : EmployerCreateModel
+    public class CustomerCreateModel : BaseUnitPersonModel
     {
         public CustomerCreateModel()
         {
@@ -12,6 +13,8 @@
         }
 
         public int EmployerId { get; set; }
+
+        public string OwnerId { get; set; }
 
         public string AdditionalInfo { get; set; }
 

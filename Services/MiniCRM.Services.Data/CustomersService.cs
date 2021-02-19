@@ -1,15 +1,14 @@
-﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using MiniCRM.Services.Mapping;
-
-namespace MiniCRM.Services.Data
+﻿namespace MiniCRM.Services.Data
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore;
     using MiniCRM.Data.Common.Repositories;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Services.Mapping;
     using MiniCRM.Web.ViewModels.Customer;
 
     public class CustomersService : ICustomersService
@@ -28,14 +27,14 @@ namespace MiniCRM.Services.Data
             this.jobTitlesService = jobTitlesService;
         }
 
-        public async Task<int> CreateAsync(CustomerCreateModel input, string ownerId)
+        public async Task<int> CreateAsync(CustomerCreateModel input)
         {
 
-            if (await this.IsExistEmail(input.Email, ownerId))
+            if (await this.IsExistEmail(input.Email, input.OwnerId))
             {
                 throw new Exception($"You already have customer with email: {input.Email}");
             }
-            if (await this.IsExistPhone(input.PhoneNumber, ownerId))
+            if (await this.IsExistPhone(input.PhoneNumber, input.OwnerId))
             {
                 throw new Exception($"You already have customer with phone: {input.PhoneNumber}");
             }
@@ -51,7 +50,7 @@ namespace MiniCRM.Services.Data
                 JobTitleId = jobTitle,
                 AddressId = address,
                 EmployerId = input.EmployerId,
-                OwnerId = ownerId,
+                OwnerId = input.OwnerId,
                 PhoneNumber = input.PhoneNumber,
                 Email = input.Email,
                 AdditionalInfo = input.AdditionalInfo,

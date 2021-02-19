@@ -102,6 +102,7 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
             var viewModel = new CustomerCreateModel
             {
                 EmployerId = employerId,
+                OwnerId = employerAccount.ParentId,
             };
 
             return this.View(viewModel);
@@ -114,7 +115,7 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
             try
             {
-                await this.customersService.CreateAsync(input, employerAccount.ParentId);
+                await this.customersService.CreateAsync(input);
             }
             catch (Exception e)
             {

@@ -6,8 +6,5 @@
     public class EmployerEditModel : EmployerCreateModel, IMapFrom<Employer>
     {
         public int Id { get; set; }
-
-        public string CompanyId { get; set; }
-     
     }
 }

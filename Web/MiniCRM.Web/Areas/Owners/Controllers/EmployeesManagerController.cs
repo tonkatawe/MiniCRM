@@ -139,7 +139,7 @@
 
             try
             {
-                await this.employeesManagerService.CreateAsync(input, owner.CompanyId);
+                await this.employeesManagerService.CreateAsync(input);
             }
             catch (Exception e)
             {

@@ -6,7 +6,6 @@
     public class CustomerEditModel : CustomerCreateModel, IMapFrom<Customer>
     {
         public int Id { get; set; }
-        
-        
+
     }
 }
