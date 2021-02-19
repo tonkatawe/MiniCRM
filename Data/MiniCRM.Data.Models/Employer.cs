@@ -10,6 +10,7 @@
         public Employer()
         {
             this.Customers = new HashSet<Customer>();
+            this.Sales = new HashSet<Sale>();
         }
 
         public string FirstName { get; set; }
@@ -51,5 +52,7 @@
         public string Email { get; set; }
 
         public virtual IEnumerable<Customer> Customers { get; set; }
+
+        public virtual IEnumerable<Sale> Sales { get; set; }
     }
 }

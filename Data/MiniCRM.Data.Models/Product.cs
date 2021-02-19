@@ -9,7 +9,7 @@
     {
         public Product()
         {
-            this.Orders = new HashSet<Order>();
+            this.Sales = new HashSet<Sale>();
             //  this.Customers = new HashSet<ApplicationUser>();
         }
 
@@ -32,7 +32,7 @@
 
         public virtual Company Company { get; set; }
 
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Sale> Sales { get; set; }
 
         //public virtual ICollection<ApplicationUser> Customers { get; set; }
 

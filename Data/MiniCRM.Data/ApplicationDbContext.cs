@@ -44,6 +44,8 @@
 
         public DbSet<Employer> Employees { get; set; }
 
+        public DbSet<Sale> Sales { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
@@ -81,8 +83,8 @@
 
             builder.Entity<UserCompanies>()
                 .HasKey(uc => new { uc.UserId, uc.CompanyId });
-            
-    
+
+
 
 
             this.ConfigureUserIdentityRelations(builder);
