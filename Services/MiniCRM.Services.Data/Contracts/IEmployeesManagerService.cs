@@ -1,15 +1,13 @@
-﻿using System.Linq;
-
-namespace MiniCRM.Services.Data.Contracts
+﻿namespace MiniCRM.Services.Data.Contracts
 {
-    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using MiniCRM.Web.ViewModels.Employees;
 
     public interface IEmployeesManagerService
     {
-        Task<int> CreateAsync(EmployerCreateModel input, string companyId);
+        Task<int> CreateAsync(EmployerCreateModel input);
 
         Task<T> GetEmployerAsync<T>(int id);
 

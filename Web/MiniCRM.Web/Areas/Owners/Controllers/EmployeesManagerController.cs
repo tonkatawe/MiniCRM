@@ -117,7 +117,9 @@
             var viewModel = new EmployerCreateModel
             {
                 OwnerId = ownerId,
+                CompanyId = owner.CompanyId,
             };
+
             return this.View(viewModel);
         }
 

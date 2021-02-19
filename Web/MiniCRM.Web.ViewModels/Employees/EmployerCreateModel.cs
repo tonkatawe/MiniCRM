@@ -8,5 +8,8 @@
     {
         [Required]
         public string OwnerId { get; set; }
+
+        [Required]
+        public string CompanyId { get; set; }
     }
 }

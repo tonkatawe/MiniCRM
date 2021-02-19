@@ -33,7 +33,7 @@
             this.usersService = usersService;
         }
 
-        public async Task<int> CreateAsync(EmployerCreateModel input, string companyId)
+        public async Task<int> CreateAsync(EmployerCreateModel input)
         {
             var address = await this.addressService.CreateAsync(input.AddressCountry, input.AddressCity, input.AddressStreet, input.AddressZipCode);
             var jobTitle = await this.jobTitlesService.CreateAsync(input.JobTitleName);
@@ -53,7 +53,7 @@
                 FirstName = input.FirstName,
                 MiddleName = input.MiddleName,
                 LastName = input.LastName,
-                CompanyId = companyId,
+                CompanyId = input.CompanyId,
                 AddressId = address,
                 JobTitleId = jobTitle,
                 Email = input.Email,
