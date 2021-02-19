@@ -55,14 +55,14 @@ namespace MiniCRM.Web.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> See(int notificationId)
+        public async Task<IActionResult> See(int notificationId, string url)
         {
-            var currentUrl = this.HttpContext.Request.GetDisplayUrl();
+            var currentUrl = url;
 
             await this.notificationsService.ReadNotificationsAsync(notificationId);
 
 
-            return this.Ok(currentUrl);
+            return this.Redirect(currentUrl);
         }
     }
 }

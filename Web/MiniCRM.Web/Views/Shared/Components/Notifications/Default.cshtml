@@ -1,43 +1,27 @@
-﻿@model IEnumerable<MiniCRM.Web.ViewModels.Notifications.NotificationViewModel>
+﻿@using Microsoft.AspNetCore.Http.Extensions
+@model IEnumerable<MiniCRM.Web.ViewModels.Notifications.NotificationViewModel>
 
 @foreach (var notification in Model)
 {
-    var timeSince = DateTime.UtcNow.Subtract(notification.CreatedOn).TotalMinutes;
+
     <a href="#" class="dropdown-item" title="View more">
         <p class="col-12">
             <i class="fas fa-envelope mr-2"></i>@notification.Content
             <br />
-
-            @if (timeSince >= 60)
-            {
-                if (timeSince >= 1440)
-                {
-                    <small>@DateTime.UtcNow.Subtract(notification.CreatedOn).TotalDays.ToString("f0") days ago</small>
-                }
-                else
-                {
-                    <small>@DateTime.UtcNow.Subtract(notification.CreatedOn).TotalHours.ToString("f0") hours ago</small>
-                }
-            }
-            else
-            {
-                if (timeSince < 1)
-                {
-                    <small>@DateTime.UtcNow.Subtract(notification.CreatedOn).TotalSeconds.ToString("f0") seconds ago</small>
-                }
-                else
-                {
-                    <small>@timeSince.ToString("f0") mins ago</small>
-                }
-            }
-            <div class="col-md-2">
-                <form asp-area="" asp-controller="Notifications" asp-action="See" method="post" id="deleteForm">
-                    <input type="text" name="notificationId" value="@notification.Id" hidden />
-                    <button class="btn btn-warning float-right">
-                        See
-                    </button>
-                </form>
-            </div>
+            <small>
+                @notification.TimeSince
+            
+                    <form asp-area="" asp-controller="Notifications" asp-action="See" asp-route-url="@this.Url" id="asReadForm" method="post">
+                        <div class="form-check">
+                            <input class="form-check-input small" type="checkbox" name="notificationId" value="@notification.Id" onclick="asReadForm.submit()">
+                            <input type="text" name="url" value="@this.Url.ActionContext.HttpContext.Request.GetDisplayUrl()" hidden />
+                            <label class="form-check-label small">
+                                Mark as read
+                            </label>
+                        </div>
+                    </form>
+          
+            </small>
         </p>
     </a>
     <div class="dropdown-divider"></div>
