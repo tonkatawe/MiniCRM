@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 using MiniCRM.Data.Models;
 
 namespace MiniCRM.Web.Areas.Employees.Controllers
@@ -36,7 +37,6 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
             var allCustomers =
                 this.customersService.GetEmployerCustomers<CustomerViewModel>(employerAccount.ParentId, employerId);
-        
 
             this.ViewData["CurrentSort"] = sortOrder;
             this.ViewData["SortByName"] = string.IsNullOrEmpty(sortOrder) ? "nameDesc" : string.Empty;
@@ -91,6 +91,41 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
             int pageSize = 3;
 
             return this.View(await PaginatedList<CustomerViewModel>.CreateAsync(customers, pageNumber ?? 1, pageSize));
+        }
+
+        public async Task<IActionResult> Create()
+        {
+            var employerAccount = await this.userManager.GetUserAsync(this.User);
+
+            var employerId = await this.employeesManagerService.GetEmployersIdAsync(employerAccount.Id);
+
+            var viewModel = new CustomerCreateModel
+            {
+                EmployerId = employerId,
+            };
+
+            return this.View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CustomerCreateModel input)
+        {
+            var employerAccount = await this.userManager.GetUserAsync(this.User);
+
+            try
+            {
+                await this.customersService.CreateAsync(input, employerAccount.ParentId);
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+            }
+
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+            return this.RedirectToAction("Index");
         }
     }
 }

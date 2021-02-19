@@ -1,4 +1,5 @@
-﻿@model MiniCRM.Web.ViewModels.Customer.CustomerViewModel;
+﻿@using MiniCRM.Common
+@model MiniCRM.Web.ViewModels.Customer.CustomerViewModel;
     <!-- Profile Image -->
 <div class="card card-primary card-outline">
     <div class="d-flex justify-content-end user">
@@ -8,12 +9,15 @@
                     <i class="fas fa-edit" title="Edit customer"></i>
                 </a>
             </li>
-            <li class="list-inline-item">
-                <form method="post" asp-area="Owners" asp-controller="CustomerManager" asp-action="Delete"  asp-route-customerId="@Model.Id">
-                <button class="btn btn-danger  btn-sm" type="submit">  <i class="fas fa-trash" title="Delete customer"></i></button>
-                </form>
+            @if (this.User.IsInRole(GlobalConstants.OwnerUserRoleName))
+            {
+                <li class="list-inline-item">
+                    <form method="post" asp-area="Owners" asp-controller="CustomerManager" asp-action="Delete" asp-route-customerId="@Model.Id">
+                        <button class="btn btn-danger  btn-sm" type="submit">  <i class="fas fa-trash" title="Delete customer"></i></button>
+                    </form>
 
-            </li>
+                </li>
+            }
         </ul>
     </div>
     <div class="card-body">
@@ -53,6 +57,3 @@
     <!-- /.card-body -->
 </div>
 <!-- /.card -->
-
-
-
