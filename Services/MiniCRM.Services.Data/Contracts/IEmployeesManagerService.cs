@@ -22,5 +22,7 @@ namespace MiniCRM.Services.Data.Contracts
         Task<T> GetByIdAsync<T>(int employerId);
 
         Task<int> UpdateAsync(EmployerEditModel input);
+
+        Task<int> GetEmployersIdAsync(string accountId);
     }
 }

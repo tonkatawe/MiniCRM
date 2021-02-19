@@ -1,8 +1,7 @@
-﻿using System.Globalization;
-
-namespace MiniCRM.Web.ViewModels.Notifications
+﻿namespace MiniCRM.Web.ViewModels.Notifications
 {
     using System;
+    using System.Globalization;
 
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Mapping;

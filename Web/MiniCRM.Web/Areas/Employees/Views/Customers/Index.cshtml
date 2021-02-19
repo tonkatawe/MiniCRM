@@ -1,0 +1,92 @@
+﻿@using MiniCRM.Web.ViewModels.Employees
+@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Customer.CustomerViewModel>
+@{
+    this.ViewData["Title"] = "All Customers";
+
+}
+@if (this.TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger">@this.TempData["Error"]</div>
+}
+@if (this.TempData.ContainsKey("Successful"))
+{
+    <div class="alert alert-success">@this.TempData["Successful"]</div>
+}
+
+<form asp-action="Index" method="get">
+    <div class="row">
+        <p>
+            Find by name: <input type="text" class="rounded-pill" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <button type="submit" class="btn btn-primary  rounded-pill btn-sm">
+                <span class="icon text-white-50">
+                    <i class="fas fa-search"></i>
+                </span>
+                <span class="text">Search</span>
+            </button>
+            <a asp-action="Index" class="btn btn-info rounded-pill btn-sm">
+                <span class="icon text-white-50">
+                    <i class="far fa-arrow-alt-circle-left"></i>
+                </span>
+                <span class="text">Back to full list</span>
+            </a>
+        </p>
+    </div>
+</form>
+
+<div class="container">
+    <div class="row">
+        @foreach (var customer in Model)
+        {
+            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+                <partial name="_CustomerPartial" model="@customer" />
+            </div>
+        }
+    </div>
+</div>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<ul class="pagination">
+
+
+    <li>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+    </li>
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item  @(Model.PageIndex == i ? "active" : string.Empty)">
+            <a class="page-link rounded-pill" asp-route-pageNumber="@i">@i</a>
+        </li>
+    }
+
+    <li>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+
+    </li>
+</ul>
+
+<div>
+    <a asp-area="Owners" asp-action="Create" asp-controller="CustomerManager" class="btn btn-primary rounded-pill">
+        <span class="icon text-white-50">
+            <i class="fas fa-user-plus"></i>
+        </span>
+        <span class="text">Add New Customer</span>
+    </a>
+</div>
+

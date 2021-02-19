@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using MiniCRM.Services.Data.Contracts;
-using MiniCRM.Web.ViewModels.Notifications;
-
-namespace MiniCRM.Web.Controllers
+﻿namespace MiniCRM.Web.Controllers
 {
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http.Extensions;
+    using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Web.ViewModels.Notifications;
+
     public class NotificationsController : Controller
     {
         private readonly INotificationsService notificationsService;

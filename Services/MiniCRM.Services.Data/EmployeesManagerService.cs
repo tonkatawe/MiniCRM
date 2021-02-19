@@ -176,5 +176,14 @@
 
             return await this.employersRepository.SaveChangesAsync();
         }
+
+        public async Task<int> GetEmployersIdAsync(string accountId)
+        {
+            return await this.employersRepository
+                .All()
+                .Where(x => x.AccountId == accountId)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+        }
     }
 }
