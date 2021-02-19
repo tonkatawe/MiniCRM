@@ -17,15 +17,18 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
     {
         private readonly ICustomersService customersService;
         private readonly IEmployeesManagerService employeesManagerService;
+        private readonly INotificationsService notificationsService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public CustomersController(
             ICustomersService customersService,
             IEmployeesManagerService employeesManagerService,
+            INotificationsService notificationsService,
             UserManager<ApplicationUser> userManager)
         {
             this.customersService = customersService;
             this.employeesManagerService = employeesManagerService;
+            this.notificationsService = notificationsService;
             this.userManager = userManager;
         }
 
@@ -126,6 +129,56 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
             {
                 return this.View(input);
             }
+
+            await this.notificationsService.CreateNotificationAsync(
+                employerAccount.ParentId,
+                $"{employerAccount.FullName} add new customer");
+
+            return this.RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Edit(int customerId)
+        {
+            var employerAccount = await this.userManager.GetUserAsync(this.User);
+            var employerId = await this.employeesManagerService.GetEmployersIdAsync(employerAccount.Id);
+            var viewModel = await this.customersService.GetByIdAsync<CustomerEditModel>(customerId);
+
+            if (viewModel.EmployerId != employerId)
+            {
+                return this.NotFound();
+            }
+
+            return this.View(viewModel);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(CustomerEditModel input)
+        {
+            var employerAccount = await this.userManager.GetUserAsync(this.User);
+            var employerId = await this.employeesManagerService.GetEmployersIdAsync(employerAccount.Id);
+
+            if (input.EmployerId != employerId)
+            {
+                return this.NotFound();
+            }
+            try
+            {
+                await this.customersService.UpdateAsync(input);
+            }
+            catch (Exception e)
+            {
+                this.ModelState.AddModelError(string.Empty, e.Message);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return this.View(input);
+            }
+
+            await this.notificationsService.CreateNotificationAsync(
+                employerAccount.ParentId,
+                $"{employerAccount.FullName} edited {input.FirstName} {input.LastName} as him customer");
+
             return this.RedirectToAction("Index");
         }
     }

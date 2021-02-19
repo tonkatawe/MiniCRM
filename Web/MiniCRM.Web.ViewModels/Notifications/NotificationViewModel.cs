@@ -34,7 +34,7 @@
             {
                 result = totalMinutes < 1
                     ? $"{DateTime.UtcNow.Subtract(datetime).TotalSeconds:f0} seconds ago"
-                    : $"{totalMinutes.ToString(CultureInfo.InvariantCulture):f0} minutes ago";
+                    : $"{Math.Ceiling(totalMinutes)} minutes ago";
             }
 
             return result;

@@ -1,5 +1,93 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model MiniCRM.Web.ViewModels.Customer.CustomerEditModel;
 @{
+    this.ViewData["Title"] = "Add new customer";
 }
+
+<div class="container">
+    <form asp-area="Employees" asp-controller="Customers" asp-action="Edit" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="card border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 mb-4">Personal data</h1>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-12 mb-3 mb-sm-0">
+                                    <input asp-for="JobTitleName" class="form-control" placeholder="Job Title">
+                                    <span asp-validation-for="JobTitleName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <input asp-for="FirstName" type="text" class="form-control" placeholder="First Name">
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input asp-for="MiddleName" type="text" class="form-control" placeholder="Middle Name">
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input asp-for="LastName" type="text" class="form-control" placeholder="Last Name">
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input asp-for="PhoneNumber" type="text" class="form-control" placeholder="PhoneNumberNumber number">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input asp-for="Email" class="form-control" placeholder="Email address">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea asp-for="AdditionalInfo" class="form-control" placeholder="Additional information" rows="3"></textarea>
+                                <span asp-validation-for="AdditionalInfo" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 mb-4">Address data</h1>
+                            </div>
+                            <div class="form-group row">
+                                <input asp-for="AddressCountry" class="form-control " placeholder="AddressCountry">
+                                <span asp-validation-for="AddressCountry" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <input asp-for="AddressCity" class="form-control" placeholder="AddressCity">
+                                <span asp-validation-for="AddressCity" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <input asp-for="AddressStreet" class="form-control" placeholder="AddressStreet">
+                                <span asp-validation-for="AddressStreet" class="text-danger"></span>
+                            </div>
+                            <div class="form-group row">
+                                <input asp-for="AddressZipCode" class="form-control" placeholder="Zip Code">
+                                <span asp-validation-for="AddressZipCode" class="text-danger"></span>
+                            </div>
+                            <div id="container">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input asp-for="Id" type="hidden" />
+                <input asp-for="OwnerId" type="hidden" />
+                <input asp-for="EmployerId" type="hidden" />
+
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+
+            <br />
+        </div>
+    </form>
+</div>
+
+

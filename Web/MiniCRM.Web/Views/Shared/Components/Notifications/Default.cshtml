@@ -1,12 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @model IEnumerable<MiniCRM.Web.ViewModels.Notifications.NotificationViewModel>
 
-@foreach (var notification in Model)
+@foreach (var notification in Model.OrderByDescending(x=>x.CreatedOn))
 {
 
     <a href="#" class="dropdown-item" title="View more">
         <p class="col-12">
-            <i class="fas fa-envelope mr-2"></i>@notification.Content
+           @notification.Content
             <br />
             <small>
                 @notification.TimeSince
