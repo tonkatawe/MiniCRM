@@ -11,6 +11,7 @@ namespace MiniCRM.Data.Models
         {
             this.Products = new HashSet<Product>();
         }
+
         public int EmployerId { get; set; }
 
         public virtual Employer Employer { get; set; }

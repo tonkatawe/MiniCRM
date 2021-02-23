@@ -51,9 +51,9 @@
             <strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
             <p class="text-muted">@Model.AddressCountry, @Model.AddressCity, @Model.AddressStreet, @Model.AddressZipCode</p>
             <hr>
-            <strong><i class="fas fa-phone-alt mr-1"></i> PhoneNumberNumber</strong>
+            <strong><i class="fas fa-phone-alt mr-1"></i> Phone</strong>
             <p class="text-muted">
-                @Model.Phone
+                @Model.PhoneNumber
             </p>
             <hr>
             <strong><i class="fas fa-at mr-1"></i> Email</strong>
@@ -63,7 +63,11 @@
             <p class="text-muted">@Model.AdditionalInfo</p>
         </div>
         <small>Responsible employer: @Model.EmployerFullName</small>
-        <a href="#" class="btn btn-primary btn-block"><b>Add order</b></a>
+        @if (this.User.IsInRole(GlobalConstants.EmployerUserRoleName))
+        {
+            <a asp-area="Employees" asp-controller="Sales" asp-action="Create" asp-route-customerId="@Model.Id" class="btn btn-primary btn-block"><b>Add order</b></a>
+
+        }
     </div>
     <!-- /.card-body -->
 </div>

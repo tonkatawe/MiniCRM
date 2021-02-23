@@ -1,0 +1,71 @@
+﻿@model MiniCRM.Web.ViewModels.Sales.SaleCreateModel
+@{
+    var products = Model.Products.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+}
+
+
+<link href="~/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+@*@section scripts{
+    <script>
+        function objectifyForm(formArray) {//serialize data function
+            var returnArray = {};
+            for (var i = 0; i < formArray.length; i++) {
+                returnArray[formArray[i]['name']] = formArray[i]['value'];
+            }
+            return returnArray;
+        }
+        $("#btnGetData").click(function () {
+            var listbox = Array();
+            $('#select1 > option').each(function () {
+                this.selected = true;
+                alert(this.value);
+                listbox.push(this.value);//If you want to pass the value of each option. 
+                listbox.push(this.text);//If you want to pass the text of each option.
+            });
+            var gmailInbox = objectifyForm($('form').serializeArray());
+            $.ajax({
+                url: '/Report/LongRunningProcess',
+                method: 'POST',
+                data: { viewModel: viewModel, select: listbox },
+                success: function () {
+                    alert("s");
+                },
+                error: function () {
+                    alert("e");
+                }
+            })
+        })
+    </script>
+}*@
+
+<form asp-area="Employees" asp-controller="Sales" asp-action="Create" method="post">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                
+                    
+                        <select class="duallistbox" asp-items="products" multiple="multiple">
+                        </select>
+                    
+                </div>
+            </div>
+   
+
+        </div>
+        <button type="submit">test</button>
+
+    </div>
+</form>
+<script src="~/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<script>
+
+    $('.duallistbox').bootstrapDualListbox()
+</script>
