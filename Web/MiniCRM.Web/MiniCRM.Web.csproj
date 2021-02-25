@@ -50,6 +50,21 @@
     <Content Update="wwwroot\js\adminlte.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\lib\bootstrap4-duallistbox\bootstrap-duallistbox.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap4-duallistbox\jquery.bootstrap-duallistbox.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -59,13 +74,19 @@
     <Content Update="wwwroot\lib\jquery\dist\jquery.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\plugins\bootstrap4-duallistbox\bootstrap-duallistbox.min.css">
+    <Content Update="wwwroot\lib\slim-select\slimselect.min.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\plugins\bootstrap4-duallistbox\jquery.bootstrap-duallistbox.min.js">
+    <Content Update="wwwroot\lib\slim-select\slimselect.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\plugins\bootstrap\js\bootstrap.min.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\plugins\bs-stepper\css\bs-stepper.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\plugins\bs-stepper\js\bs-stepper.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\plugins\fontawesome-free\css\all.min.css">

@@ -1,6 +1,6 @@
 ﻿@using MiniCRM.Common
 @model MiniCRM.Web.ViewModels.Customer.CustomerViewModel;
-    <!-- Profile Image -->
+
 <div class="card card-primary card-outline">
     <div class="d-flex justify-content-end user">
         <ul class="list-inline">
@@ -66,9 +66,6 @@
         @if (this.User.IsInRole(GlobalConstants.EmployerUserRoleName))
         {
             <a asp-area="Employees" asp-controller="Sales" asp-action="Create" asp-route-customerId="@Model.Id" class="btn btn-primary btn-block"><b>Add order</b></a>
-
         }
     </div>
-    <!-- /.card-body -->
 </div>
-<!-- /.card -->

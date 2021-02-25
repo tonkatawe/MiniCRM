@@ -1,71 +1,114 @@
-﻿@model MiniCRM.Web.ViewModels.Sales.SaleCreateModel
+﻿@model MiniCRM.Web.ViewModels.Sales.IndexSalesCreateViewModel
 @{
-    var products = Model.Products.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+    var products = Model.ProductsList.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
 }
 
 
-<link href="~/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
+<link href="~/lib/slim-select/slimselect.min.css" rel="stylesheet" />
+<script src="~/lib/slim-select/slimselect.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<link href="~/plugins/bs-stepper/css/bs-stepper.min.css" rel="stylesheet" />
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Add your sale</h3>
+            </div>
+            <div class="card-body p-0">
+                <div class="bs-stepper">
+                    <div class="bs-stepper-header" role="tablist">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+                        <div class="step" data-target="#logins-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
+                                <span class="bs-stepper-circle">1</span>
+                                <span class="bs-stepper-label">Choose products</span>
+                            </button>
+                        </div>
+                        <div class="line"></div>
+                        <div class="step" data-target="#information-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
+                                <span class="bs-stepper-circle">2</span>
+                                <span class="bs-stepper-label">Add quantity</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bs-stepper-content">
 
-@*@section scripts{
-    <script>
-        function objectifyForm(formArray) {//serialize data function
-            var returnArray = {};
-            for (var i = 0; i < formArray.length; i++) {
-                returnArray[formArray[i]['name']] = formArray[i]['value'];
-            }
-            return returnArray;
-        }
-        $("#btnGetData").click(function () {
-            var listbox = Array();
-            $('#select1 > option').each(function () {
-                this.selected = true;
-                alert(this.value);
-                listbox.push(this.value);//If you want to pass the value of each option. 
-                listbox.push(this.text);//If you want to pass the text of each option.
-            });
-            var gmailInbox = objectifyForm($('form').serializeArray());
-            $.ajax({
-                url: '/Report/LongRunningProcess',
-                method: 'POST',
-                data: { viewModel: viewModel, select: listbox },
-                success: function () {
-                    alert("s");
-                },
-                error: function () {
-                    alert("e");
-                }
-            })
-        })
-    </script>
-}*@
+                        <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
 
-<form asp-area="Employees" asp-controller="Sales" asp-action="Create" method="post">
-    <div class="card-body">
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                
-                    
-                        <select class="duallistbox" asp-items="products" multiple="multiple">
-                        </select>
-                    
+                            <select id="demo" asp-items="products" asp-for="SelectedIDs" multiple>
+                            </select>
+
+
+
+
+                            <button class="btn btn-primary" id="btnNext" onclick="stepper.next()">Next</button>
+                        </div>
+                        <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
+                            <form asp-area="Employees" asp-controller="Sales" asp-action="Create" method="post">
+                                <div id="container"></div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                            <button class="btn btn-primary" id="btnPrevious" onclick="stepper.previous()">Previous</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-   
 
         </div>
-        <button type="submit">test</button>
-
     </div>
-</form>
-<script src="~/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+</div>
+
+<script src="~/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+
+
+
 <script>
 
-    $('.duallistbox').bootstrapDualListbox()
+    document.addEventListener('DOMContentLoaded', function () {
+        window.stepper = new window.Stepper(document.querySelector('.bs-stepper'));
+    });
+
+
+</script>
+<script>
+    var slim = new SlimSelect({
+        select: '#demo',
+        placeholder: "Choose product to add",
+        searchText: "It is not available product",
+        searchPlaceholder: "Search for available product"
+
+    })
+
+</script>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#btnNext").click(function () {
+            var ids = $("#demo").val();
+            var customerId = @Model.Sale.CustomerId;
+            $.ajax({
+                type: "post",
+                url: "/Employees/Sales/SaleProductPartial",
+                data: { "ids": ids, "customerId": customerId },
+                success: function (result) {
+                    $("#container").append(result);
+                },
+                error: function (ex) {
+                    alert("Error");
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnPrevious").click(function () {
+
+            $("#container").empty();
+
+        });
+    });
 </script>

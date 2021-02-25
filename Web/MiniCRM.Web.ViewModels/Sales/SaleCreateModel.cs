@@ -8,15 +8,11 @@ namespace MiniCRM.Web.ViewModels.Sales
 
     public class SaleCreateModel
     {
-        public SaleCreateModel()
-        {
-            this.Products = new HashSet<ProductNameAndIdViewModel>();
-        }
 
         public int CustomerId { get; set; }
 
         public int EmployerId { get; set; }
 
-        public virtual IEnumerable<ProductNameAndIdViewModel> Products { get; set; }
+        public IList<SaleProductCreateModel> Products { get; set; }
     }
 }

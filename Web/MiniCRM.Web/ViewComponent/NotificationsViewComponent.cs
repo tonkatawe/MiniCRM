@@ -1,11 +1,11 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using MiniCRM.Services.Data.Contracts;
-using MiniCRM.Web.ViewModels.Notifications;
-
-namespace MiniCRM.Web.ViewComponent
+﻿namespace MiniCRM.Web.ViewComponent
 {
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Mvc;
+    using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Web.ViewModels.Notifications;
 
     [ViewComponent(Name = "Notifications")]
     public class NotificationsViewComponent : ViewComponent

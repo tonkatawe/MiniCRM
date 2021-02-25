@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace MiniCRM.Web.Areas.Employees.Controllers
+﻿namespace MiniCRM.Web.Areas.Employees.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Identity;
@@ -39,9 +36,13 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
             var employerAccount = await this.userManager.GetUserAsync(this.User);
             var products = this.productsService.GetAll<ProductNameAndIdViewModel>(employerAccount.CompanyId).ToList();
-            var viewModel = new SaleCreateModel
+            var viewModel = new IndexSalesCreateViewModel
             {
-                Products = products,
+                ProductsList = products,
+                Sale = new SaleCreateModel
+                {
+                    CustomerId = customerId,
+                },
             };
 
             return this.View(viewModel);
@@ -55,16 +56,24 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
             return this.View();
         }
 
-        public async Task<PartialViewResult> SaleProductPartial(int productId)
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
+        public PartialViewResult SaleProductPartial(IList<int> ids, int customerId)
         {
-            var viewModel = this.productsService.GetById<ProductViewModel>(productId);
+            var products = new List<SaleProductCreateModel>();
+            foreach (var id in ids)
+            {
+                var product = this.productsService.GetById<SaleProductCreateModel>(id);
+                products.Add(product);
+            }
+
+            var viewModel = new SaleCreateModel
+            {
+                Products = products,
+                CustomerId = customerId,
+            };
             return this.PartialView("_SaleProductPartial", viewModel);
         }
 
-        public ActionResult GetPartial(int productId)
-        {
-            var viewModel = this.productsService.GetById<ProductViewModel>(productId);
-            return PartialView("_SaleProductPartial", viewModel);
-        }
     }
 }
