@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Web.Areas.Employees.Controllers
+﻿using System;
+
+namespace MiniCRM.Web.Areas.Employees.Controllers
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -16,17 +18,20 @@
         private readonly ISalesService salesService;
         private readonly INotificationsService notificationsService;
         private readonly IProductsService productsService;
+        private readonly IEmployeesManagerService employeesManagerService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public SalesController(
             ISalesService salesService,
             INotificationsService notificationsService,
             IProductsService productsService,
+            IEmployeesManagerService employeesManagerService,
             UserManager<ApplicationUser> userManager)
         {
             this.salesService = salesService;
             this.notificationsService = notificationsService;
             this.productsService = productsService;
+            this.employeesManagerService = employeesManagerService;
             this.userManager = userManager;
         }
 
@@ -52,8 +57,18 @@
         public async Task<IActionResult> Create(SaleCreateModel input)
         {
             var employerAccount = await this.userManager.GetUserAsync(this.User);
+            var employerId = await this.employeesManagerService.GetEmployersIdAsync(employerAccount.Id);
+            if (!this.ModelState.IsValid)
+            {
+                return this.PartialView("_SaleProductPartial", input);
+            }
 
-            return this.View();
+            await this.salesService.AddSaleAsync(input, employerId);
+
+            await this.notificationsService.CreateNotificationAsync(employerAccount.ParentId,
+                $"{employerAccount.FullName} added sales");
+
+            return this.RedirectToAction("Index", "Customers");
         }
 
         [HttpPost]

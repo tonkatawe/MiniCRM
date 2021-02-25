@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MiniCRM.Data.Common.Models;
-
-namespace MiniCRM.Data.Models
+﻿namespace MiniCRM.Data.Models
 {
+    using System.Collections.Generic;
+    using MiniCRM.Data.Common.Models;
+
     public class Sale : BaseDeletableModel<int>
     {
         public Sale()
         {
-            this.Products = new HashSet<Product>();
+            this.Products = new HashSet<SaleProduct>();
         }
 
         public int EmployerId { get; set; }
@@ -20,6 +18,6 @@ namespace MiniCRM.Data.Models
 
         public virtual Customer Customer { get; set; }
 
-        public virtual IEnumerable<Product> Products { get; set; }
+        public virtual ICollection<SaleProduct> Products { get; set; }
     }
 }

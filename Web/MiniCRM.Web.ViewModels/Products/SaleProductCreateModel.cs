@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
-
-namespace MiniCRM.Web.ViewModels.Products
+﻿namespace MiniCRM.Web.ViewModels.Products
 {
-    using System.ComponentModel.DataAnnotations.Schema;
-
+    using AutoMapper;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Mapping;
 

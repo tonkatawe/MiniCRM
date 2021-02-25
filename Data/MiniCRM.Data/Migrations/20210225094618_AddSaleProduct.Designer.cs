@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniCRM.Data;
 
 namespace MiniCRM.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210225094618_AddSaleProduct")]
+    partial class AddSaleProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -713,6 +715,9 @@ namespace MiniCRM.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -720,6 +725,8 @@ namespace MiniCRM.Data.Migrations
                     b.HasIndex("EmployerId");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Sales");
                 });
@@ -970,6 +977,10 @@ namespace MiniCRM.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("MiniCRM.Data.Models.Product", null)
+                        .WithMany("Sales")
+                        .HasForeignKey("ProductId");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Employer");
@@ -978,7 +989,7 @@ namespace MiniCRM.Data.Migrations
             modelBuilder.Entity("MiniCRM.Data.Models.SaleProduct", b =>
                 {
                     b.HasOne("MiniCRM.Data.Models.Product", "Product")
-                        .WithMany("Sales")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
