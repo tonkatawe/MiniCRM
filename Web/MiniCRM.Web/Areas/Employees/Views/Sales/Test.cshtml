@@ -1,16 +1,25 @@
-﻿@model MiniCRM.Web.ViewModels.Sales.IndexSalesCreateViewModel
-@{
-    var products = Model.ProductsList.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+﻿@model MiniCRM.Web.ViewModels.Sales.SaleCreateModel
+@*@{
+        var products = Model.ProductsList.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
-}
-<link href="~/lib/slim-select/slimselect.min.css" rel="stylesheet" asp-append-version="true" />
+    }*@
+@*<link href="~/lib/slim-select/slimselect.min.css" rel="stylesheet" asp-append-version="true" />
 
-<select id="demo" asp-items="products" asp-for="SelectedIDs" multiple>
-</select>
-<input type="hidden" id="customerId" value="@Model.Sale.CustomerId" />
+    <select id="demo" asp-items="products" asp-for="SelectedIDs" multiple>
+    </select>
+    <input type="hidden" id="customerId" value="@Model.Sale.CustomerId" />*@
+<div id="productList">
 
+    @await Component.InvokeAsync("ProductsList")
+</div>
 <button class="btn btn-primary" id="btnNext">Next</button>
-<div id="container"></div>
+<form asp-action="Create">
+    <div id="container"></div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+    <input type="hidden" asp-for="CustomerId" asp-route="@Model" />
+
+</form>
+    <button class="btn btn-primary" id="btnPrevious" style="display: none">Previous</button>
 
 @section Scripts
 {
@@ -23,6 +32,7 @@
             searchPlaceholder: "Search for available product"
 
         });
+
     </script>
     <script>
         $(function () {
@@ -35,11 +45,28 @@
                     data: { "ids": ids, "customerId": customerId },
                     success: function (result) {
                         $("#container").append(result);
+                        $("#productList").hide(result);
+                        $("#btnNext").hide();
+                        $("#btnPrevious").show();
+
                     },
                     error: function (ex) {
                         alert("Error");
                     }
                 });
+
+
+
+            });
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#btnPrevious").click(function () {
+
+                $("#container").empty();
+                $("#productList").show();
+                $("#btnNext").show();
             });
         });
     </script>

@@ -59,13 +59,9 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
             var employerAccount = await this.userManager.GetUserAsync(this.User);
             var products = this.productsService.GetAll<ProductNameAndIdViewModel>(employerAccount.CompanyId).ToList();
-            var viewModel = new IndexSalesCreateViewModel
+            var viewModel = new SaleCreateModel
             {
-                ProductsList = products,
-                Sale = new SaleCreateModel
-                {
-                    CustomerId = customerId,
-                },
+                CustomerId = customerId,
             };
 
             return this.View(viewModel);
