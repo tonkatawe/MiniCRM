@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore;
 
 namespace MiniCRM.Services.Data
 {
@@ -91,15 +93,28 @@ namespace MiniCRM.Services.Data
             return query;
         }
 
-        public T GetById<T>(int productId)
+        public async Task<T> GetByIdAsync<T>(int productId)
         {
-            var product = this.productsRepository
+            var product = await this.productsRepository
                 .All()
                 .Where(x => x.Id == productId)
                 .To<T>()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             return product;
+        }
+
+        public async Task DecreaseQuantityAsync(int productId, int quantity)
+        {
+            var product = await this.productsRepository
+                .All()
+                .Where(x => x.Id == productId)
+                .FirstOrDefaultAsync();
+
+            product.Quantity -= quantity;
+
+            this.productsRepository.Update(product);
+            await this.productsRepository.SaveChangesAsync();
         }
     }
 }

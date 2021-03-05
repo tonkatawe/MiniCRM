@@ -1,4 +1,6 @@
-﻿using MiniCRM.Services.Data.Contracts;
+﻿using System.Collections.Generic;
+using MiniCRM.Services.Data.Contracts;
+using MiniCRM.Web.ViewModels.Products;
 
 namespace MiniCRM.Web.Controllers
 {
@@ -35,6 +37,17 @@ namespace MiniCRM.Web.Controllers
             {
                 return Json($"PhoneNumber {phone} is already in use.");
             }
+
+            return this.Json(true);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public JsonResult VerifyQuantity(IList<SaleProductCreateModel> Products)
+        {
+            //if (this.validationsService.IsExistUserPhoneNumber(quantity))
+            //{
+            //    return Json($"PhoneNumber {phone} is already in use.");
+            //}
 
             return this.Json(true);
         }

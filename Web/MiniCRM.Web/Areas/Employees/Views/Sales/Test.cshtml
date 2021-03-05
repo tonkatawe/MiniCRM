@@ -1,0 +1,46 @@
+﻿@model MiniCRM.Web.ViewModels.Sales.IndexSalesCreateViewModel
+@{
+    var products = Model.ProductsList.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+}
+<link href="~/lib/slim-select/slimselect.min.css" rel="stylesheet" asp-append-version="true" />
+
+<select id="demo" asp-items="products" asp-for="SelectedIDs" multiple>
+</select>
+<input type="hidden" id="customerId" value="@Model.Sale.CustomerId" />
+
+<button class="btn btn-primary" id="btnNext">Next</button>
+<div id="container"></div>
+
+@section Scripts
+{
+    <script src="~/lib/slim-select/slimselect.min.js" asp-append-version="true"></script>
+    <script>
+        var slim = new SlimSelect({
+            select: '#demo',
+            placeholder: "Choose product to add",
+            searchText: "It is not available product",
+            searchPlaceholder: "Search for available product"
+
+        });
+    </script>
+    <script>
+        $(function () {
+            $("#btnNext").click(function () {
+                var ids = $("#demo").val();
+                var customerId = $("#customerId").val();
+                $.ajax({
+                    type: "post",
+                    url: "/Employees/Sales/SaleProductPartial",
+                    data: { "ids": ids, "customerId": customerId },
+                    success: function (result) {
+                        $("#container").append(result);
+                    },
+                    error: function (ex) {
+                        alert("Error");
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace MiniCRM.Web.Areas.Employees.Controllers
 {
@@ -52,15 +53,34 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
             return this.View(viewModel);
         }
+        public async Task<IActionResult> Test(int customerId)
+        {
+
+
+            var employerAccount = await this.userManager.GetUserAsync(this.User);
+            var products = this.productsService.GetAll<ProductNameAndIdViewModel>(employerAccount.CompanyId).ToList();
+            var viewModel = new IndexSalesCreateViewModel
+            {
+                ProductsList = products,
+                Sale = new SaleCreateModel
+                {
+                    CustomerId = customerId,
+                },
+            };
+
+            return this.View(viewModel);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(SaleCreateModel input)
         {
             var employerAccount = await this.userManager.GetUserAsync(this.User);
             var employerId = await this.employeesManagerService.GetEmployersIdAsync(employerAccount.Id);
+
             if (!this.ModelState.IsValid)
             {
-                return this.PartialView("_SaleProductPartial", input);
+
+                return this.View("_SaleProductPartial", input);
             }
 
             await this.salesService.AddSaleAsync(input, employerId);
@@ -73,14 +93,14 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
         [HttpPost]
         [IgnoreAntiforgeryToken]
-        public PartialViewResult SaleProductPartial(IList<int> ids, int customerId)
+        public async Task<PartialViewResult> SaleProductPartial(IList<int> ids, int customerId)
         {
-            var products = new List<SaleProductCreateModel>();
-            foreach (var id in ids)
-            {
-                var product = this.productsService.GetById<SaleProductCreateModel>(id);
-                products.Add(product);
-            }
+            var products = await this.salesService.GetAllProductsSaleAsync<SaleProductCreateModel>(ids);
+            //foreach (var id in ids)
+            //{
+            //    var product = this.productsService.GetById<SaleProductCreateModel>(id);
+            //    products.Add(product);
+            //}
 
             var viewModel = new SaleCreateModel
             {
@@ -89,6 +109,5 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
             };
             return this.PartialView("_SaleProductPartial", viewModel);
         }
-
     }
 }

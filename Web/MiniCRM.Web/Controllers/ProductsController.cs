@@ -65,9 +65,9 @@
         }
 
         [Authorize(Roles = "Owner, Administrator")]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var viewModel = this.productsService.GetById<EditProductModel>(id);
+            var viewModel = await this.productsService.GetByIdAsync<EditProductModel>(id);
 
             return this.View(viewModel);
         }
@@ -77,7 +77,7 @@
         [Authorize(Roles = "Owner, Administrator")]
         public async Task<IActionResult> Edit(EditProductModel input)
         {
-            if (!ModelState.IsValid)
+            if (!this.ModelState.IsValid)
             {
                 return this.View();
             }

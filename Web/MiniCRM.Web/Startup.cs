@@ -1,4 +1,7 @@
-﻿namespace MiniCRM.Web
+﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using MiniCRM.Web.ViewModels.Products;
+
+namespace MiniCRM.Web
 {
     using System.Reflection;
 
@@ -75,7 +78,6 @@
             });
 
             services.AddSingleton(cloudinary);
-
             // Data repositories
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));

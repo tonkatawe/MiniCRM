@@ -15,6 +15,8 @@
 
         IQueryable<T> GetAll<T>(string companyId);
 
-        T GetById<T>(int productId);
+        Task<T> GetByIdAsync<T>(int productId);
+
+        Task DecreaseQuantityAsync(int productId, int quantity);
     }
 }

@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MiniCRM.Data.Models\MiniCRM.Data.Models.csproj" />
     <ProjectReference Include="..\..\Services\MiniCRM.Services.Mapping\MiniCRM.Services.Mapping.csproj" />
+    <ProjectReference Include="..\MiniCRM.Web.Infrastructure\MiniCRM.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

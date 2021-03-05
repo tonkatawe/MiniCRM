@@ -26,9 +26,40 @@ $(function () {
     });
 });
 $(function () {
-    $("#btnPrevious").click(function () {
+    $("#btnSubmit").click(function () {
+        var ids = $("#test").val();
+        var input = {
+            CustomerId: $("#dd").val(),
+            Products: [
+                {
+                    Id: 2,
+                    Quantity: 20
+                }
+            ],
+        };
+        //$.each(input.Products, function () {
+        //    Products.push({
+        //        Id: $("#productId").val(), Quantity: $("#quantityId").val()
+        //    }
+        //    );
 
-        $("#container").empty();
-
+            $.ajax({
+                type: "post",
+                url: "/Employees/Sales/Create",
+                data: { "input": input },
+                success: function (result) {
+                    $("#container").append(result);
+                },
+                error: function (ex) {
+                    alert("Error");
+                }
+            });
+        });
     });
-});
+    $(function () {
+        $("#btnPrevious").click(function () {
+
+            $("#container").empty();
+
+        });
+    });

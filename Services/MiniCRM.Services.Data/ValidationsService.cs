@@ -13,11 +13,16 @@ namespace MiniCRM.Services.Data
     {
         private readonly IDeletableEntityRepository<ApplicationUser> usersRepository;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly IProductsService productsService;
 
-        public ValidationsService(IDeletableEntityRepository<ApplicationUser> usersRepository, UserManager<ApplicationUser> userManager)
+        public ValidationsService(
+            IDeletableEntityRepository<ApplicationUser> usersRepository, 
+            UserManager<ApplicationUser> userManager,
+            IProductsService productsService)
         {
             this.usersRepository = usersRepository;
             this.userManager = userManager;
+            this.productsService = productsService;
         }
 
         public bool IsExistUserEmail(string email) =>
@@ -25,5 +30,7 @@ namespace MiniCRM.Services.Data
 
         public bool IsExistUserPhoneNumber(string phoneNumber) =>
             this.userManager.Users.Any(x => x.PhoneNumber == phoneNumber);
+
+       
     }
 }
