@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MiniCRM.Web.ViewModels.Products;
+using MiniCRM.Web.ViewModels.Sales;
 
 namespace MiniCRM.Web.ViewModels.Attributes
 {

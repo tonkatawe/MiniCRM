@@ -34,8 +34,6 @@
 
         public virtual ICollection<SaleProduct> Sales { get; set; }
 
-        //public virtual ICollection<ApplicationUser> Customers { get; set; }
-
         public string ProductPictureUrl { get; set; }
     }
 }

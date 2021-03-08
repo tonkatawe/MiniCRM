@@ -1,10 +1,8 @@
-﻿using MiniCRM.Web.ViewModels.Attributes;
-
-namespace MiniCRM.Web.ViewModels.Products
+﻿namespace MiniCRM.Web.ViewModels.Sales
 {
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Mapping;
-    using MiniCRM.Web.Infrastructure;
+    using MiniCRM.Web.ViewModels.Attributes;
 
     public class SaleProductCreateModel : IMapFrom<Product>
     {

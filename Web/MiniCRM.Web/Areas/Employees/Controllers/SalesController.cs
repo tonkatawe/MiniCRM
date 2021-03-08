@@ -1,10 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc.Routing;
-
-namespace MiniCRM.Web.Areas.Employees.Controllers
+﻿namespace MiniCRM.Web.Areas.Employees.Controllers
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Identity;
@@ -18,7 +14,6 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
     {
         private readonly ISalesService salesService;
         private readonly INotificationsService notificationsService;
-        private readonly IProductsService productsService;
         private readonly IEmployeesManagerService employeesManagerService;
         private readonly UserManager<ApplicationUser> userManager;
 
@@ -31,79 +26,47 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
         {
             this.salesService = salesService;
             this.notificationsService = notificationsService;
-            this.productsService = productsService;
             this.employeesManagerService = employeesManagerService;
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Create(int customerId)
+        public IActionResult Create(int customerId)
         {
-
-
-            var employerAccount = await this.userManager.GetUserAsync(this.User);
-            var products = this.productsService.GetAll<ProductNameAndIdViewModel>(employerAccount.CompanyId).ToList();
-            var viewModel = new IndexSalesCreateViewModel
-            {
-                ProductsList = products,
-                Sale = new SaleCreateModel
-                {
-                    CustomerId = customerId,
-                },
-            };
-
-            return this.View(viewModel);
-        }
-        public async Task<IActionResult> Test(int customerId)
-        {
-
-
-            var employerAccount = await this.userManager.GetUserAsync(this.User);
-            var products = this.productsService.GetAll<ProductNameAndIdViewModel>(employerAccount.CompanyId).ToList();
-            var viewModel = new SaleCreateModel
-            {
-                CustomerId = customerId,
-            };
-
-            return this.View(viewModel);
+            this.ViewData["CustomerId"] = customerId;
+            return this.View(this.ViewData["CustomerId"]);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SaleCreateModel input)
+        public async Task<IActionResult> Create(IList<SaleProductCreateModel> input, int customerId)
         {
+
             var employerAccount = await this.userManager.GetUserAsync(this.User);
             var employerId = await this.employeesManagerService.GetEmployersIdAsync(employerAccount.Id);
 
             if (!this.ModelState.IsValid)
             {
-
-                return this.View("_SaleProductPartial", input);
+                return this.PartialView("_SaleProductPartial", input);
             }
 
-            await this.salesService.AddSaleAsync(input, employerId);
+            await this.salesService.AddSaleAsync(input, employerId, customerId);
 
-            await this.notificationsService.CreateNotificationAsync(employerAccount.ParentId,
+            await this.notificationsService.CreateNotificationAsync(
+                employerAccount.ParentId,
                 $"{employerAccount.FullName} added sales");
 
-            return this.RedirectToAction("Index", "Customers");
+            return this.Json(new { result = "Success", url = this.Url.Action("Index", "Customers") });
         }
 
         [HttpPost]
-        [IgnoreAntiforgeryToken]
-        public async Task<PartialViewResult> SaleProductPartial(IList<int> ids, int customerId)
+        public async Task<IActionResult> SaleProductPartial(IList<int> ids)
         {
-            var products = await this.salesService.GetAllProductsSaleAsync<SaleProductCreateModel>(ids);
-            //foreach (var id in ids)
-            //{
-            //    var product = this.productsService.GetById<SaleProductCreateModel>(id);
-            //    products.Add(product);
-            //}
-
-            var viewModel = new SaleCreateModel
+            if (ids.Count == 0)
             {
-                Products = products,
-                CustomerId = customerId,
-            };
-            return this.PartialView("_SaleProductPartial", viewModel);
+                return this.Json("You have to choose minimum one product");
+            }
+
+            var products = await this.salesService.GetAllProductsSaleAsync<SaleProductCreateModel>(ids);
+            return this.PartialView("_SaleProductPartial", products);
         }
     }
 }

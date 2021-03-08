@@ -1,12 +1,9 @@
-﻿using System;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.EntityFrameworkCore;
-
-namespace MiniCRM.Services.Data
+﻿namespace MiniCRM.Services.Data
 {
     using System.Linq;
     using System.Threading.Tasks;
 
+    using Microsoft.EntityFrameworkCore;
     using MiniCRM.Data.Common.Repositories;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Contracts;

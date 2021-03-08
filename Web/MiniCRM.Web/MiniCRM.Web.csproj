@@ -50,7 +50,7 @@
     <Content Update="wwwroot\js\adminlte.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\js\CreateSale.js">
+    <Content Update="wwwroot\js\demo.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\lib\bootstrap4-duallistbox\bootstrap-duallistbox.min.css">

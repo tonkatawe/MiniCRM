@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-using MiniCRM.Web.ViewModels.Products;
-
-namespace MiniCRM.Services.Data
+﻿namespace MiniCRM.Services.Data
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using MiniCRM.Data.Common.Repositories;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Web.ViewModels.Products;
     using MiniCRM.Web.ViewModels.Sales;
 
     public class SalesService : ISalesService
@@ -23,16 +22,16 @@ namespace MiniCRM.Services.Data
             this.productsService = productsService;
         }
 
-        public async Task AddSaleAsync(SaleCreateModel input, int employerId)
+        public async Task AddSaleAsync(IList<SaleProductCreateModel> input, int employerId, int customerId)
         {
             var sale = new Sale
             {
-                CustomerId = input.CustomerId,
+                CustomerId = customerId,
                 EmployerId = employerId,
             };
 
 
-            foreach (var product in input.Products)
+            foreach (var product in input)
             {
                 await this.productsService.DecreaseQuantityAsync(product.Id, product.SaleProductQuantity);
 

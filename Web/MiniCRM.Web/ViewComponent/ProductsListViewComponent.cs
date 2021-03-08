@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
-using MiniCRM.Data.Models;
-using MiniCRM.Services.Data.Contracts;
-using MiniCRM.Web.ViewModels.Products;
-
-namespace MiniCRM.Web.ViewComponent
+﻿namespace MiniCRM.Web.ViewComponent
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using MiniCRM.Web.ViewModels.Notifications;
+    using MiniCRM.Data.Models;
+    using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Web.ViewModels.Products;
+
     [ViewComponent(Name = "ProductsList")]
     public class ProductsListViewComponent : ViewComponent
     {

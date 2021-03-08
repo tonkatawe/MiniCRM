@@ -40,16 +40,5 @@ namespace MiniCRM.Web.Controllers
 
             return this.Json(true);
         }
-
-        [AcceptVerbs("GET", "POST")]
-        public JsonResult VerifyQuantity(IList<SaleProductCreateModel> Products)
-        {
-            //if (this.validationsService.IsExistUserPhoneNumber(quantity))
-            //{
-            //    return Json($"PhoneNumber {phone} is already in use.");
-            //}
-
-            return this.Json(true);
-        }
     }
 }

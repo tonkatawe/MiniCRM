@@ -66,7 +66,6 @@
         @if (this.User.IsInRole(GlobalConstants.EmployerUserRoleName))
         {
             <a asp-area="Employees" asp-controller="Sales" asp-action="Create" asp-route-customerId="@Model.Id" class="btn btn-primary btn-block"><b>Add order</b></a>
-            <a asp-area="Employees" asp-controller="Sales" asp-action="Test" asp-route-customerId="@Model.Id" class="btn btn-primary btn-block"><b>test order</b></a>
         }
     </div>
 </div>
