@@ -44,7 +44,8 @@
 
         <ul class="list-group list-group-unbordered mb-3">
             <li class="list-group-item">
-                <b>Orders</b> <a class="float-right">@Model.OrdersCount</a>
+                <b>Orders</b>
+                <a asp-area="Employees" asp-controller="Sales" asp-action="GetOrders" asp-route-fullName="@Model.FullName" asp-route-customerId="@Model.Id" class="float-right" title="View all">@Model.OrdersCount</a>
             </li>
         </ul>
         <div class="card-body">

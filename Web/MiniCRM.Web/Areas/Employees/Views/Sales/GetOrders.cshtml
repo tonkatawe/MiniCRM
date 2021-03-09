@@ -1,0 +1,75 @@
+﻿@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Sales.SaleViewModel>
+
+@{
+    this.ViewData["Title"] = $"{this.ViewData["FullName"]} orders list";
+
+}
+<h2>@ViewData["Title"]</h2>
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-fullname="@ViewData["FullName"]">Ordered date</a>
+            </th>
+            <th>
+                <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByName"]" asp-route-fullname="@ViewData["FullName"]">Products </a>
+            </th>
+            <th>
+                <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByQuantity"]" asp-route-fullname="@ViewData["FullName"]">Benefit</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+
+            <tr>
+                <td>
+                    @order.CreatedOn
+                </td>
+
+                <td>
+                    @string.Join(", ", order.Products.Select(x => x.ProductName))
+                </td>
+                <td>
+                    @order.Products.Sum(x => x.Benefit)
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<ul class="pagination">
+
+    <li>
+        <a asp-action="GetOrders"
+           asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-fullname="@ViewData["FullName"]"
+           class="btn @prevDisabled">
+            Previous
+        </a>
+    </li>
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item @(Model.PageIndex == i ? "active" : string.Empty)">
+            <a class="page-link rounded-pill" asp-route-pageNumber="@i" asp-route-fullname="@ViewData["FullName"]">@i</a>
+        </li>
+    }
+    <li>
+        <a asp-action="GetOrders"
+           asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-fullname="@ViewData["FullName"]"
+           class="btn  @nextDisabled">
+            Next
+        </a>
+    </li>
+</ul>

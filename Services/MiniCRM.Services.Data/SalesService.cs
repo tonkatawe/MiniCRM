@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using MiniCRM.Services.Mapping;
 
 namespace MiniCRM.Services.Data
 {
@@ -62,6 +63,14 @@ namespace MiniCRM.Services.Data
             return products;
         }
 
-    
+        public IQueryable<T> GetAllCustomerOrders<T>(int customerId)
+        {
+            var query = this.salesRepository.All()
+                .Where(x => x.CustomerId == customerId)
+                .To<T>()
+                .AsQueryable();
+
+            return query;
+        }
     }
 }

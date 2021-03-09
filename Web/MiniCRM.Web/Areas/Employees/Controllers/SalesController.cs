@@ -1,4 +1,9 @@
-﻿namespace MiniCRM.Web.Areas.Employees.Controllers
+﻿using System;
+using System.Linq;
+using MiniCRM.Web.Infrastructure;
+using MiniCRM.Web.ViewModels.Customer;
+
+namespace MiniCRM.Web.Areas.Employees.Controllers
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -28,6 +33,35 @@
             this.notificationsService = notificationsService;
             this.employeesManagerService = employeesManagerService;
             this.userManager = userManager;
+        }
+
+        public async Task<IActionResult> GetOrders(int customerId, string fullName, string sortOrder, int? pageNumber)
+        {
+            var allOrders = this.salesService.GetAllCustomerOrders<SaleViewModel>(customerId);
+            int pageSize = 3;
+
+            this.ViewData["FullName"] = fullName;
+            this.ViewData["CurrentSort"] = sortOrder;
+            this.ViewData["SortByDate"] = string.IsNullOrEmpty(sortOrder) ? "dateSorted" : string.Empty;
+            this.ViewData["Benefit"] = string.IsNullOrEmpty(sortOrder) ? "benefitSorted" : string.Empty;
+
+            var orders = from o in allOrders select o;
+
+            switch (sortOrder)
+            {
+                case "benefitSorted":
+                    orders = orders.OrderByDescending(x => x.Products.Sum(x => x.Benefit));
+                    break;
+                case "dateSorted":
+                    orders = orders.OrderBy(x => x.CreatedOn);
+                    break;
+                    //case "nameSorted":
+                    //    orders = orders.OrderBy(x => x.ProductName);
+                    //    break;
+
+            }
+
+            return View(await PaginatedList<SaleViewModel>.CreateAsync(orders, pageNumber ?? 1, pageSize));
         }
 
         public IActionResult Create(int customerId)
