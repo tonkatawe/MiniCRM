@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Data.Models
+﻿using System.Collections.Generic;
+
+namespace MiniCRM.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
 
@@ -43,5 +45,7 @@
 
         [Required]
         public string Email { get; set; }
+
+        public virtual ICollection<Sale> Orders { get; set; }
     }
 }
