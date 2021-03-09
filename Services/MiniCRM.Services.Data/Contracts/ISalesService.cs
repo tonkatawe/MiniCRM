@@ -14,5 +14,7 @@ namespace MiniCRM.Services.Data.Contracts
         Task<IList<T>> GetAllProductsSaleAsync<T>(IList<int> ids);
 
         IQueryable<T> GetAllCustomerOrders<T>(int customerId);
+
+        Task<T> GetSaleById<T>(int saleId);
     }
 }

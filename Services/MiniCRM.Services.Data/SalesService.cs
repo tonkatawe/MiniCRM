@@ -72,5 +72,16 @@ namespace MiniCRM.Services.Data
 
             return query;
         }
+
+        public async Task<T> GetSaleById<T>(int saleId)
+        {
+            var query = await this.salesRepository
+                .All()
+                .Where(x => x.Id == saleId)
+                .To<T>()
+                .FirstOrDefaultAsync();
+
+            return query;
+        }
     }
 }

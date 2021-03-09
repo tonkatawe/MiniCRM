@@ -1,0 +1,12 @@
+﻿@model MiniCRM.Web.ViewModels.Sales.SaleViewModel
+
+@foreach (var product in @Model.Products)
+{
+    @product.ProductName
+    <br />
+    @product.Quantity
+    <br />
+    @product.Benefit
+    <br />
+
+}

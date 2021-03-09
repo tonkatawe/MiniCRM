@@ -8,6 +8,7 @@
 
     public class SaleViewModel : IMapFrom<Sale>
     {
+        public int Id { get; set; }
         public DateTime CreatedOn { get; set; }
 
         public IEnumerable<SaleProductsViewModel> Products { get; set; }

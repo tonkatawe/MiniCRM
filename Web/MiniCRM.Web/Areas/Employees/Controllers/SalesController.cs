@@ -39,7 +39,7 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
         {
             var allOrders = this.salesService.GetAllCustomerOrders<SaleViewModel>(customerId);
             int pageSize = 3;
-
+            this.ViewData["CustomerId"] = customerId;
             this.ViewData["FullName"] = fullName;
             this.ViewData["CurrentSort"] = sortOrder;
             this.ViewData["SortByDate"] = string.IsNullOrEmpty(sortOrder) ? "dateSorted" : string.Empty;
@@ -101,6 +101,13 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
 
             var products = await this.salesService.GetAllProductsSaleAsync<SaleProductCreateModel>(ids);
             return this.PartialView("_SaleProductPartial", products);
+        }
+
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var viewModel = await this.salesService.GetSaleById<SaleViewModel>(id);
+            return this.PartialView("_SaleDetails", viewModel);
         }
     }
 }

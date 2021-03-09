@@ -11,7 +11,7 @@
     <thead>
         <tr>
             <th>
-                <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-fullname="@ViewData["FullName"]">Ordered date</a>
+                <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByDate"]" asp-route-fullname="@ViewData["FullName"]" asp-route-customerId="@ViewData["CustomerId"]" asp-route-pageNumber="@Model.PageIndex">Ordered date</a>
             </th>
             <th>
                 <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByName"]" asp-route-fullname="@ViewData["FullName"]">Products </a>
@@ -19,14 +19,17 @@
             <th>
                 <a asp-action="GetOrders" asp-route-sortOrder="@ViewData["SortByQuantity"]" asp-route-fullname="@ViewData["FullName"]">Benefit</a>
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
+
         @foreach (var order in Model)
         {
+            var tm = "#myModal" + order.Products;
+            var mid = order.Products;
 
-            <tr>
+            <tr data-toggle="modal" data-id="@order.Id" data-target="#orderModal">
                 <td>
                     @order.CreatedOn
                 </td>
@@ -37,12 +40,19 @@
                 <td>
                     @order.Products.Sum(x => x.Benefit)
                 </td>
+                <td>
 
+                    <a class="btn btn-default btn-sm" id="@order.Id" onclick="Details(this.id)">Show</a>
+
+                </td>
 
             </tr>
         }
     </tbody>
 </table>
+
+
+
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -54,7 +64,7 @@
 
     <li>
         <a asp-action="GetOrders"
-           asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-fullname="@ViewData["FullName"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-fullname="@ViewData["FullName"]" asp-route-customerId="@ViewData["CustomerId"]"
            class="btn @prevDisabled">
             Previous
         </a>
@@ -62,14 +72,48 @@
     @for (var i = 1; i <= Model.TotalPages; i++)
     {
         <li class="page-item @(Model.PageIndex == i ? "active" : string.Empty)">
-            <a class="page-link rounded-pill" asp-route-pageNumber="@i" asp-route-fullname="@ViewData["FullName"]">@i</a>
+            <a class="page-link rounded-pill" asp-route-pageNumber="@i" asp-route-fullname="@ViewData["FullName"]" asp-route-customerId="@ViewData["CustomerId"]">@i</a>
         </li>
     }
     <li>
         <a asp-action="GetOrders"
-           asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-fullname="@ViewData["FullName"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-fullname="@ViewData["FullName"]" asp-route-customerId="@ViewData["CustomerId"]"
            class="btn  @nextDisabled">
             Next
         </a>
     </li>
 </ul>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Details</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script>
+        function Details(id) {
+            $.get("@Url.Action("Details","Sales")/" + id,
+                function (data) {
+                    $('.modal-body').html(data);
+                });
+
+            $("#myModal").modal("show");
+        }
+    </script>
+}
