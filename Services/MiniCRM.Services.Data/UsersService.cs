@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-
+﻿
 namespace MiniCRM.Services.Data
 {
     using System;

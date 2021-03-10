@@ -27,6 +27,11 @@
                 {
                     options.MapFrom(c => c.Company.Products.Count(p => p.CompanyId == c.CompanyId));
                 });
+            configuration.CreateMap<ApplicationUser, OwnersDashBoardViewModel>()
+                .ForMember(x => x.OrdersCount, options =>
+                {
+                    options.MapFrom(o => o.Employees.SelectMany(x => x.Sales).Count());
+                });
         }
     }
 }
