@@ -41,10 +41,11 @@ namespace MiniCRM.Services.Data
             await this.notificationsRepository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<T>> GetNotificationsAsync<T>(string userId)
+        public async Task<ICollection<T>> GetNotificationsAsync<T>(string userId)
         {
             return await this.notificationsRepository.All()
                 .Where(x => x.UserId == userId && x.IsRead == false)
+                .OrderByDescending(x => x.CreatedOn)
                 .To<T>()
                 .ToListAsync();
         }

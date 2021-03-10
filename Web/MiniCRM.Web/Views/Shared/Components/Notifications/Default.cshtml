@@ -1,28 +1,59 @@
 ﻿@using Microsoft.AspNetCore.Http.Extensions
 @model IEnumerable<MiniCRM.Web.ViewModels.Notifications.NotificationViewModel>
 
-@foreach (var notification in Model.OrderByDescending(x=>x.CreatedOn))
+
+<span class="dropdown-header">
+
+    @if (Model.Any())
+    {
+        @Model.Count() <p>Notifications</p>
+        <div class="dropdown-divider"></div>
+    }
+    else
+    {
+        <p>You haven't new notification</p>
+    }
+
+</span>
+@{
+    var notifications = @Model;
+    bool test = false;
+
+}
+
+@if (@Model.Count() > 3)
+{
+    notifications = notifications.Take(3);
+    test = true;
+}
+
+
+@foreach (var notification in notifications)
 {
 
     <a href="#" class="dropdown-item" title="View more">
         <p class="col-12">
-           @notification.Content
+            @notification.Content
             <br />
             <small>
                 @notification.TimeSince
-            
-                    <form asp-area="" asp-controller="Notifications" asp-action="See" asp-route-url="@this.Url" id="asReadForm" method="post">
-                        <div class="form-check">
-                            <input class="form-check-input small" type="checkbox" name="notificationId" value="@notification.Id" onclick="asReadForm.submit()">
-                            <input type="text" name="url" value="@this.Url.ActionContext.HttpContext.Request.GetDisplayUrl()" hidden />
-                            <label class="form-check-label small">
-                                Mark as read
-                            </label>
-                        </div>
-                    </form>
-          
+
+                <form asp-area="" asp-controller="Notifications" asp-action="See" asp-route-url="@this.Url" id="asReadForm" method="post">
+                    <div class="form-check">
+                        <input class="form-check-input small" type="checkbox" name="notificationId" value="@notification.Id" onclick="asReadForm.submit()">
+                        <input type="text" name="url" value="@this.Url.ActionContext.HttpContext.Request.GetDisplayUrl()" hidden />
+                        <label class="form-check-label small">
+                            Mark as read
+                        </label>
+                    </div>
+                </form>
+
             </small>
         </p>
     </a>
     <div class="dropdown-divider"></div>
+}
+@if (test)
+{
+    <a asp-area="" asp-controller="Notifications" asp-action="Index" class="dropdown-item dropdown-footer">See All Notifications</a>
 }

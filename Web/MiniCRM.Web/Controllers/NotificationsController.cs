@@ -1,4 +1,6 @@
-﻿namespace MiniCRM.Web.Controllers
+﻿using System.Security.Claims;
+
+namespace MiniCRM.Web.Controllers
 {
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Http.Extensions;
@@ -15,18 +17,16 @@
             this.notificationsService = notificationsService;
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index()
         {
-            var viewModel = new IndexViewModel();
+            var userId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            if (id != null)
+            var viewModel = new IndexViewModel
             {
-                var notificaiton = await this.notificationsService.GetByIdAsync<NotificationViewModel>(id);
-                viewModel.Notifications.Add(notificaiton);
-                return this.View(viewModel);
-            }
+                Notifications = await this.notificationsService.GetNotificationsAsync<NotificationViewModel>(userId),
+            };
 
-            return this.View();
+            return this.View(viewModel);
         }
 
         [HttpPost]
