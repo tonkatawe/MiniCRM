@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-
-namespace MiniCRM.Web.ViewModels.Customer
+﻿namespace MiniCRM.Web.ViewModels.Customer
 {
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Mapping;
@@ -32,13 +30,5 @@ namespace MiniCRM.Web.ViewModels.Customer
         public string OwnerId { get; set; }
 
         public int OrdersCount { get; set; }
-        //public void CreateMappings(IProfileExpression configuration)
-        //{
-        //    configuration.CreateMap<Sale, CustomerViewModel>()
-        //        .ForMember(x => x.OrdersCount, options =>
-        //        {
-        //            options.MapFrom(p => p.Products.Count);
-        //        });
-        //}
     }
 }
