@@ -42,7 +42,11 @@
                 </td>
                 <td>
 
-                    <a class="btn btn-default btn-sm" id="@order.Id" onclick="Details(this.id)">Show</a>
+                    @*<input class="search btn-default" type="button" value="Search"
+                        data-assigned-id="@order.Id" data-toggle="modal" data-target="#detailsModal" />*@
+                    <input class="getDetails btn btn-primary" type="button" value="Get Details"
+                           data-assigned-id="@order.Id" data-toggle="modal" data-target="#detailsModal" />
+
 
                 </td>
 
@@ -50,9 +54,6 @@
         }
     </tbody>
 </table>
-
-
-
 
 @{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -84,36 +85,36 @@
     </li>
 </ul>
 
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
 
-        <!-- Modal content-->
+
+<div class="modal fade" id="detailsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Details</h4>
+                <h5 class="modal-title">Order details</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div id="partial"></div>
             </div>
         </div>
     </div>
 </div>
 
 
-
-
 @section scripts{
-    <script>
-        function Details(id) {
-            $.get("@Url.Action("Details","Sales")/" + id,
-                function (data) {
-                    $('.modal-body').html(data);
-                });
+    <script type="text/javascript">
+    $(function () {
+        $('.getDetails').click(function () {
+            var id = $(this).data('assigned-id');
+            var route = '@Url.Action("Details", "Sales")?id=' + id;
+            $('#partial').load(route);
+        });
 
-            $("#myModal").modal("show");
-        }
+    });
     </script>
+
 }

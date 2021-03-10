@@ -103,10 +103,13 @@ namespace MiniCRM.Web.Areas.Employees.Controllers
             return this.PartialView("_SaleProductPartial", products);
         }
 
-
+        //[HttpPost]
+        //[IgnoreAntiforgeryToken]
         public async Task<IActionResult> Details(int id)
         {
             var viewModel = await this.salesService.GetSaleById<SaleViewModel>(id);
+            //var student = await this.salesService.GetSaleById<SaleViewModel>(id);
+            //return new JsonResult(student);
             return this.PartialView("_SaleDetails", viewModel);
         }
     }
