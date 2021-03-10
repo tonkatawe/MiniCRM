@@ -1,16 +1,14 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MiniCRM.Data.Common.Repositories;
-using MiniCRM.Data.Models;
-using MiniCRM.Services.Data.Contracts;
-using MiniCRM.Services.Mapping;
-
-namespace MiniCRM.Services.Data
+﻿namespace MiniCRM.Services.Data
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
+    using System.Linq;
+    using System.Threading.Tasks;
+
+    using Microsoft.EntityFrameworkCore;
+    using MiniCRM.Data.Common.Repositories;
+    using MiniCRM.Data.Models;
+    using MiniCRM.Services.Data.Contracts;
+    using MiniCRM.Services.Mapping;
 
     public class NotificationsService : INotificationsService
     {
@@ -71,6 +69,19 @@ namespace MiniCRM.Services.Data
             }
 
             this.notificationsRepository.Update(notification);
+
+            await this.notificationsRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteNotificationAsync(int notificationId)
+        {
+            var notification = await this.notificationsRepository
+                .All()
+                .FirstOrDefaultAsync(x => x.Id == notificationId);
+            
+            notification.IsRead = true;
+            
+            this.notificationsRepository.Delete(notification);
 
             await this.notificationsRepository.SaveChangesAsync();
         }

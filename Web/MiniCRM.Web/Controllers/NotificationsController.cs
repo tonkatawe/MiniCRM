@@ -57,5 +57,13 @@ namespace MiniCRM.Web.Controllers
 
             return this.Redirect(currentUrl);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int notificationId)
+        {
+            await this.notificationsService.DeleteNotificationAsync(notificationId);
+
+            return this.Redirect("/Notifications/Index");
+        }
     }
 }

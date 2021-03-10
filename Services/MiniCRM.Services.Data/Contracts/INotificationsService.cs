@@ -14,5 +14,7 @@
         Task<T> GetByIdAsync<T>(int id);
 
         Task ReadNotificationsAsync(int notificationId);
+
+        Task DeleteNotificationAsync(int notificationId);
     }
 }

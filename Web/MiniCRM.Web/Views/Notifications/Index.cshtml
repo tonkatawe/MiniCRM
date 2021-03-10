@@ -4,9 +4,9 @@
 <hr />
 @if (Model.Notifications == null || Model.Notifications.Any())
 {
-    @foreach (var notification in Model.Notifications.OrderByDescending(x => x.CreatedOn))
+    @foreach (var notification in Model.Notifications)
     {
-        var timeSince = DateTime.UtcNow.Subtract(notification.CreatedOn).TotalMinutes;
+
 
         <div class="bg-primary mt-3">
             <div class="toast-header">
@@ -23,30 +23,11 @@
                         <strong class="mr-auto">Seen</strong>
                     }
                 </svg>
-                @if (timeSince >= 60)
-                {
-                    if (timeSince >= 1440)
-                    {
-                        <small>@DateTime.UtcNow.Subtract(notification.CreatedOn).TotalDays.ToString("f0") days ago</small>
-                    }
-                    else
-                    {
-                        <small>@DateTime.UtcNow.Subtract(notification.CreatedOn).TotalHours.ToString("f0") hours ago</small>
-                    }
-                }
-                else
-                {
-                    if (timeSince < 1)
-                    {
-                        <small>@DateTime.UtcNow.Subtract(notification.CreatedOn).TotalSeconds.ToString("f0") seconds ago</small>
-                    }
-                    else
-                    {
-                        <small>@timeSince.ToString("f0") mins ago</small>
-                    }
-                }
-                <form asp-controller="Notifications" asp-action="Delete" method="post">
-                    <input type="number" name="notificationId" value="@notification.Id" hidden />
+
+                <small>@notification.TimeSince</small>
+
+
+                <form asp-controller="Notifications" asp-action="Delete" asp-route-notificationId="@notification.Id" method="post">
                     <button type="submit" class="ml-2 mb-1 close" title="Delete">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -76,22 +57,22 @@ else
     </div>
 }
 
-<script>
-    @if (Model.Notifications.Any())
-    {
-        @: window.onload = function (event) {
-        @: event.preventDefault();
-        @: var token = $("#deleteForm input[name=__RequestVerificationToken").val();
-        @: $.ajax({
-        @:     type: "POST",
-        @:     url: "/Notifications/SeeAll",
-        @:     headers: { "X-CSRF-TOKEN": token },
-        @:     data:
-        @:     {
-        @:         UserId: "@Model.Notifications?.Select(x => x.UserId).First()"
-        @:     }
-        @: });
-    };
-    }
+@*<script>
+        @if (Model.Notifications.Any())
+        {
+            @: window.onload = function (event) {
+            @: event.preventDefault();
+            @: var token = $("#deleteForm input[name=__RequestVerificationToken").val();
+            @: $.ajax({
+            @:     type: "POST",
+            @:     url: "/Notifications/SeeAll",
+            @:     headers: { "X-CSRF-TOKEN": token },
+            @:     data:
+            @:     {
+            @:         UserId: "@Model.Notifications?.Select(x => x.UserId).First()"
+            @:     }
+            @: });
+        };
+        }
 
-</script>
+    </script>*@
