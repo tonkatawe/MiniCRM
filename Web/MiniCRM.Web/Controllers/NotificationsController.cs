@@ -30,6 +30,7 @@ namespace MiniCRM.Web.Controllers
         }
 
         [HttpPost]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> SeeAll(string userId)
         {
             if (userId != null)
@@ -47,16 +48,12 @@ namespace MiniCRM.Web.Controllers
             return this.Ok();
         }
 
-
-
-
         [HttpPost]
         public async Task<IActionResult> See(int notificationId, string url)
         {
             var currentUrl = url;
 
             await this.notificationsService.ReadNotificationsAsync(notificationId);
-
 
             return this.Redirect(currentUrl);
         }

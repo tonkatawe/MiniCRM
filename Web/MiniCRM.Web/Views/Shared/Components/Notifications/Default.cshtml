@@ -6,25 +6,27 @@
 
     @if (Model.Any())
     {
-        @Model.Count() <p>Notifications</p>
-        <div class="dropdown-divider"></div>
+        <span>@Model.Count() Notifications</span>
     }
     else
     {
         <p>You haven't new notification</p>
-    }
+        <hr />
 
+        <a asp-area="" asp-controller="Notifications" asp-action="Index" class="dropdown-item dropdown-footer">Go to notification center</a>
+    }
 </span>
+<div class="dropdown-divider"></div>
 @{
     var notifications = @Model;
-    bool test = false;
+
 
 }
 
 @if (@Model.Count() > 3)
 {
     notifications = notifications.Take(3);
-    test = true;
+
 }
 
 
@@ -37,23 +39,23 @@
             <br />
             <small>
                 @notification.TimeSince
-
-                <form asp-area="" asp-controller="Notifications" asp-action="See" asp-route-url="@this.Url" id="asReadForm" method="post">
+            
+                <form asp-area="" asp-controller="Notifications" asp-action="See" asp-route-url="@this.Url" method="post">
                     <div class="form-check">
-                        <input class="form-check-input small" type="checkbox" name="notificationId" value="@notification.Id" onclick="asReadForm.submit()">
+                        <input class="form-check-input small" type="checkbox" name="notificationId" value="@notification.Id" onclick="this.form.submit()">
                         <input type="text" name="url" value="@this.Url.ActionContext.HttpContext.Request.GetDisplayUrl()" hidden />
                         <label class="form-check-label small">
                             Mark as read
                         </label>
                     </div>
                 </form>
-
+          
             </small>
         </p>
     </a>
     <div class="dropdown-divider"></div>
 }
-@if (test)
-{
-    <a asp-area="" asp-controller="Notifications" asp-action="Index" class="dropdown-item dropdown-footer">See All Notifications</a>
-}
+
+<a asp-area="" asp-controller="Notifications" asp-action="Index" class="dropdown-item dropdown-footer">See All Notifications</a>
+
+
