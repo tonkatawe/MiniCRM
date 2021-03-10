@@ -7,24 +7,23 @@
     @foreach (var notification in Model.Notifications)
     {
 
-
-        <div class="bg-primary mt-3">
+   
+        <div class="bg-gradient-info mt-3">
             <div class="toast-header">
-                <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg"
-                     preserveAspectRatio="xMidYMid slice" focusable="false" role="img">
-                    @if (notification.IsRead == false)
-                    {
-                        <rect fill="#007aff" width="100%" height="100%" />
-                        <strong class="mr-auto">New</strong>
-                    }
-                    else
-                    {
-                        <rect fill="gray" width="100%" height="100%" />
-                        <strong class="mr-auto">Seen</strong>
-                    }
-                </svg>
 
-                <small>@notification.TimeSince</small>
+                @if (notification.IsRead == false)
+                {
+                   
+                    <strong class="mr-auto">New</strong>
+                }
+                else
+                {
+                 
+                    <strong class="mr-auto">Seen</strong>
+                }
+                <small>
+                     <i class="far fa-clock mr-1"></i>@notification.TimeSince
+                </small>
 
 
                 <form asp-controller="Notifications" asp-action="Delete" asp-route-notificationId="@notification.Id" method="post">
@@ -57,7 +56,7 @@ else
     </div>
 }
 
-@*<script>
+<script>
         @if (Model.Notifications.Any())
         {
             @: window.onload = function (event) {
@@ -75,4 +74,4 @@ else
         };
         }
 
-    </script>*@
+    </script>

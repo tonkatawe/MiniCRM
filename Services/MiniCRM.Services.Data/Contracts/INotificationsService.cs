@@ -9,7 +9,9 @@
 
         Task CreateNotificationAsync(string userId, string content);
 
-        Task<ICollection<T>> GetNotificationsAsync<T>(string userId);
+        Task<IEnumerable<T>> GetNotificationsAsync<T>(string userId);
+
+        Task<IEnumerable<T>> GetFilteredNotificationsAsync<T>(string userId, bool isRead);
 
         Task<T> GetByIdAsync<T>(int id);
 

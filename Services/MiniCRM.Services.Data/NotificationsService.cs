@@ -39,10 +39,19 @@
             await this.notificationsRepository.SaveChangesAsync();
         }
 
-        public async Task<ICollection<T>> GetNotificationsAsync<T>(string userId)
+        public async Task<IEnumerable<T>> GetNotificationsAsync<T>(string userId)
         {
             return await this.notificationsRepository.All()
-                .Where(x => x.UserId == userId && x.IsRead == false)
+                .Where(x => x.UserId == userId)
+                .OrderByDescending(x => x.CreatedOn)
+                .To<T>()
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetFilteredNotificationsAsync<T>(string userId, bool isRead)
+        {
+            return await this.notificationsRepository.All()
+                .Where(x => x.UserId == userId && x.IsRead == isRead)
                 .OrderByDescending(x => x.CreatedOn)
                 .To<T>()
                 .ToListAsync();
@@ -78,9 +87,9 @@
             var notification = await this.notificationsRepository
                 .All()
                 .FirstOrDefaultAsync(x => x.Id == notificationId);
-            
+
             notification.IsRead = true;
-            
+
             this.notificationsRepository.Delete(notification);
 
             await this.notificationsRepository.SaveChangesAsync();

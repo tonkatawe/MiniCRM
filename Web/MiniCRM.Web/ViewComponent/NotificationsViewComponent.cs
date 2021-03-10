@@ -20,7 +20,7 @@
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var userId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var viewModel = await this.notificationsService.GetNotificationsAsync<NotificationViewModel>(userId);
+            var viewModel = await this.notificationsService.GetFilteredNotificationsAsync<NotificationViewModel>(userId, false);
             return this.View(viewModel);
         }
     }

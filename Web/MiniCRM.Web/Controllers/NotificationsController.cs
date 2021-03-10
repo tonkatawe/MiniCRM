@@ -3,6 +3,7 @@
 namespace MiniCRM.Web.Controllers
 {
     using System.Threading.Tasks;
+
     using Microsoft.AspNetCore.Http.Extensions;
     using Microsoft.AspNetCore.Mvc;
     using MiniCRM.Services.Data.Contracts;
@@ -21,9 +22,13 @@ namespace MiniCRM.Web.Controllers
         {
             var userId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            var notifications =
+                await this.notificationsService.GetNotificationsAsync<NotificationViewModel>(userId);
+
+
             var viewModel = new IndexViewModel
             {
-                Notifications = await this.notificationsService.GetNotificationsAsync<NotificationViewModel>(userId),
+                Notifications = notifications,
             };
 
             return this.View(viewModel);
