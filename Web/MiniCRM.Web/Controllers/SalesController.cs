@@ -1,7 +1,6 @@
 ﻿namespace MiniCRM.Web.Controllers
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Authorization;
@@ -10,7 +9,6 @@
     using MiniCRM.Common;
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
-    using MiniCRM.Web.Infrastructure;
     using MiniCRM.Web.ViewModels.Sales;
 
     [Authorize]
@@ -33,34 +31,6 @@
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> GetOrders(int customerId, string fullName, string sortOrder, int? pageNumber)
-        {
-            var allOrders = this.salesService.GetAllCustomerOrders<SaleViewModel>(customerId);
-            int pageSize = 3;
-            this.ViewData["CustomerId"] = customerId;
-            this.ViewData["FullName"] = fullName;
-            this.ViewData["CurrentSort"] = sortOrder;
-            this.ViewData["SortByDate"] = string.IsNullOrEmpty(sortOrder) ? "dateSorted" : string.Empty;
-            this.ViewData["Benefit"] = string.IsNullOrEmpty(sortOrder) ? "benefitSorted" : string.Empty;
-
-            var orders = from o in allOrders select o;
-
-            switch (sortOrder)
-            {
-                case "benefitSorted":
-                    orders = orders.OrderByDescending(x => x.Products.Sum(x => x.Benefit));
-                    break;
-                case "dateSorted":
-                    orders = orders.OrderBy(x => x.CreatedOn);
-                    break;
-                    //case "nameSorted":
-                    //    orders = orders.OrderBy(x => x.ProductName);
-                    //    break;
-            }
-
-            return this.View(await PaginatedList<SaleViewModel>.CreateAsync(orders, pageNumber ?? 1, pageSize));
-        }
-
         [Authorize(Roles = GlobalConstants.EmployerUserRoleName)]
         public IActionResult Create(int customerId)
         {
@@ -70,7 +40,6 @@
 
         [HttpPost]
         [Authorize(Roles = GlobalConstants.EmployerUserRoleName)]
-
         public async Task<IActionResult> Create(IList<SaleProductCreateModel> input, int customerId)
         {
             var employerAccount = await this.userManager.GetUserAsync(this.User);
@@ -101,14 +70,6 @@
 
             var products = await this.salesService.GetAllProductsSaleAsync<SaleProductCreateModel>(ids);
             return this.PartialView("_SaleProductPartial", products);
-        }
-
-        [Authorize(Roles = GlobalConstants.OwnerUserRoleName)]
-
-        public async Task<IActionResult> Details(int id)
-        {
-            var viewModel = await this.salesService.GetSaleById<SaleViewModel>(id);
-            return this.PartialView("_SaleDetails", viewModel);
         }
     }
 }

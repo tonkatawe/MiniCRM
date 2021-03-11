@@ -10,7 +10,7 @@
                 <div class="info-box-content">
                     <span class="info-box-text">Total Sales</span>
                     <span class="info-box-number">
-                        @Model.OrdersCount
+                        <a asp-area="" asp-controller="Orders" asp-action="Owner">@Model.OrdersCount</a>
 
                     </span>
                 </div>

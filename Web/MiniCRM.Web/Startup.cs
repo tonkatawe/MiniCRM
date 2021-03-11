@@ -98,6 +98,7 @@ namespace MiniCRM.Web
             services.AddTransient<IValidationsService, ValidationsService>();
             services.AddTransient<INotificationsService, NotificationsService>();
             services.AddTransient<ISalesService, SalesService>();
+            services.AddTransient<IOrdersService, OrdersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
