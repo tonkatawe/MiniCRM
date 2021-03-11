@@ -33,7 +33,7 @@
 
                 $.ajax({
                     type: "post",
-                    url: "/Employees/Sales/SaleProductPartial",
+                    url: "/Sales/SaleProductPartial",
                     data: { "ids": ids },
                     headers: { 'X-CSRF-TOKEN': token },
                     success: function (result) {
@@ -73,7 +73,7 @@
                 var data = $("#myForm").serialize();
                 $.ajax({
                     type: "post",
-                    url: "/Employees/Sales/Create",
+                    url: "/Sales/Create",
                     data: data + '&customerId=' + customerId,
                     headers: { 'X-CSRF-TOKEN': token },
                     success: function (response) {

@@ -45,7 +45,7 @@
         <ul class="list-group list-group-unbordered mb-3">
             <li class="list-group-item">
                 <b>Orders</b>
-                <a asp-area="Employees" asp-controller="Sales" asp-action="GetOrders" asp-route-fullName="@Model.FullName" asp-route-customerId="@Model.Id" class="float-right" title="View all">@Model.OrdersCount</a>
+                <a asp-area="" asp-controller="Sales" asp-action="GetOrders" asp-route-fullName="@Model.FullName" asp-route-customerId="@Model.Id" class="float-right" title="View all">@Model.OrdersCount</a>
             </li>
         </ul>
         <div class="card-body">
@@ -66,7 +66,7 @@
         <small>Responsible employer: @Model.EmployerFullName</small>
         @if (this.User.IsInRole(GlobalConstants.EmployerUserRoleName))
         {
-            <a asp-area="Employees" asp-controller="Sales" asp-action="Create" asp-route-customerId="@Model.Id" class="btn btn-primary btn-block"><b>Add order</b></a>
+            <a asp-area="" asp-controller="Sales" asp-action="Create" asp-route-customerId="@Model.Id" class="btn btn-primary btn-block"><b>Add order</b></a>
         }
     </div>
 </div>
