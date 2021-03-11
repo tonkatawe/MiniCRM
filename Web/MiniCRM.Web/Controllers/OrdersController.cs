@@ -52,7 +52,7 @@
             return this.View("Orders", await PaginatedList<SaleViewModel>.CreateAsync(orders, pageNumber ?? 1, pageSize));
         }
 
-        public async Task<IActionResult> Employer()
+        public async Task<IActionResult> Employer(int employerId)
         {
             throw new NotImplementedException();
         }

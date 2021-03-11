@@ -45,6 +45,11 @@
       "provider": "cdnjs",
       "library": "slim-select@1.27.0",
       "destination": "wwwroot/lib/slim-select/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "datatables@1.10.21",
+      "destination": "wwwroot/lib/datatables/"
     }
   ]
 }

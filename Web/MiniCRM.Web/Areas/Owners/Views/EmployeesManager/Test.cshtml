@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home page";
+}
+<link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+<div class="container">
+    <form id="employeesTableForm" method="post"></form>
+
+
+    <table id="employeesTable" class="table table-hover display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employer Name</th>
+                <th>Job Title</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Customers</th>
+                <th>Sales</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+@section Scripts
+{
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/emoployerDataTable.js"></script>
+}

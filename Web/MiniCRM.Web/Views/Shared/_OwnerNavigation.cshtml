@@ -41,7 +41,7 @@
 </li>
 <li class="nav-item ">
 
-    <a asp-area="Owners" asp-controller="CustomerManager" asp-action="Index"
+    <a asp-area="Owners" asp-controller="EmployeesManager" asp-action="Index"
        class="nav-link @Url.MakeActiveClass("customerManager","index")">
         <i class="nav-icon fas fa-user"></i>
         <p>
@@ -56,6 +56,16 @@
         <i class="nav-icon fas fa-user"></i>
         <p>
             Add Customer
+        </p>
+    </a>
+</li>
+<li class="nav-item ">
+
+    <a asp-area="Owners" asp-controller="EmployeesManager" asp-action="Test"
+       class="nav-link @Url.MakeActiveClass("employeesManager","Test")">
+        <i class="nav-icon fas fa-user"></i>
+        <p>
+            Test
         </p>
     </a>
 </li>

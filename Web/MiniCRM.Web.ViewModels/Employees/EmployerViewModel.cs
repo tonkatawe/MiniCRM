@@ -11,6 +11,8 @@
 
         public int CustomersCount { get; set; }
 
+        public int SalesCount { get; set; }
+
         public string CompanyId { get; set; }
 
         public string JobTitleName { get; set; }

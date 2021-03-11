@@ -40,18 +40,18 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByName"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Full Name</a>
             </th>
 
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByJobTitle"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Job Title</a>
-            </th>
 
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByEmail"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Email</a>
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByPhone"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">PhoneNumberNumber</a>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByPhone"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Phone</a>
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByCustomer"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customers</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByCustomer"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sales</a>
             </th>
 
 
@@ -73,12 +73,10 @@
             <tr>
                 <td>
                     @employer.FullName
+
+                    <small><p class="font-italic font-light">@employer.JobTitleName</p></small>
                 </td>
 
-
-                <td>
-                    @employer.JobTitleName
-                </td>
                 <td>
                     @employer.Email
                 </td>
@@ -87,6 +85,9 @@
                 </td>
                 <td>
                     <a asp-area="Owners" asp-controller="CustomerManager" asp-action="Index" asp-route-employerId="@employer.Id">  @employer.CustomersCount</a>
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="Ordres" asp-action="Employer" asp-route-asp-route-employerId="@employer.Id">@employer.SalesCount</a>
                 </td>
                 <td>
                     <ul class="list-inline">
@@ -130,7 +131,7 @@
                                 <form method="post" asp-area="Owners" asp-controller="EmployeesManager" asp-action="DeleteAccount" id="deleteAccountForm" asp-route-id="@employer.Id" asp-route-accountId="@employer.AccountId">
                                     <button class="btn btn-danger  btn-sm" data-toggle="modal" data-target="#deleteAccountModal">  <i class="fas fa-trash" title="Delete customer"></i>Close account</button>
 
-                  
+
                                 </form>
 
                             </li>
@@ -175,7 +176,7 @@
                     </ul>
                 </td>
             </tr>
-      
+
         }
     </tbody>
 </table>

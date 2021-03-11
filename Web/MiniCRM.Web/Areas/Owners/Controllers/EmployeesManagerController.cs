@@ -303,5 +303,10 @@
 
             return this.RedirectToAction("Details", new { employerId = input.Id });
         }
+
+        public IActionResult Test()
+        {
+            return this.View();
+        }
     }
 }
