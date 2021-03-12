@@ -1,0 +1,228 @@
+﻿@using MiniCRM.Web.ViewModels.Employees
+@model MiniCRM.Web.Infrastructure.PaginatedList<MiniCRM.Web.ViewModels.Employees.EmployerViewModel>
+@{
+    this.ViewData["Title"] = "All Customers";
+
+}
+@if (this.TempData.ContainsKey("Error"))
+{
+    <div class="alert alert-danger">@this.TempData["Error"]</div>
+}
+@if (this.TempData.ContainsKey("Successful"))
+{
+    <div class="alert alert-success">@this.TempData["Successful"]</div>
+}
+
+<form asp-action="Index" method="get">
+    <div class="row">
+        <p>
+            Find by name: <input type="text" class="rounded-pill" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <button type="submit" class="btn btn-primary  rounded-pill btn-sm">
+                <span class="icon text-white-50">
+                    <i class="fas fa-search"></i>
+                </span>
+                <span class="text">Search</span>
+            </button>
+            <a asp-action="Index" class="btn btn-info rounded-pill btn-sm">
+                <span class="icon text-white-50">
+                    <i class="far fa-arrow-alt-circle-left"></i>
+                </span>
+                <span class="text">Back to full list</span>
+            </a>
+        </p>
+    </div>
+</form>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByName"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Full Name</a>
+            </th>
+
+
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByEmail"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Email</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByPhone"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Phone</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByCustomer"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Customers</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["SortByCustomer"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Sales</a>
+            </th>
+
+
+            <th>
+                Customer Settings
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+
+        @foreach (var employer in Model)
+        {
+            var tm = "#myModal" + employer.Id;
+            var mid = "myModal" + employer.Id;
+
+
+            <tr>
+                <td>
+                    @employer.FullName
+
+                    <small><p class="font-italic font-light">@employer.JobTitleName</p></small>
+                </td>
+
+                <td>
+                    @employer.Email
+                </td>
+                <td>
+                    @employer.PhoneNumber
+                </td>
+                <td>
+                    <a asp-area="Owners" asp-controller="CustomerManager" asp-action="Index" asp-route-employerId="@employer.Id">  @employer.CustomersCount</a>
+                </td>
+                <td>
+                    <a asp-area="" asp-controller="Ordres" asp-action="Employer" asp-route-asp-route-employerId="@employer.Id">@employer.SalesCount</a>
+                </td>
+                <td>
+                    <ul class="list-inline">
+                        @if (!@employer.HasAccount)
+                        {
+
+
+                            <li class="list-inline-item">
+                                <form asp-area="Owners" asp-controller="EmployeesManager" asp-action="CreateAccount" asp-route-id="@employer.Id" method="post" class="form-inline">
+
+                                    <button class="btn btn-primary rounded-pill btn-sm">
+                                        <span class="icon text-white-50">
+                                            <i class="fas fa-plus"></i>
+                                        </span>
+                                        <span class="text">Create Account</span>
+                                    </button>
+                                    <div class="modal" tabindex="-1" role="dialog" id="deleteAccountModal">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header d-flex justify-content-lg-start">
+                                                    <h4 class="modal-title " id="myModalAccountLabel">Delete Confirmation</h4>
+                                                </div>
+                                                <div class="modal-body font-weight-bold">
+                                                    <p>Do you want to delete "@employer.FullName" account's?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn bg-danger mr-1 text-white" onclick="deleteAccountForm.submit()">Delete</button>
+                                                    <button type="button" class="btn btn-dark " data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="list-inline-item">
+
+                                <form method="post" asp-area="Owners" asp-controller="EmployeesManager" asp-action="DeleteAccount" id="deleteAccountForm" asp-route-id="@employer.Id" asp-route-accountId="@employer.AccountId">
+                                    <button class="btn btn-danger  btn-sm" data-toggle="modal" data-target="#deleteAccountModal">  <i class="fas fa-trash" title="Delete customer"></i>Close account</button>
+
+
+                                </form>
+
+                            </li>
+                        }
+
+                        <li class="list-inline-item">
+                            <form asp-area="Owners" asp-controller="EmployeesManager" asp-action="Details" asp-route-employerId="@employer.Id" class="form-inline">
+                                <button class="btn btn-info rounded-pill btn-sm">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-info"></i>
+                                    </span>
+                                    <span class="text">Details</span>
+                                </button>
+                            </form>
+                        </li>
+                        <li class="list-inline-item">
+                            <button type="button" class="btn btn-danger rounded-pill btn-sm" data-toggle="modal" data-target="@tm">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-user-times"></i>
+                                </span>
+                                <span class="text">Delete</span>
+                            </button>
+                            <form asp-action="Delete" asp-route-id="@employer.Id" method="post">
+                                <div class="modal fade" id="@mid" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header d-flex justify-content-lg-start">
+                                                <h4 class="modal-title " id="myModalLabel">Delete Confirmation</h4>
+                                            </div>
+                                            <div class="modal-body font-weight-bold">
+                                                Are you sure want to delete @employer.FullName?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" id="deleteBtn2" class="btn bg-danger mr-1 text-white">Delete</button>
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+
+<ul class="pagination">
+
+
+    <li>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+    </li>
+    @for (var i = 1; i <= Model.TotalPages; i++)
+    {
+        <li class="page-item  @(Model.PageIndex == i ? "active" : string.Empty)">
+            <a class="page-link rounded-pill" asp-route-pageNumber="@i">@i</a>
+        </li>
+    }
+
+    <li>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
+
+    </li>
+</ul>
+
+<div>
+    <a asp-action="Create" class="btn btn-primary rounded-pill">
+        <span class="icon text-white-50">
+            <i class="fas fa-user-plus"></i>
+        </span>
+        <span class="text">Add New Employer</span>
+    </a>
+</div>

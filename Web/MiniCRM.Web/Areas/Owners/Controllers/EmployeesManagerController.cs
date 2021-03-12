@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Linq.Dynamic.Core;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -11,7 +12,6 @@
     using MiniCRM.Data.Models;
     using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Services.Messaging;
-    using MiniCRM.Web.Infrastructure;
     using MiniCRM.Web.ViewModels;
     using MiniCRM.Web.ViewModels.Employees;
     using MiniCRM.Web.ViewModels.Users;
@@ -35,73 +35,67 @@
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public IActionResult Index()
         {
-            var ownerId = this.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var owner = await this.usersService.GetUserAsync<UserViewModel>(ownerId);
+            //todo make validaiton for existing employers
+            return this.View();
+        }
 
-            if (owner.CompanyId == null)
-            {
-                return this.RedirectToAction("Create", "Companies", new { area = "Owners" });
-            }
-
+        [HttpPost]
+        public async Task<IActionResult> GetEmployees()
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
             var allEmployers = this.employeesManagerService.GetAll<EmployerViewModel>(owner.CompanyId);
 
-            this.ViewData["CurrentSort"] = sortOrder;
-            this.ViewData["SortByName"] = string.IsNullOrEmpty(sortOrder) ? "nameDesc" : string.Empty;
-            this.ViewData["SortByJobTitle"] = string.IsNullOrEmpty(sortOrder) ? "jobDesc" : string.Empty;
-            this.ViewData["SortByEmail"] = string.IsNullOrEmpty(sortOrder) ? "emailDesc" : string.Empty;
-            this.ViewData["SortByPhone"] = string.IsNullOrEmpty(sortOrder) ? "phoneDesc" : string.Empty;
-            this.ViewData["SortByCustomer"] = string.IsNullOrEmpty(sortOrder) ? "customerCount" : string.Empty;
-
-            if (searchString != null)
+            try
             {
-                pageNumber = 1;
+                var draw = this.Request.Form["draw"].FirstOrDefault();
+                var start = this.Request.Form["start"].FirstOrDefault();
+                var length = this.Request.Form["length"].FirstOrDefault();
+                var sortColumn = this.Request.Form["columns[" + this.Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
+                var sortColumnDirection = this.Request.Form["order[0][dir]"].FirstOrDefault();
+                var searchValue = this.Request.Form["search[value]"].FirstOrDefault();
+                int pageSize = length != null ? Convert.ToInt32(length) : 0;
+                int skip = start != null ? Convert.ToInt32(start) : 0;
+                int recordsTotal = 0;
+                var customerData = from tempcustomer in allEmployers select tempcustomer;
+                if (!(string.IsNullOrEmpty(sortColumn) && string.IsNullOrEmpty(sortColumnDirection)))
+                {
+                    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
+                }
+
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    customerData = customerData.Where(m => m.FirstName.Contains(searchValue)
+                                                || m.MiddleName.Contains(searchValue)
+                                                || m.LastName.Contains(searchValue)
+                                                || m.Email.Contains(searchValue));
+                }
+
+                recordsTotal = customerData.Count();
+                var data = customerData.Skip(skip).Take(pageSize).ToList();
+                var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
+                return this.Ok(jsonData);
             }
-            else
+            catch (Exception ex)
             {
-                searchString = currentFilter;
+                throw;
             }
+        }
 
-            this.ViewData["CurrentFilter"] = searchString;
+        public async Task<IActionResult> DetailsPartial(int id)
+        {
+            var owner = await this.userManager.GetUserAsync(this.User);
 
-            var employees = from c in allEmployers
-                            select c;
-            if (!string.IsNullOrEmpty(searchString))
+            var viewModel = await this.employeesManagerService.GetByIdAsync<DetailsEmployerViewModel>(id);
+
+            if (owner.CompanyId != viewModel.CompanyId)
             {
-                employees = employees.Where(s => s.LastName.Contains(searchString)
-                                                 || s.FirstName.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "nameDesc":
-                    employees = employees
-                        .OrderByDescending(e => e.FirstName)
-                        .ThenByDescending(e => e.LastName)
-                        .ThenByDescending(e => e.MiddleName);
-                    break;
-
-                case "jobDesc":
-                    employees = employees.OrderByDescending(e => e.JobTitleName);
-                    break;
-                case "emailDesc":
-                    employees = employees.OrderByDescending(e => e.Email);
-                    break;
-                case "phoneDesc":
-                    employees = employees.OrderByDescending(e => e.PhoneNumber);
-                    break;
-                case "customerCount":
-                    employees = employees.OrderBy(e => e.CustomersCount);
-                    break;
-                default:
-                    employees = employees.OrderBy(c => c.LastName);
-                    break;
+                return this.NotFound();
             }
 
-            int pageSize = 3;
+            return this.PartialView("Details", viewModel);
 
-            return this.View(await PaginatedList<EmployerViewModel>.CreateAsync(employees, pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> Create()
@@ -148,6 +142,7 @@
 
             if (!this.ModelState.IsValid)
             {
+
                 return this.View(input);
             }
 
@@ -304,9 +299,6 @@
             return this.RedirectToAction("Details", new { employerId = input.Id });
         }
 
-        public IActionResult Test()
-        {
-            return this.View();
-        }
+
     }
 }

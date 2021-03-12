@@ -91,6 +91,7 @@
         public async Task<IActionResult> Details(int id)
         {
             var viewModel = await this.salesService.GetSaleById<SaleViewModel>(id);
+
             return this.PartialView("_SaleDetails", viewModel);
         }
     }

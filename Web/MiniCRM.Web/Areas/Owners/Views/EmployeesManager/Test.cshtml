@@ -2,7 +2,10 @@
     ViewData["Title"] = "Home page";
 }
 <link href="~/lib/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+<a asp-controller="EmployeesManager" asp-action="Create" class="btn btn-primary">Add Employer</a>
 <div class="container">
+
     <form id="employeesTableForm" method="post"></form>
 
 
@@ -20,10 +23,20 @@
             </tr>
         </thead>
     </table>
-
 </div>
+
+<div class="modal fade" id="editAssetModal" tabindex="-1" role="dialog" aria-labelledby="EditAssetModal" aria-hidden="true" data-backdrop="static">
+    <div id="employerActionContainer">
+    </div>
+</div>
+
+
 @section Scripts
 {
+
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
     <script src="~/lib/datatables/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/js/emoployerDataTable.js"></script>

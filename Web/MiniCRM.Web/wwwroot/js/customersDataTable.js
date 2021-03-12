@@ -1,18 +1,18 @@
 ﻿$(document).ready(function () {
-    var token = $("#employeesTableForm input[name=__RequestVerificationToken]").val();
+    var token = $("#customersTableForm input[name=__RequestVerificationToken]").val();
 
-    var table = $("#employeesTable").DataTable({
+    var table = $("#customersTable").DataTable({
         "processing": true,
         "serverSide": true,
         "filter": true,
-        "lengthMenu": [10, 15, 25, 50],
-        "language": {
-            "info": "Showing _START_ to _END_ of _TOTAL_ employees",
-            "zeroRecords": "No matching employer found",
-            "sLengthMenu": "Show _MENU_ employees",
+        "lengthMenu": [10, 15, 25, 50], "language": {
+            "info": "Showing _START_ to _END_ of _TOTAL_ customers",
+            "zeroRecords": "No matching customer found",
+            "sLengthMenu": "Show _MENU_ customers",
         },
+
         "ajax": {
-            "url": "/owners/employeesManager/getEmployees",
+            "url": "/owners/CustomerManager/getCustomers",
             "type": "POST",
             "datatype": "json",
             "headers": { 'X-CSRF-TOKEN': token }
@@ -29,14 +29,14 @@
             { "data": "jobTitleName", "name": "JobTitleName", "autoWidth": true },
             { "data": "email", "name": "Email", "autoWidth": true, "orderable": false, "targets": 0 },
             { "data": "phoneNumber", "name": "Phone", "autoWidth": true, "orderable": false, "targets": 0 },
+            { "data": "employerFullName", "name": "EmployerFullName", "autoWidth": true },
             {
-                "data": "customersCount", "name": "CustomersCount", "autoWidth": true,
+                "data": "ordersCount", "name": "OrdersCount", "autoWidth": true,
                 "render": function (data, type, row) {
-                    return '<a href="/owners/customerManager?employerId=' + row.id + '">' + row.customersCount + '</a>';
+                    return '<a href="/owners/customerManager?employerId=' + row.id + '">' + row.ordersCount + '</a>';
 
                 }
             },
-            { "data": "salesCount", "name": "SalesCount", "autoWidth": true },
             {
                 "orderable": false, "targets": 0,
                 "render": function (data, type, row) {

@@ -47,11 +47,7 @@
                         .FirstOrDefault().Name);
 
                 });
-            //.ForMember(x => x.BestEmployerName, options =>
-            //{
-            //    options.MapFrom(
-            //        e => e.Employees.OrderByDescending(s => s.Sales.Max(sp => sp.Products.Max(x => x.Product.Price * x.Quantity))).Select(x => x.FirstName).FirstOrDefault());
-            //});
+       
         }
     }
 }

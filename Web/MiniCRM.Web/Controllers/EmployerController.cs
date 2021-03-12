@@ -13,9 +13,9 @@
     using MiniCRM.Services.Data.Contracts;
     using MiniCRM.Web.ViewModels.Employees;
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmployerController : ControllerBase
+    //[Route("api/[controller]")]
+    //[ApiController]
+    public class EmployerController : Controller
     {
         private readonly IEmployeesManagerService employeesManagerService;
         private readonly UserManager<ApplicationUser> userManager;
@@ -72,5 +72,7 @@
                 throw;
             }
         }
+
+
     }
 }
