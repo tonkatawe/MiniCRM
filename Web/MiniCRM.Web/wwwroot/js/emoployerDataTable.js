@@ -32,7 +32,7 @@
             {
                 "data": "customersCount", "name": "CustomersCount", "autoWidth": true,
                 "render": function (data, type, row) {
-                    return '<a href="/owners/customerManager?employerId=' + row.id + '">' + row.customersCount + '</a>';
+                    return '<a href="/owners/customerManager/?employerId=' + row.id + '">' + row.customersCount + '</a>';
 
                 }
             },
@@ -43,8 +43,9 @@
                     return '<a href="/owners/employeesManager/DetailsPartial?id=' + row.id + '" id="employerRowAction" class="btn btn-primary">Details</a>';
                 }
             }
-        ]
+        ],
     });
+
     $('#employeesTable').on("click", "#employerRowAction", function (event) {
 
         event.preventDefault();
