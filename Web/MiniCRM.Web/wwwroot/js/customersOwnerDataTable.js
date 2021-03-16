@@ -50,7 +50,7 @@
             {
                 "data": "ordersCount", "name": "OrdersCount", "autoWidth": true,
                 "render": function (data, type, row) {
-                    return '<a href="/owners/?employerId=' + row.id + '">' + row.ordersCount + '</a>';
+                    return '<a href="/orders/customer/?customerId=' + row.id + '">' + row.ordersCount + '</a>';
 
                 }
             },
@@ -61,32 +61,6 @@
                 }
             }
         ],
-    });
-
-
-
-    //if ($("#employerId").val()) {
-    //    table.column(5).visible(false);
-    //    console.log("asdasd");
-    //    console.log(test);
-    //    console.log(table.rows(0).column(5).data());
-
-    //}
-
-    $('#customersTable tbody').on('click', 'td.details-control', function () {
-        var tr = $(this).closest('tr');
-        var row = table.row(tr);
-
-        if (row.child.isShown()) {
-            // This row is already open - close it
-            row.child.hide();
-            tr.removeClass('shown');
-        }
-        else {
-            // Open this row
-            row.child(format(row.data())).show();
-            tr.addClass('shown');
-        }
     });
 });
 

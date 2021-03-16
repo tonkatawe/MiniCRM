@@ -1,13 +1,9 @@
-﻿using System;
-using System.Security.Claims;
-using MiniCRM.Web.Infrastructure;
-using System.Linq.Dynamic.Core;
-
-using MiniCRM.Web.ViewModels;
-
-namespace MiniCRM.Web.Areas.Owners.Controllers
+﻿namespace MiniCRM.Web.Areas.Owners.Controllers
 {
+    using System;
     using System.Linq;
+    using System.Linq.Dynamic.Core;
+    using System.Security.Claims;
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Identity;
@@ -33,13 +29,12 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
             this.userManager = userManager;
         }
 
-       
+
         public IActionResult Index(int? employerId)
         {
             this.ViewData["EmployerId"] = employerId;
             return this.View();
         }
-
 
         [HttpPost]
         public IActionResult GetCustomers(int? employerId)
@@ -93,6 +88,7 @@ namespace MiniCRM.Web.Areas.Owners.Controllers
                 var jsonData = new { draw = draw, recordsFiltered = recordsTotal, recordsTotal = recordsTotal, data = data };
                 return this.Ok(jsonData);
             }
+
             catch (Exception ex)
             {
                 throw;
